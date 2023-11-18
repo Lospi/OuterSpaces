@@ -1,0 +1,103 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%d - %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$d - %2$@"
+          }
+        }
+      }
+    },
+    "Desktop %lld" : {
+
+    },
+    "Force icon refresh shortcut" : {
+
+    },
+    "General" : {
+
+    },
+    "GitHub" : {
+
+    },
+    "Launch Spaceman at login" : {
+
+    },
+    "Name (max 3 char.)" : {
+
+    },
+    "Named spaces" : {
+
+    },
+    "No Space Defined" : {
+
+    },
+    "Numbers" : {
+
+    },
+    "Rectangles" : {
+
+    },
+    "Rectangles with desktop numbers" : {
+
+    },
+    "Rectangles with numbers" : {
+
+    },
+    "Refresh" : {
+
+    },
+    "Refresh spaces in background" : {
+
+    },
+    "Run" : {
+
+    },
+    "Select Space" : {
+      "comment" : "Spaces não é traduzido",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select Space"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar Space"
+          }
+        }
+      }
+    },
+    "Space" : {
+
+    },
+    "Space %lld" : {
+
+    },
+    "Spaceman" : {
+
+    },
+    "Spaces" : {
+
+    },
+    "Style" : {
+
+    },
+    "Update name" : {
+
+    },
+    "Version %@" : {
+
+    },
+    "Website" : {
+
+    }
+  },
+  "version" : "1.0"
+}
