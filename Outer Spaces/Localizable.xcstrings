@@ -1,59 +1,37 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%d - %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$d - %2$@"
-          }
-        }
-      }
+    "Custom Name" : {
+
+    },
+    "Delete CoreData" : {
+
     },
     "Desktop %lld" : {
 
     },
-    "Force icon refresh shortcut" : {
+    "Desktop Name" : {
 
     },
-    "General" : {
+    "Display %lld" : {
 
     },
-    "GitHub" : {
+    "Focus Preset" : {
 
     },
-    "Launch Spaceman at login" : {
+    "New Preset Name" : {
 
     },
-    "Name (max 3 char.)" : {
+    "New Preset..." : {
 
     },
-    "Named spaces" : {
+    "Outer Spaces" : {
 
     },
-    "No Space Defined" : {
+    "Refresh Available Spaces" : {
 
     },
-    "Numbers" : {
-
-    },
-    "Rectangles" : {
-
-    },
-    "Rectangles with desktop numbers" : {
-
-    },
-    "Rectangles with numbers" : {
-
-    },
-    "Refresh" : {
-
-    },
-    "Refresh spaces in background" : {
-
-    },
-    "Run" : {
+    "Select Preset" : {
 
     },
     "Select Space" : {
@@ -74,28 +52,13 @@
         }
       }
     },
+    "Set" : {
+
+    },
     "Space" : {
 
     },
-    "Space %lld" : {
-
-    },
-    "Spaceman" : {
-
-    },
-    "Spaces" : {
-
-    },
-    "Style" : {
-
-    },
-    "Update name" : {
-
-    },
-    "Version %@" : {
-
-    },
-    "Website" : {
+    "Switch to Space" : {
 
     }
   },

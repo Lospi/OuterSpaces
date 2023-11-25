@@ -9,12 +9,11 @@ import Cocoa
 import Foundation
 import SwiftUI
 
-class SpaceObserver {
+class SpaceObserver: ObservableObject {
     private let workspace = NSWorkspace.shared
     private let conn = _CGSDefaultConnection()
-    private let defaults = UserDefaults.standard
     weak var delegate: SpaceObserverDelegate?
-    public var spaces: [DesktopSpaces] = []
+    @Published var spaces: [DesktopSpaces] = []
     
     init() {
         workspace.notificationCenter.addObserver(
@@ -29,12 +28,13 @@ class SpaceObserver {
             object: nil)
     }
     
-    @objc public func updateSpaceInformation() {
+    public func setSpace(indexDesktop: Int, index: Int) {}
+    
+    @MainActor @objc public func updateSpaceInformation() {
         let displays = CGSCopyManagedDisplaySpaces(conn) as! [NSDictionary]
         var activeSpaceID = -1
         var spacesIndex = 0
         var allSpaces = [Space]()
-        var updatedDict = [String: SpaceNameInfo]()
         
         for d in displays {
             guard let currentSpaces = d["Current Space"] as? [String: Any],
@@ -53,44 +53,11 @@ class SpaceObserver {
                 return
             }
 
-            var lastDesktopNumber = 0
-
             for s in spaces {
                 let spaceID = String(s["ManagedSpaceID"] as! Int)
-                let spaceNumber: Int = spacesIndex + 1
-                let isCurrentSpace = activeSpaceID == s["ManagedSpaceID"] as! Int
-                let isFullScreen = s["TileLayoutManager"] as? [String: Any] != nil
-                var desktopNumber: Int?
-                if !isFullScreen {
-                    lastDesktopNumber += 1
-                    desktopNumber = lastDesktopNumber
-                }
-                var space = Space(displayID: displayID,
-                                  spaceID: spaceID,
-                                  spaceName: "N/A",
-                                  spaceNumber: spaceNumber,
-                                  desktopNumber: desktopNumber,
-                                  isCurrentSpace: isCurrentSpace,
-                                  isFullScreen: isFullScreen)
+                let space = Space(displayID: displayID,
+                                  spaceID: spaceID)
                 
-                if let data = defaults.value(forKey: "spaceNames") as? Data,
-                   let dict = try? PropertyListDecoder().decode([String: SpaceNameInfo].self, from: data),
-                   let saved = dict[spaceID]
-                {
-                    space.spaceName = saved.spaceName
-                } else if isFullScreen {
-                    if let pid = s["pid"] as? pid_t,
-                       let app = NSRunningApplication(processIdentifier: pid),
-                       let name = app.localizedName
-                    {
-                        space.spaceName = name.prefix(3).uppercased()
-                    } else {
-                        space.spaceName = "FUL"
-                    }
-                }
-                
-                let nameInfo = SpaceNameInfo(spaceNum: spaceNumber, spaceName: space.spaceName)
-                updatedDict[spaceID] = nameInfo
                 allSpaces.append(space)
                 spacesIndex += 1
             }
@@ -109,7 +76,6 @@ class SpaceObserver {
             spaces.append(DesktopSpaces(desktopSpaces: desktopSpaces))
         }
         
-        defaults.set(try? PropertyListEncoder().encode(updatedDict), forKey: "spaceNames")
         delegate?.didUpdateSpaces(spaces: allSpaces)
     }
 }

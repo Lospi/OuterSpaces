@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DesktopSpaces: Identifiable, Hashable {
+struct DesktopSpaces: Identifiable, Hashable, Codable {
     var id = UUID()
     var desktopSpaces: [Space]
 }

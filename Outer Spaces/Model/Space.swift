@@ -6,14 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
-struct Space: Identifiable, Hashable {
+struct Space: Identifiable, Hashable, Codable {
     var id = UUID()
     var displayID: String
     var spaceID: String
-    var spaceName: String
-    var spaceNumber: Int
-    var desktopNumber: Int?
-    var isCurrentSpace: Bool
-    var isFullScreen: Bool
+    var customName: String?
 }

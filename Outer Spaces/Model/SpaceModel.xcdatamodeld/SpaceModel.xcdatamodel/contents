@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23B81" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Desktop" representedClassName="Desktop" syncable="YES" codeGenerationType="class"/>
+    <entity name="Focus" representedClassName="Focus" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="spaces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SpaceData" inverseName="focus" inverseEntity="SpaceData"/>
+    </entity>
+    <entity name="SpaceData" representedClassName="SpaceData" syncable="YES">
+        <attribute name="customName" optional="YES" attributeType="String"/>
+        <attribute name="displayId" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <relationship name="focus" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Focus" inverseName="spaces" inverseEntity="Focus"/>
+    </entity>
+</model>

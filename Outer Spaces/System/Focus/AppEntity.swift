@@ -16,13 +16,15 @@ struct SpaceAppEntity: AppEntity {
 }
 
 struct SpaceAppEntityQuery: EntityQuery {
+    static var entities: [SpaceAppEntity] = []
+
     init() {}
 
     func suggestedEntities() async throws -> [SpaceAppEntity] {
-        [] // Implement this
+        return SpaceAppEntityQuery.entities
     }
 
     func entities(for identifiers: [UUID]) async throws -> [SpaceAppEntity] {
-        return []
+        return SpaceAppEntityQuery.entities
     }
 }
