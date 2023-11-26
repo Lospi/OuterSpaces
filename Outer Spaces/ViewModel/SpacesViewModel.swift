@@ -16,7 +16,7 @@ class SpacesViewModel: ObservableObject {
     @MainActor func updateSystemSpaces() {
         spaceObserver.updateSpaceInformation()
 
-        if spaceObserver.allSpaces.containsSameElements(as: allSpaces) {
+        if !spaceObserver.allSpaces.containsSameElements(as: allSpaces) {
             desktopSpaces = spaceObserver.spaces
             allSpaces = spaceObserver.allSpaces
         }
