@@ -15,12 +15,21 @@ class SpacesViewModel: ObservableObject {
 
     @MainActor func updateSystemSpaces() {
         spaceObserver.updateSpaceInformation()
-        desktopSpaces = spaceObserver.spaces
-        allSpaces = spaceObserver.allSpaces
+
+        if spaceObserver.allSpaces.containsSameElements(as: allSpaces) {
+            desktopSpaces = spaceObserver.spaces
+            allSpaces = spaceObserver.allSpaces
+        }
     }
 
     func loadSpaces(desktopSpaces: [DesktopSpaces], allSpaces: [Space]) {
         self.desktopSpaces = desktopSpaces
         self.allSpaces = allSpaces
+    }
+}
+
+extension Array where Element: Comparable {
+    func containsSameElements(as other: [Element]) -> Bool {
+        return count == other.count && sorted() == other.sorted()
     }
 }
