@@ -13,7 +13,6 @@
 		073BE5962B07AD3700B23112 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073BE58F2B07AD3700B23112 /* AppMain.swift */; };
 		073BE59D2B07AE4700B23112 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 073BE59C2B07AE4700B23112 /* KeyboardShortcuts */; };
 		0742F49E2B0FFC8700B95465 /* OuterSpace.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0742F49C2B0FFC8700B95465 /* OuterSpace.xcdatamodeld */; };
-		0742F4A02B1035C700B95465 /* ExclusiveToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F49F2B1035C700B95465 /* ExclusiveToggleView.swift */; };
 		0742F4A22B1037FD00B95465 /* DisplaySpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */; };
 		0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A42B10447700B95465 /* FocusViewModel.swift */; };
 		0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A62B1191E500B95465 /* SpacesViewModel.swift */; };
@@ -38,7 +37,6 @@
 		0715DE502B0AAB1600A6E46C /* AppMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenuBar.swift; sourceTree = "<group>"; };
 		073BE58F2B07AD3700B23112 /* AppMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
 		0742F49D2B0FFC8700B95465 /* OuterSpace.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OuterSpace.xcdatamodel; sourceTree = "<group>"; };
-		0742F49F2B1035C700B95465 /* ExclusiveToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExclusiveToggleView.swift; sourceTree = "<group>"; };
 		0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySpacesView.swift; sourceTree = "<group>"; };
 		0742F4A42B10447700B95465 /* FocusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusViewModel.swift; sourceTree = "<group>"; };
 		0742F4A62B1191E500B95465 /* SpacesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesViewModel.swift; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 				0715DE502B0AAB1600A6E46C /* AppMenuBar.swift */,
 				07F3F5C92B0BFC3200AB00CB /* SpacesView.swift */,
 				076ED57A2B0EF773005931DB /* SpaceInfoView.swift */,
-				0742F49F2B1035C700B95465 /* ExclusiveToggleView.swift */,
 				0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */,
 			);
 			path = View;
@@ -273,7 +270,6 @@
 				07FEE3352B07B2EF00419E50 /* SpaceObserver.swift in Sources */,
 				07F3F5CF2B0C132D00AB00CB /* PersistenceController.swift in Sources */,
 				076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */,
-				0742F4A02B1035C700B95465 /* ExclusiveToggleView.swift in Sources */,
 				07F3F5C82B0BD5E300AB00CB /* SpaceStore.swift in Sources */,
 				07F3F5CA2B0BFC3200AB00CB /* SpacesView.swift in Sources */,
 				0742F49E2B0FFC8700B95465 /* OuterSpace.xcdatamodeld in Sources */,
