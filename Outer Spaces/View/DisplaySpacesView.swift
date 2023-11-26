@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct DisplaySpacesView: View {
-    var desktopSpaces: [Space]
-    var desktopSpace: DesktopSpaces
+    @State var desktopSpace: DesktopSpaces
     var desktopIndex: Int
-    @State var flags: [Bool]
     @Binding var editingFocus: Bool
+    @ObservedObject var focusViewModel: FocusViewModel
 
     var body: some View {
         VStack {
             Text("Display \(desktopIndex + 1)")
             ForEach(Array(desktopSpace.desktopSpaces.enumerated()), id: \.element) { index, space in
-                SpaceInfoView(space: space, index: index, isEditingSpace: $editingFocus, toggleItem: ToggleItem(storage: self.$flags, tag: index))
+                SpaceInfoView(space: space, index: index, focusViewModel: focusViewModel, isEditingSpace: $editingFocus)
             }
         }
     }

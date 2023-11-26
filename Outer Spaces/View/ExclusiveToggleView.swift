@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ToggleItem: View {
     @Binding var storage: [Bool]
+    @ObservedObject var focusViewModel: FocusViewModel
+    var relatedSpace: Space
     var tag: Int
 
     var body: some View {
@@ -22,6 +24,7 @@ struct ToggleItem: View {
                                        // If the toggle is being turned on, set only the selected toggle to true
                                        self.storage = self.storage.enumerated().map { $0.0 == self.tag }
                                    }
+                                   focusViewModel.updateFocusSpaces(relatedSpace: relatedSpace)
                                }
                            })
         return Toggle(isOn: isOn) {}

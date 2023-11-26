@@ -14,6 +14,7 @@ class SpaceObserver: ObservableObject {
     private let conn = _CGSDefaultConnection()
     weak var delegate: SpaceObserverDelegate?
     @Published var spaces: [DesktopSpaces] = []
+    @Published var allSpaces: [Space] = []
     
     init() {
         workspace.notificationCenter.addObserver(
@@ -63,6 +64,8 @@ class SpaceObserver: ObservableObject {
             }
         }
         var desktopIds: [String] = []
+        
+        self.allSpaces = allSpaces
         
         allSpaces.forEach {
             if !desktopIds.contains($0.displayID) {

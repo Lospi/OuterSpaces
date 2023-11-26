@@ -38,6 +38,7 @@ struct AppMenuBar: View {
 
     func saveNewSpaces() {
         deleteCoreDataModel(modelName: "SpaceData")
+        spacesViewModel.updateSystemSpaces()
         spacesViewModel.desktopSpaces.forEach {
             $0.desktopSpaces.forEach {
                 let space = SpaceData(context: managedObjectContext)
@@ -92,7 +93,7 @@ struct AppMenuBar: View {
             Divider()
             VStack {
                 ForEach(Array(spacesViewModel.desktopSpaces.enumerated()), id: \.element) { indexDesktop, desktopSpace in
-                    DisplaySpacesView(desktopSpaces: desktopSpace.desktopSpaces, desktopSpace: desktopSpace, desktopIndex: indexDesktop, flags: Array(repeating: false, count: desktopSpace.desktopSpaces.count), editingFocus: $focusViewModel.editingFocus)
+                    DisplaySpacesView(desktopSpace: desktopSpace, desktopIndex: indexDesktop, editingFocus: $focusViewModel.editingFocus, focusViewModel: focusViewModel)
                 }
             }
         }
@@ -101,30 +102,17 @@ struct AppMenuBar: View {
                 Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName)
             }
             var desktopIds: [String] = []
-
             loadedSpaces.forEach {
                 if !desktopIds.contains($0.displayID) {
                     desktopIds.append($0.displayID)
                 }
             }
-
             var desktopSpaces: [DesktopSpaces] = []
             desktopIds.forEach { desktopId in
                 let desktopPerSpace = loadedSpaces.filter { $0.displayID == desktopId }
                 desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
             }
-            spacesViewModel.desktopSpaces = desktopSpaces
-
-            var spaceAppEntities: [SpaceAppEntity] = []
-
-            spacesViewModel.desktopSpaces.forEach { desktopSpace in
-                desktopSpace.desktopSpaces.forEach { space in
-                    let spaceAppEntity = SpaceAppEntity(id: space.id, title: space.customName ?? "Desktop")
-                    spaceAppEntities.append(spaceAppEntity)
-                }
-            }
-
-            SpaceAppEntityQuery.entities = spaceAppEntities
+            spacesViewModel.loadSpaces(desktopSpaces: desktopSpaces, allSpaces: loadedSpaces)
         }
         .padding()
     }

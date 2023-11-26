@@ -13,17 +13,24 @@ struct SpaceInfoView: View {
     @State var space: Space
     var index: Int
     @Environment(\.managedObjectContext) var managedObjectContext
+    @ObservedObject var focusViewModel: FocusViewModel
     @State var isEditingName = false
     @State var customName = ""
     @Binding var isEditingSpace: Bool
     @State var isSelected = false
-    var toggleItem: ToggleItem
 
     var body: some View {
         VStack {
             HStack {
                 if isEditingSpace {
-                    toggleItem
+                    Toggle(isOn: Binding(
+                        get: { focusViewModel.doesFocusHasSpace(space: space) },
+                        set: { _ in
+                            withAnimation {
+                                focusViewModel.updateFocusSpaces(relatedSpace: space)
+                            }
+                        }
+                    )) {}
                 }
                 Text(space.customName ?? "Desktop \(index)")
                 Spacer()
