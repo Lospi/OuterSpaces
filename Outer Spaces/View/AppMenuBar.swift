@@ -105,6 +105,10 @@ struct AppMenuBar: View {
                             PersistenceController.shared.save()
                         }
 
+                        SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
+                            SpaceAppEntity(id: focus.id, title: focus.name)
+                        }
+
                         focusViewModel.creatingPreset.toggle()
                     }
             }

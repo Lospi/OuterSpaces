@@ -43,6 +43,10 @@ struct SpaceInfoView: View {
                                     focus.spacesIds = $0.spaces.map { $0.spaceID }
                                     PersistenceController.shared.save()
                                 }
+
+                                SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
+                                    SpaceAppEntity(id: focus.id, title: focus.name)
+                                }
                             }
                         }
                     )) {}
