@@ -32,6 +32,8 @@ class FocusViewModel: ObservableObject {
         }
 
         availableFocusPresets[focusIndex!].spaces = selectedFocusPreset!.spaces
+        
+        
     }
 
     func doesFocusHasSpace(space: Space) -> Bool {

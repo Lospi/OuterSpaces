@@ -15,6 +15,7 @@ struct AppMenuBar: View {
     @StateObject var spacesViewModel = SpacesViewModel()
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(sortDescriptors: []) var spaceModel: FetchedResults<SpaceData>
+    @FetchRequest(sortDescriptors: []) var focusModel: FetchedResults<FocusData>
     @State var newPresetName = ""
 
     let checkSpace = { (space: Space, setSpaces: [Space]) -> Bool in
@@ -34,18 +35,18 @@ struct AppMenuBar: View {
         } catch {}
     }
 
-    func updateSelectedPresetSpaces(selectedSpace: Space) {}
-
     func saveNewSpaces() {
-        deleteCoreDataModel(modelName: "SpaceData")
-        spacesViewModel.updateSystemSpaces()
-        spacesViewModel.desktopSpaces.forEach {
-            $0.desktopSpaces.forEach {
-                let space = SpaceData(context: managedObjectContext)
-                space.displayId = $0.displayID
-                space.spaceId = $0.spaceID
-                space.id = UUID()
-                PersistenceController.shared.save()
+        let isUpdated = spacesViewModel.updateSystemSpaces()
+        if isUpdated {
+            deleteCoreDataModel(modelName: "SpaceData")
+            spacesViewModel.desktopSpaces.forEach {
+                $0.desktopSpaces.forEach {
+                    let space = SpaceData(context: managedObjectContext)
+                    space.displayId = $0.displayID
+                    space.spaceId = $0.spaceID
+                    space.id = $0.id
+                    PersistenceController.shared.save()
+                }
             }
         }
     }
@@ -60,12 +61,15 @@ struct AppMenuBar: View {
             Button(action: {
                        // Create Fetch Request
                        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "SpaceData")
+                       let focusFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FocusData")
 
                        // Create Batch Delete Request
                        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                       let focusBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: focusFetchRequest)
 
                        do {
                            try managedObjectContext.execute(batchDeleteRequest)
+                           try managedObjectContext.execute(focusBatchDeleteRequest)
 
                        } catch {
                            // Error Handling
@@ -87,6 +91,20 @@ struct AppMenuBar: View {
                 TextField("New Preset Name", text: $newPresetName)
                     .onSubmit {
                         focusViewModel.availableFocusPresets.append(Focus(name: newPresetName, spaces: []))
+                        let focusFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FocusData")
+                        let focusBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: focusFetchRequest)
+                        do {
+                            try managedObjectContext.execute(focusBatchDeleteRequest)
+                        } catch {}
+
+                        focusViewModel.availableFocusPresets.forEach {
+                            let focus = FocusData(context: managedObjectContext)
+                            focus.id = UUID()
+                            focus.name = $0.name
+                            focus.spacesIds = $0.spaces.map { $0.spaceID }
+                            PersistenceController.shared.save()
+                        }
+
                         focusViewModel.creatingPreset.toggle()
                     }
             }
@@ -113,6 +131,14 @@ struct AppMenuBar: View {
                 desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
             }
             spacesViewModel.loadSpaces(desktopSpaces: desktopSpaces, allSpaces: loadedSpaces)
+
+            let loadedFocus = focusModel.map { focus in
+                Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.map { spaceId in
+                    loadedSpaces.first(where: { $0.spaceID == spaceId })!
+                })
+            }
+
+            focusViewModel.availableFocusPresets = loadedFocus
         }
         .padding()
     }

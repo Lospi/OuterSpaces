@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23B81" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="FocusData" representedClassName="FocusData" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
-        <relationship name="spaces" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SpaceData" inverseName="focus" inverseEntity="SpaceData"/>
+        <attribute name="spacesIds" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
     </entity>
     <entity name="SpaceData" representedClassName="SpaceData" syncable="YES" codeGenerationType="class">
         <attribute name="customName" optional="YES" attributeType="String"/>
         <attribute name="displayId" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="spaceId" attributeType="String"/>
-        <relationship name="focus" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FocusData" inverseName="spaces" inverseEntity="FocusData"/>
     </entity>
 </model>

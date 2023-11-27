@@ -28,6 +28,21 @@ struct SpaceInfoView: View {
                         set: { _ in
                             withAnimation {
                                 focusViewModel.updateFocusSpaces(relatedSpace: space)
+
+                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FocusData")
+                                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+                                do {
+                                    try managedObjectContext.execute(batchDeleteRequest)
+                                } catch {}
+
+                                focusViewModel.availableFocusPresets.forEach {
+                                    let focus = FocusData(context: managedObjectContext)
+                                    focus.id = UUID()
+                                    focus.name = $0.name
+                                    focus.spacesIds = $0.spaces.map { $0.spaceID }
+                                    PersistenceController.shared.save()
+                                }
                             }
                         }
                     )) {}

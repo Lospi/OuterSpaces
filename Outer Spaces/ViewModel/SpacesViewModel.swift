@@ -13,13 +13,16 @@ class SpacesViewModel: ObservableObject {
     @Published var desktopSpaces: [DesktopSpaces] = []
     @Published var allSpaces: [Space] = []
 
-    @MainActor func updateSystemSpaces() {
+    @MainActor func updateSystemSpaces() -> Bool {
         spaceObserver.updateSpaceInformation()
 
-        if !spaceObserver.allSpaces.containsSameElements(as: allSpaces) {
+        let shouldUpdate = allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.id == $1.id }) || allSpaces.isEmpty
+
+        if shouldUpdate {
             desktopSpaces = spaceObserver.spaces
             allSpaces = spaceObserver.allSpaces
         }
+        return shouldUpdate
     }
 
     func loadSpaces(desktopSpaces: [DesktopSpaces], allSpaces: [Space]) {
