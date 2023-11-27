@@ -18,6 +18,9 @@
 		0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A62B1191E500B95465 /* SpacesViewModel.swift */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
+		0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC672B143FC500FD7647 /* SettingsViewModel.swift */; };
+		0794FC6A2B143FCE00FD7647 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC692B143FCE00FD7647 /* Settings.swift */; };
+		0794FC6D2B14414500FD7647 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC6C2B14414500FD7647 /* Repository.swift */; };
 		07A626A82B06C64A0013FE80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07A626A72B06C64A0013FE80 /* Assets.xcassets */; };
 		07A626AB2B06C64A0013FE80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07A626AA2B06C64A0013FE80 /* Preview Assets.xcassets */; };
 		07CD7B942B06C8F200D39387 /* FocusFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD7B932B06C8F200D39387 /* FocusFilter.swift */; };
@@ -42,6 +45,9 @@
 		0742F4A62B1191E500B95465 /* SpacesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesViewModel.swift; sourceTree = "<group>"; };
 		076ED57A2B0EF773005931DB /* SpaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceInfoView.swift; sourceTree = "<group>"; };
 		076ED5842B0FED2D005931DB /* Focus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
+		0794FC672B143FC500FD7647 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		0794FC692B143FCE00FD7647 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		0794FC6C2B14414500FD7647 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 		07A626A02B06C6480013FE80 /* Outer Spaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Outer Spaces.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07A626A72B06C64A0013FE80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07A626AA2B06C64A0013FE80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -80,8 +86,17 @@
 			children = (
 				0742F4A42B10447700B95465 /* FocusViewModel.swift */,
 				0742F4A62B1191E500B95465 /* SpacesViewModel.swift */,
+				0794FC672B143FC500FD7647 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0794FC6B2B14413A00FD7647 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				0794FC6C2B14414500FD7647 /* Repository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		07A626972B06C6480013FE80 = {
@@ -103,6 +118,7 @@
 		07A626A22B06C6480013FE80 /* Outer Spaces */ = {
 			isa = PBXGroup;
 			children = (
+				0794FC6B2B14413A00FD7647 /* Repository */,
 				0742F4A32B10445A00B95465 /* ViewModel */,
 				07FEE3372B07B8ED00419E50 /* Model */,
 				07FEE3362B07B3C600419E50 /* Spaceman-Bridging-Header.h */,
@@ -172,6 +188,7 @@
 				07FEE3382B07E53400419E50 /* DesktopSpaces.swift */,
 				076ED5842B0FED2D005931DB /* Focus.swift */,
 				0742F49C2B0FFC8700B95465 /* OuterSpace.xcdatamodeld */,
+				0794FC692B143FCE00FD7647 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -268,9 +285,12 @@
 				07CD7B972B06C9F600D39387 /* AppEntity.swift in Sources */,
 				0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */,
 				07FEE3352B07B2EF00419E50 /* SpaceObserver.swift in Sources */,
+				0794FC6A2B143FCE00FD7647 /* Settings.swift in Sources */,
 				07F3F5CF2B0C132D00AB00CB /* PersistenceController.swift in Sources */,
 				076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */,
+				0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */,
 				07F3F5C82B0BD5E300AB00CB /* SpaceStore.swift in Sources */,
+				0794FC6D2B14414500FD7647 /* Repository.swift in Sources */,
 				07F3F5CA2B0BFC3200AB00CB /* SpacesView.swift in Sources */,
 				0742F49E2B0FFC8700B95465 /* OuterSpace.xcdatamodeld in Sources */,
 				0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */,

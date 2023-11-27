@@ -9,15 +9,20 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
 
     // How a configured filter appears on the Focus details screen
     var displayRepresentation: DisplayRepresentation {
-        spaceFilterPreset?.displayRepresentation ?? .init(title: .init(stringLiteral: "Select Preset"))
+        spaceFilterPreset.displayRepresentation
     }
+
+    var repository = Repository()
 
     // A custom parameter called Category
     @Parameter(title: "Focus Preset", description: "Select Preset")
-    var spaceFilterPreset: SpaceAppEntity?
+    var spaceFilterPreset: SpaceAppEntity
 
     func perform() async throws -> some IntentResult {
-        // Use the parameter to update the state of the app
+        let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
+        repository.updateAppDataModelStore(settingsModel)
+
+        print("perform")
 
         return .result()
     }

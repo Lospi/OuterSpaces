@@ -10,6 +10,9 @@ import SFSafeSymbols
 import SwiftUI
 
 struct AppMenuBar: View {
+    @AppStorage("AppData", store: Repository.suiteUserDefaults)
+    var appData: Data = .init()
+
     let spaceObserver = SpaceObserver()
     @StateObject var focusViewModel = FocusViewModel()
     @StateObject var spacesViewModel = SpacesViewModel()
@@ -17,6 +20,7 @@ struct AppMenuBar: View {
     @FetchRequest(sortDescriptors: []) var spaceModel: FetchedResults<SpaceData>
     @FetchRequest(sortDescriptors: []) var focusModel: FetchedResults<FocusData>
     @State var newPresetName = ""
+    @State var settingsViewModel = SettingsViewModel(settingsModel: SettingsModel())
 
     let checkSpace = { (space: Space, setSpaces: [Space]) -> Bool in
         if setSpaces.contains(where: { $0.displayID == space.displayID }) {
@@ -35,19 +39,53 @@ struct AppMenuBar: View {
         } catch {}
     }
 
+    func saveSpacesToCoreData() {
+        spacesViewModel.desktopSpaces.forEach {
+            $0.desktopSpaces.forEach {
+                let space = SpaceData(context: managedObjectContext)
+                space.displayId = $0.displayID
+                space.spaceId = $0.spaceID
+                space.id = $0.id
+                PersistenceController.shared.save()
+            }
+        }
+    }
+
+    func saveFocusToCoreData() {
+        focusViewModel.availableFocusPresets.forEach {
+            let focus = FocusData(context: managedObjectContext)
+            focus.id = UUID()
+            focus.name = $0.name
+            focus.spacesIds = $0.spaces.map { $0.spaceID }
+            PersistenceController.shared.save()
+        }
+    }
+
+    func loadSpacesFromCoreData() -> [Space] {
+        let loadedSpaces = spaceModel.map { space in
+            Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName)
+        }
+        var desktopIds: [String] = []
+        loadedSpaces.forEach {
+            if !desktopIds.contains($0.displayID) {
+                desktopIds.append($0.displayID)
+            }
+        }
+        var desktopSpaces: [DesktopSpaces] = []
+        desktopIds.forEach { desktopId in
+            let desktopPerSpace = loadedSpaces.filter { $0.displayID == desktopId }
+            desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
+        }
+        spacesViewModel.loadSpaces(desktopSpaces: desktopSpaces, allSpaces: loadedSpaces)
+
+        return loadedSpaces
+    }
+
     func saveNewSpaces() {
         let isUpdated = spacesViewModel.updateSystemSpaces()
         if isUpdated {
             deleteCoreDataModel(modelName: "SpaceData")
-            spacesViewModel.desktopSpaces.forEach {
-                $0.desktopSpaces.forEach {
-                    let space = SpaceData(context: managedObjectContext)
-                    space.displayId = $0.displayID
-                    space.spaceId = $0.spaceID
-                    space.id = $0.id
-                    PersistenceController.shared.save()
-                }
-            }
+            saveSpacesToCoreData()
         }
     }
 
@@ -97,16 +135,16 @@ struct AppMenuBar: View {
                             try managedObjectContext.execute(focusBatchDeleteRequest)
                         } catch {}
 
+                        SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
+                            SpaceAppEntity(id: focus.id, title: focus.name)
+                        }
+
                         focusViewModel.availableFocusPresets.forEach {
                             let focus = FocusData(context: managedObjectContext)
                             focus.id = UUID()
                             focus.name = $0.name
                             focus.spacesIds = $0.spaces.map { $0.spaceID }
                             PersistenceController.shared.save()
-                        }
-
-                        SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
-                            SpaceAppEntity(id: focus.id, title: focus.name)
                         }
 
                         focusViewModel.creatingPreset.toggle()
@@ -119,22 +157,16 @@ struct AppMenuBar: View {
                 }
             }
         }
+        .onChange(of: appData) { _, newValue in
+            let decoder = JSONDecoder()
+            guard let appDataModelDecoded = try? decoder.decode(SettingsModel.self, from: newValue) else {
+                return
+            }
+            settingsViewModel = SettingsViewModel(settingsModel: appDataModelDecoded)
+            print("changed")
+        }
         .onAppear {
-            let loadedSpaces = spaceModel.map { space in
-                Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName)
-            }
-            var desktopIds: [String] = []
-            loadedSpaces.forEach {
-                if !desktopIds.contains($0.displayID) {
-                    desktopIds.append($0.displayID)
-                }
-            }
-            var desktopSpaces: [DesktopSpaces] = []
-            desktopIds.forEach { desktopId in
-                let desktopPerSpace = loadedSpaces.filter { $0.displayID == desktopId }
-                desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
-            }
-            spacesViewModel.loadSpaces(desktopSpaces: desktopSpaces, allSpaces: loadedSpaces)
+            let loadedSpaces = loadSpacesFromCoreData()
 
             let loadedFocus = focusModel.map { focus in
                 Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.map { spaceId in

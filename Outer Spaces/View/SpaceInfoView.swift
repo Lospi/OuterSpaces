@@ -47,6 +47,9 @@ struct SpaceInfoView: View {
                                 SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
                                     SpaceAppEntity(id: focus.id, title: focus.name)
                                 }
+
+                                print(SpaceAppEntityQuery.entities)
+                                print(SpaceAppEntity.defaultQuery.entities) 
                             }
                         }
                     )) {}
