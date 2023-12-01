@@ -2,67 +2,159 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Custom Name" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome personalizado"
+          }
+        }
+      }
     },
     "Delete CoreData" : {
 
     },
     "Desktop %lld" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesa %lld"
+          }
+        }
+      }
     },
     "Desktop Name" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome da mesa"
+          }
+        }
+      }
     },
     "Display %lld" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display %lld"
+          }
+        }
+      }
     },
     "Focus Preset" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foco pré-determinado"
+          }
+        }
+      }
     },
     "New Preset Name" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do foco"
+          }
+        }
+      }
     },
     "New Preset..." : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo foco pré-determinado..."
+          }
+        }
+      }
     },
     "Outer Spaces" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outer Spaces"
+          }
+        }
+      }
     },
     "Refresh Available Spaces" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizar Mesas Disponíveis"
+          }
+        }
+      }
     },
     "Select Preset" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar foco pré-determinado"
+          }
+        }
+      }
     },
     "Select Space" : {
       "comment" : "Spaces não é traduzido",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select Space"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecionar Space"
+            "value" : "Selecionar Mesa"
           }
         }
       }
     },
     "Select your built preset with the desired spaces" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecione seu foco pré-definido com as mesas desejadas"
+          }
+        }
+      }
     },
     "Set" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definir"
+          }
+        }
+      }
     },
     "Space" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesa"
+          }
+        }
+      }
     },
     "Switch to Space" : {
-
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mudar para Mesa"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

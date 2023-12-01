@@ -1,4 +1,5 @@
 import AppIntents
+import SwiftUI
 
 struct SpaceAppEntity: AppEntity {
     let id: UUID
@@ -16,9 +17,9 @@ struct SpaceAppEntity: AppEntity {
 }
 
 struct SpaceAppEntityQuery: EntityQuery {
-    static var entities: [SpaceAppEntity] = []
-
-    init() {}
+    static let entities: [SpaceAppEntity] = FocusManager.loadFocusModels().map {
+        SpaceAppEntity(id: $0.id, title: $0.name)
+    }
 
     func suggestedEntities() async throws -> [SpaceAppEntity] {
         return SpaceAppEntityQuery.entities

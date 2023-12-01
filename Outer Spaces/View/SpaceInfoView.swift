@@ -38,18 +38,13 @@ struct SpaceInfoView: View {
 
                                 focusViewModel.availableFocusPresets.forEach {
                                     let focus = FocusData(context: managedObjectContext)
-                                    focus.id = UUID()
+                                    focus.id = $0.id
                                     focus.name = $0.name
                                     focus.spacesIds = $0.spaces.map { $0.spaceID }
                                     PersistenceController.shared.save()
                                 }
 
-                                SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
-                                    SpaceAppEntity(id: focus.id, title: focus.name)
-                                }
-
-                                print(SpaceAppEntityQuery.entities)
-                                print(SpaceAppEntity.defaultQuery.entities) 
+                                FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
                             }
                         }
                     )) {}
@@ -92,7 +87,8 @@ struct SpaceInfoView: View {
                         updatedSpace.spaceId = space.spaceID
                         updatedSpace.id = space.id
                         updatedSpace.customName = customName.isEmpty ? "Desktop \(index)" : customName
-                        space = Space(id: updatedSpace.id!, displayID: updatedSpace.displayId!, spaceID: updatedSpace.spaceId!, customName: updatedSpace.customName)
+                        updatedSpace.spaceIndex = Int16(index)
+                        space = Space(id: updatedSpace.id!, displayID: updatedSpace.displayId!, spaceID: updatedSpace.spaceId!, customName: updatedSpace.customName, spaceIndex: Int(updatedSpace.spaceIndex))
                         isEditingName = !isEditingName
                         PersistenceController.shared.save()
                     }

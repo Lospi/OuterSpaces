@@ -18,6 +18,12 @@ class FocusViewModel: ObservableObject {
         editingFocus = true
     }
 
+    func deleteFocusPreset(focusPreset: Focus) {
+        availableFocusPresets.removeAll(where: { $0 == focusPreset })
+        editingFocus = false
+        selectedFocusPreset = nil
+    }
+
     func updateFocusSpaces(relatedSpace: Space) {
         let focusIndex = availableFocusPresets.firstIndex(of: selectedFocusPreset!)
         if selectedFocusPreset!.spaces.contains(where: { $0 == relatedSpace }) {
@@ -32,8 +38,6 @@ class FocusViewModel: ObservableObject {
         }
 
         availableFocusPresets[focusIndex!].spaces = selectedFocusPreset!.spaces
-        
-        
     }
 
     func doesFocusHasSpace(space: Space) -> Bool {

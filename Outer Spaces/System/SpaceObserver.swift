@@ -57,7 +57,7 @@ class SpaceObserver: ObservableObject {
             for s in spaces {
                 let spaceID = String(s["ManagedSpaceID"] as! Int)
                 let space = Space(displayID: displayID,
-                                  spaceID: spaceID)
+                                  spaceID: spaceID, spaceIndex: spacesIndex)
                 
                 allSpaces.append(space)
                 spacesIndex += 1

@@ -13,7 +13,6 @@ struct AppMenuBar: View {
     @AppStorage("AppData", store: Repository.suiteUserDefaults)
     var appData: Data = .init()
 
-    let spaceObserver = SpaceObserver()
     @StateObject var focusViewModel = FocusViewModel()
     @StateObject var spacesViewModel = SpacesViewModel()
     @Environment(\.managedObjectContext) var managedObjectContext
@@ -46,6 +45,7 @@ struct AppMenuBar: View {
                 space.displayId = $0.displayID
                 space.spaceId = $0.spaceID
                 space.id = $0.id
+                space.spaceIndex = Int16($0.spaceIndex)
                 PersistenceController.shared.save()
             }
         }
@@ -54,7 +54,7 @@ struct AppMenuBar: View {
     func saveFocusToCoreData() {
         focusViewModel.availableFocusPresets.forEach {
             let focus = FocusData(context: managedObjectContext)
-            focus.id = UUID()
+            focus.id = $0.id
             focus.name = $0.name
             focus.spacesIds = $0.spaces.map { $0.spaceID }
             PersistenceController.shared.save()
@@ -63,7 +63,7 @@ struct AppMenuBar: View {
 
     func loadSpacesFromCoreData() -> [Space] {
         let loadedSpaces = spaceModel.map { space in
-            Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName)
+            Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName, spaceIndex: Int(space.spaceIndex))
         }
         var desktopIds: [String] = []
         loadedSpaces.forEach {
@@ -112,16 +112,28 @@ struct AppMenuBar: View {
                        } catch {
                            // Error Handling
                        }
+
+                       UserDefaults.resetStandardUserDefaults()
                    },
                    label: { Text("Delete CoreData")
                    })
-            Menu(focusViewModel.selectedFocusPreset?.name ?? "Select a Preset") {
-                Button("New Preset...") {
-                    focusViewModel.creatingPreset.toggle()
+            HStack {
+                Menu(focusViewModel.selectedFocusPreset?.name ?? "Select a Preset") {
+                    Button("New Preset...") {
+                        focusViewModel.creatingPreset.toggle()
+                    }
+                    ForEach(focusViewModel.availableFocusPresets) { focus in
+                        PresetInfoView(focus: focus, focusViewModel: focusViewModel)
+                    }
                 }
-                ForEach(focusViewModel.availableFocusPresets) { focus in
-                    Button(focus.name) {
-                        focusViewModel.selectFocusPreset(preset: focus)
+                Spacer()
+                if focusViewModel.selectedFocusPreset != nil {
+                    Button {
+                        focusViewModel.deleteFocusPreset(focusPreset: focusViewModel.selectedFocusPreset!)
+                        saveFocusToCoreData()
+                        FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
+                    } label: {
+                        Image(systemSymbol: SFSymbol.trashFill)
                     }
                 }
             }
@@ -135,13 +147,11 @@ struct AppMenuBar: View {
                             try managedObjectContext.execute(focusBatchDeleteRequest)
                         } catch {}
 
-                        SpaceAppEntityQuery.entities = focusViewModel.availableFocusPresets.map { focus in
-                            SpaceAppEntity(id: focus.id, title: focus.name)
-                        }
+                        FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
 
                         focusViewModel.availableFocusPresets.forEach {
                             let focus = FocusData(context: managedObjectContext)
-                            focus.id = UUID()
+                            focus.id = $0.id
                             focus.name = $0.name
                             focus.spacesIds = $0.spaces.map { $0.spaceID }
                             PersistenceController.shared.save()
@@ -163,15 +173,24 @@ struct AppMenuBar: View {
                 return
             }
             settingsViewModel = SettingsViewModel(settingsModel: appDataModelDecoded)
-            print("changed")
+            settingsViewModel.updateSpacesOnScreen(focus: focusViewModel.availableFocusPresets.first(where: { $0.id == settingsViewModel.selectedFocusPresetId })!)
+            print("--------------")
+            print(focusViewModel.availableFocusPresets)
         }
+
         .onAppear {
             let loadedSpaces = loadSpacesFromCoreData()
+            var loadedFocus: [Focus] = []
 
-            let loadedFocus = focusModel.map { focus in
-                Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.map { spaceId in
-                    loadedSpaces.first(where: { $0.spaceID == spaceId })!
-                })
+            loadedFocus = focusModel.map { focus in
+                var focusData: Focus?
+                if focus.spacesIds != nil {
+                    if !focus.spacesIds!.isEmpty {
+                        focusData = Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.isEmpty ? [] : loadedSpaces.filter { focus.spacesIds!.contains($0.spaceID)
+                        })
+                    }
+                }
+                return focusData ?? Focus(id: focus.id!, name: focus.name!, spaces: [])
             }
 
             focusViewModel.availableFocusPresets = loadedFocus

@@ -18,6 +18,7 @@
 		0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A62B1191E500B95465 /* SpacesViewModel.swift */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
+		07829F842B1A533B0031F608 /* PresetInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07829F832B1A533B0031F608 /* PresetInfoView.swift */; };
 		0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC672B143FC500FD7647 /* SettingsViewModel.swift */; };
 		0794FC6A2B143FCE00FD7647 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC692B143FCE00FD7647 /* Settings.swift */; };
 		0794FC6D2B14414500FD7647 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC6C2B14414500FD7647 /* Repository.swift */; };
@@ -45,6 +46,7 @@
 		0742F4A62B1191E500B95465 /* SpacesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesViewModel.swift; sourceTree = "<group>"; };
 		076ED57A2B0EF773005931DB /* SpaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceInfoView.swift; sourceTree = "<group>"; };
 		076ED5842B0FED2D005931DB /* Focus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
+		07829F832B1A533B0031F608 /* PresetInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetInfoView.swift; sourceTree = "<group>"; };
 		0794FC672B143FC500FD7647 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		0794FC692B143FCE00FD7647 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		0794FC6C2B14414500FD7647 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				07F3F5C92B0BFC3200AB00CB /* SpacesView.swift */,
 				076ED57A2B0EF773005931DB /* SpaceInfoView.swift */,
 				0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */,
+				07829F832B1A533B0031F608 /* PresetInfoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				073BE5962B07AD3700B23112 /* AppMain.swift in Sources */,
 				0742F4A22B1037FD00B95465 /* DisplaySpacesView.swift in Sources */,
 				07CD7B972B06C9F600D39387 /* AppEntity.swift in Sources */,
+				07829F842B1A533B0031F608 /* PresetInfoView.swift in Sources */,
 				0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */,
 				07FEE3352B07B2EF00419E50 /* SpaceObserver.swift in Sources */,
 				0794FC6A2B143FCE00FD7647 /* Settings.swift in Sources */,

@@ -16,10 +16,14 @@ struct SpacemanApp: App {
     let persistenceController = PersistenceController.shared
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.managedObjectContext) var managedObjectContext
+    @State var settingsViewModel = SettingsViewModel(settingsModel: SettingsModel())
+    @StateObject var focusViewModel = FocusViewModel()
+    @AppStorage("AppData", store: Repository.suiteUserDefaults)
+    var appData: Data = .init()
 
     var body: some Scene {
         MenuBarExtra("Outer Spaces", systemImage: SFSymbol.displayAndArrowDown.rawValue) {
-            AppMenuBar()
+            AppMenuBar(focusViewModel: focusViewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
         .menuBarExtraStyle(.window)

@@ -17,4 +17,5 @@ struct Space: Identifiable, Hashable, Codable, Comparable {
     var displayID: String
     var spaceID: String
     var customName: String?
+    var spaceIndex: Int
 }

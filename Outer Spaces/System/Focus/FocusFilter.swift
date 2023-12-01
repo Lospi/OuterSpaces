@@ -12,17 +12,19 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
         spaceFilterPreset.displayRepresentation
     }
 
-    var repository = Repository()
-
     // A custom parameter called Category
     @Parameter(title: "Focus Preset", description: "Select Preset")
     var spaceFilterPreset: SpaceAppEntity
 
     func perform() async throws -> some IntentResult {
         let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
-        repository.updateAppDataModelStore(settingsModel)
+        Repository.shared.updateAppDataModelStore(settingsModel)
 
-        print("perform")
+        print("current focus")
+
+        try print(await SpacesFocusFilter.current.spaceFilterPreset.id)
+
+        print("--------")
 
         return .result()
     }
