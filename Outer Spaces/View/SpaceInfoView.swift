@@ -18,6 +18,7 @@ struct SpaceInfoView: View {
     @State var customName = ""
     @Binding var isEditingSpace: Bool
     @State var isSelected = false
+    @Binding var didError: Bool
 
     var body: some View {
         VStack {
@@ -52,16 +53,25 @@ struct SpaceInfoView: View {
                 Text(space.customName ?? "Desktop \(index)")
                 Spacer()
                 Button {
-                    NSAppleScript(source: """
-                    -- Set the index of the Space you want to switch to
-                    set targetSpaceIndex to \(index) -- Change this to the desired Space index
+                    var error: NSDictionary?
 
-                    -- Change to the specified Space index
-                    tell application "System Events"
-                        key code (18 + targetSpaceIndex) using {control down} -- Press Ctrl + (targetSpaceIndex)
-                    end tell
+                    let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(index: index)
 
-                    """)!.executeAndReturnError(nil)
+                    if let result = try? NSAppleScript(source: scriptSource)!.executeAndReturnError(&error) {
+                        if let stringValue = result.stringValue {
+                            print("Script executed successfully. Result: \(stringValue)")
+                        } else {
+                            print("Script executed successfully.")
+                        }
+                    } else {
+                        if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
+                            print("Script failed: \(errorDescription)")
+                            if errorDescription.contains("System Events") {
+                                didError = true
+                            }
+                            print(didError)
+                        }
+                    }
                 } label: {
                     Image(systemName: SFSymbol.display2.rawValue)
                 }

@@ -46,5 +46,9 @@ class FocusManager {
         } catch {
             print("Error encoding Focus models: \(error)")
         }
+        
+        SpaceAppEntityQuery.entities = loadFocusModels().map {
+            SpaceAppEntity(id: $0.id, title: $0.name)
+        }
     }
 }

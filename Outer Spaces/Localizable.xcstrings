@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "About" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre"
+          }
+        }
+      }
+    },
+    "Contact: admin@lospi.dev" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contato: admin@lospi.dev"
+          }
+        }
+      }
+    },
     "Custom Name" : {
       "localizations" : {
         "pt-BR" : {
@@ -11,10 +31,19 @@
         }
       }
     },
-    "Delete CoreData" : {
-
+    "Delete All Stored Data" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apagar todos os dados armazenados"
+          }
+        }
+      }
     },
     "Desktop %lld" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -25,11 +54,22 @@
       }
     },
     "Desktop Name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nome da mesa"
+          }
+        }
+      }
+    },
+    "Developed by Lospi" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desenvolvido por Lospi"
           }
         }
       }
@@ -44,12 +84,42 @@
         }
       }
     },
+    "Error" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro"
+          }
+        }
+      }
+    },
     "Focus Preset" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foco pré-determinado"
+          }
+        }
+      }
+    },
+    "Keyboard Shortcuts" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalhos de Teclado"
+          }
+        }
+      }
+    },
+    "Launch at login" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ao iniciar"
           }
         }
       }
@@ -74,12 +144,64 @@
         }
       }
     },
+    "New Spaces" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Spaces"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
     "Outer Spaces" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Outer Spaces"
+          }
+        }
+      }
+    },
+    "Please enable System Events for New Spaces in System Preferences > Security & Privacy > Accessibility & Automation" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilite System Events para New Spaces em Ajustes > Privacidade e Segurança > Acessibilidade & Automação"
+          }
+        }
+      }
+    },
+    "Please enable System Events for New Spaces in System Preferences > Security & Privacy > Privacy > Accessibility & Automation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilite System Events para New Spaces em Ajustes > Privacidade e Segurança > Acessibilidade & Automação"
+          }
+        }
+      }
+    },
+    "Privacy and Security" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacidade e Segurança"
           }
         }
       }
@@ -127,11 +249,32 @@
       }
     },
     "Set" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Definir"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurações"
+          }
+        }
+      }
+    },
+    "Shortcuts" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalhos"
           }
         }
       }
@@ -147,6 +290,7 @@
       }
     },
     "Switch to Space" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {

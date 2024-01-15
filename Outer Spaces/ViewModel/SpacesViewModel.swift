@@ -16,7 +16,8 @@ class SpacesViewModel: ObservableObject {
     @MainActor func updateSystemSpaces() -> Bool {
         spaceObserver.updateSpaceInformation()
 
-        let shouldUpdate = allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.id == $1.id }) || allSpaces.isEmpty
+        let shouldUpdate = allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.id == $1.id })
+            || allSpaces.isEmpty || allSpaces.count != spaceObserver.allSpaces.count
 
         if shouldUpdate {
             desktopSpaces = spaceObserver.spaces

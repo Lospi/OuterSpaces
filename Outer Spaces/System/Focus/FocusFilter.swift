@@ -1,5 +1,6 @@
 import AppIntents
 import Foundation
+import IOKit
 
 struct SpacesFocusFilter: SetFocusFilterIntent {
     // The focus filter title as it appears in the Settings app
@@ -19,13 +20,29 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
     func perform() async throws -> some IntentResult {
         let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
         Repository.shared.updateAppDataModelStore(settingsModel)
-
-        print("current focus")
-
-        try print(await SpacesFocusFilter.current.spaceFilterPreset.id)
-
-        print("--------")
-
+        if let deviceUUID = getDeviceUUID() {
+            print("Device UUID: \(deviceUUID)")
+        } else {
+            print("Unable to retrieve device UUID.")
+        }
         return .result()
+    }
+
+    func getDeviceUUID() -> String? {
+        let platformExpert = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+
+        guard platformExpert != 0 else {
+            return nil
+        }
+
+        defer {
+            IOObjectRelease(platformExpert)
+        }
+
+        if let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String) {
+            return serialNumber
+        }
+
+        return nil
     }
 }

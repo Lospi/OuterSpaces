@@ -14,22 +14,27 @@ struct SettingsViewModel {
         self.selectedFocusPresetId = settingsModel.focusPresetId
     }
 
-    func updateSpacesOnScreen(focus: Focus) {
-        print("UPDATING FOCUS")
-        print(focus)
+    func updateSpacesOnScreen(focus: Focus) -> Bool {
+        var error: NSDictionary?
+        var didError = false
 
         focus.spaces.forEach { space in
-            print("SPACE INDEX = \(space)")
-            let result = NSAppleScript(source: """
-            -- Set the index of the Space you want to switch to
-            set targetSpaceIndex to \(space.spaceIndex) -- Change this to the desired Space index
+            let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(index: space.spaceIndex)
 
-            -- Change to the specified Space index
-            tell application "System Events"
-                key code (18 + targetSpaceIndex) using {control down} -- Press Ctrl + (targetSpaceIndex)
-            end tell
-
-            """)!.executeAndReturnError(nil)
+            if let result = try? NSAppleScript(source: scriptSource)!.executeAndReturnError(&error) {
+                if let stringValue = result.stringValue {
+                    print("Script executed successfully. Result: \(stringValue)")
+                } else {
+                    print("Script executed successfully.")
+                }
+            } else {
+                if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
+                    if errorDescription.contains("System Events") {
+                        didError = true
+                    }
+                }
+            }
         }
+        return didError
     }
 }

@@ -1,10 +1,3 @@
-//
-//  SpaceObserver.swift
-//  Spaceman
-//
-//  Created by Sasindu Jayasinghe on 23/11/20.
-//
-
 import Cocoa
 import Foundation
 import SwiftUI
@@ -55,6 +48,10 @@ class SpaceObserver: ObservableObject {
             }
 
             for s in spaces {
+                if s["type"] as! Int != 0 {
+                    continue
+                }
+                    
                 let spaceID = String(s["ManagedSpaceID"] as! Int)
                 let space = Space(displayID: displayID,
                                   spaceID: spaceID, spaceIndex: spacesIndex)

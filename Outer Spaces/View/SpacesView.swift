@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SpacesView: View {
     @State var desktopSpaces: [DesktopSpaces] = []
+    @State var error: NSDictionary?
 
     var body: some View {
         VStack {
@@ -25,7 +26,7 @@ struct SpacesView: View {
                             Text("Desktop \(index)")
                             Spacer()
                             Button("Set") {
-                                NSAppleScript(source: """
+                                if let result = try? NSAppleScript(source: """
                                 -- Set the index of the Space you want to switch to
                                 set targetSpaceIndex to \(index) -- Change this to the desired Space index
 
@@ -34,7 +35,19 @@ struct SpacesView: View {
                                     key code (18 + targetSpaceIndex) using {control down} -- Press Ctrl + (targetSpaceIndex)
                                 end tell
 
-                                """)!.executeAndReturnError(nil)
+                                """)!.executeAndReturnError(&error) {
+                                    if let stringValue = result.stringValue {
+                                        print("Script executed successfully. Result: \(stringValue)")
+                                    } else {
+                                        print("Script executed successfully.")
+                                    }
+                                } else {
+                                    if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
+                                        if errorDescription.contains("System Events") {
+                                            didError = true
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
