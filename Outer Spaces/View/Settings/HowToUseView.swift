@@ -32,6 +32,7 @@ struct HowToUseView: View {
                 Text("3. Assign the desired spaces to the focus preset")
                 Text("4. Enable Automation and Accessibility permissions on the System Preferences > Security & Privacy > Accessibility for Outer Spaces (Might be prompted on the first time switching spaces)")
                 Text("5. Open System Settings, Keyboard, Shortcuts, and enable Space switching shortcuts for every space on Mission Control")
+                    .fontWeight(.bold)
                 Text("6. Switch to Focus on System Settings, and for each focus mode, assign the corresponding focus preset to the focus filter")
                 Text("7. Enjoy!")
             }
