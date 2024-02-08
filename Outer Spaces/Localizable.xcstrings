@@ -1,12 +1,92 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "1. Open the app and fetch the current available spaces (Desktops) (Only required on the first time or when new spaces are added)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Abra o app e obtenha os spaces (Mesas) disponíveis (necessário apenas na primeira vez, ou quando novas mesas surgirem)"
+          }
+        }
+      }
+    },
+    "2. Create a focus preset for each focus mode that you with to use" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Crie um foco pré-determinado para cada Foco que deseja utilizar"
+          }
+        }
+      }
+    },
+    "3. Assign the desired spaces to the focus preset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Atribua os spaces desejados no foco pré-determinado"
+          }
+        }
+      }
+    },
+    "4. Enable Automation and Accessibility permissions on the System Preferences > Security & Privacy > Accessibility for Outer Spaces (Might be prompted on the first time switching spaces)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Autorize Outer Spaces em Automação e Acessibilidade em Ajustes do Sistema > Segurança e Privacidade para Outer Spaces (Poderá ser solicitado na primeira troca de spaces)"
+          }
+        }
+      }
+    },
+    "5. Open System Settings, Keyboard, Shortcuts, and enable Space switching shortcuts for every space on Mission Control" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Abra os Ajustes do Sistema, Teclado, Atalhos, e ative os atalhos de teclado para cada mesa no Mission Control"
+          }
+        }
+      }
+    },
+    "6. Switch to Focus on System Settings, and for each focus mode, assign the corresponding focus preset to the focus filter" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6. Mude para a aba Foco nas Configurações, e para cada foco, atribua o foco pré-determinado respectivo no filtro de foco"
+          }
+        }
+      }
+    },
+    "7. Enjoy!" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7. Aproveite!"
+          }
+        }
+      }
+    },
     "About" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sobre"
+          }
+        }
+      }
+    },
+    "Check for Updates…" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verificar por atualizações..."
           }
         }
       }
@@ -31,35 +111,12 @@
         }
       }
     },
-    "Delete All Stored Data" : {
-      "extractionState" : "stale",
+    "Deactivate License" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apagar todos os dados armazenados"
-          }
-        }
-      }
-    },
-    "Desktop %lld" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mesa %lld"
-          }
-        }
-      }
-    },
-    "Desktop Name" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome da mesa"
+            "value" : "Desativar Licença"
           }
         }
       }
@@ -94,12 +151,32 @@
         }
       }
     },
+    "Failed Validating License" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falha ao validar licença"
+          }
+        }
+      }
+    },
     "Focus Preset" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foco pré-determinado"
+          }
+        }
+      }
+    },
+    "How to Use" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como Usar"
           }
         }
       }
@@ -114,12 +191,22 @@
         }
       }
     },
-    "Launch at login" : {
+    "License Key" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abrir ao iniciar"
+            "value" : "Chave de ativação"
+          }
+        }
+      }
+    },
+    "License Key Active!" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licença ativada!"
           }
         }
       }
@@ -144,16 +231,6 @@
         }
       }
     },
-    "New Spaces" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Spaces"
-          }
-        }
-      }
-    },
     "OK" : {
       "localizations" : {
         "pt-BR" : {
@@ -165,33 +242,11 @@
       }
     },
     "Outer Spaces" : {
-      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Outer Spaces"
-          }
-        }
-      }
-    },
-    "Please enable System Events for New Spaces in System Preferences > Security & Privacy > Accessibility & Automation" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Habilite System Events para New Spaces em Ajustes > Privacidade e Segurança > Acessibilidade & Automação"
-          }
-        }
-      }
-    },
-    "Please enable System Events for New Spaces in System Preferences > Security & Privacy > Privacy > Accessibility & Automation" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Habilite System Events para New Spaces em Ajustes > Privacidade e Segurança > Acessibilidade & Automação"
           }
         }
       }
@@ -248,17 +303,6 @@
         }
       }
     },
-    "Set" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Definir"
-          }
-        }
-      }
-    },
     "Settings" : {
       "localizations" : {
         "pt-BR" : {
@@ -289,13 +333,22 @@
         }
       }
     },
-    "Switch to Space" : {
-      "extractionState" : "stale",
+    "Validating License..." : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mudar para Mesa"
+            "value" : "Validando licença..."
+          }
+        }
+      }
+    },
+    "Version %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão %@"
           }
         }
       }

@@ -10,7 +10,7 @@ import SwiftUI
 struct AboutView: View {
     var body: some View {
         VStack {
-            Text("New Spaces")
+            Text("Outer Spaces")
             Text("Developed by Lospi")
             Text("Contact: admin@lospi.dev")
         }

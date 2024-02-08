@@ -18,31 +18,11 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
     var spaceFilterPreset: SpaceAppEntity
 
     func perform() async throws -> some IntentResult {
-        let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
-        Repository.shared.updateAppDataModelStore(settingsModel)
-        if let deviceUUID = getDeviceUUID() {
-            print("Device UUID: \(deviceUUID)")
-        } else {
-            print("Unable to retrieve device UUID.")
+        if KeychainManager.loadLicenseState() ?? false {
+            let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
+            Repository.shared.updateAppDataModelStore(settingsModel)
         }
+
         return .result()
-    }
-
-    func getDeviceUUID() -> String? {
-        let platformExpert = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-
-        guard platformExpert != 0 else {
-            return nil
-        }
-
-        defer {
-            IOObjectRelease(platformExpert)
-        }
-
-        if let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String) {
-            return serialNumber
-        }
-
-        return nil
     }
 }

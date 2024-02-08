@@ -25,6 +25,8 @@ class SpacesViewModel: ObservableObject {
         }
         return shouldUpdate
     }
+    
+    
 
     func loadSpaces(desktopSpaces: [DesktopSpaces], allSpaces: [Space]) {
         self.desktopSpaces = desktopSpaces

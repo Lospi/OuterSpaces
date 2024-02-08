@@ -19,4 +19,9 @@ struct Repository {
             Self.suiteUserDefaults.set(appDataModelEncoded, forKey: "AppData")
         } catch {}
     }
+
+    func updateLicensing(_ licenseStatus: Bool) {
+        Self.suiteUserDefaults.set(licenseStatus, forKey: "localLicenseStatus")
+        print("License active: \(licenseStatus)")
+    }
 }

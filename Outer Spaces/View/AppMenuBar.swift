@@ -20,7 +20,6 @@ struct AppMenuBar: View {
     @FetchRequest(sortDescriptors: []) var spaceModel: FetchedResults<SpaceData>
     @FetchRequest(sortDescriptors: []) var focusModel: FetchedResults<FocusData>
     @State var settingsViewModel = SettingsViewModel(settingsModel: SettingsModel())
-    @Environment(\.openSettings) private var openSettings
     @State var didError = false
 
     func loadSpacesFromCoreData() -> (spaces: [Space], desktops: [DesktopSpaces]) {
@@ -74,14 +73,18 @@ struct AppMenuBar: View {
             HStack {
                 Button(action: {
                            saveNewSpaces()
+                           focusViewModel.updateSpacesFromNewRefresh(newSpaces: spacesViewModel.allSpaces)
                        },
                        label: { Text("Refresh Available Spaces")
                        })
                 Spacer()
+                SettingsLink(label: {
+                    Image(systemSymbol: SFSymbol.gearshape)
+                })
                 Button(action: {
-                    try? openSettings()
+                    NSApplication.shared.terminate(nil)
                 }, label: {
-                    Image(systemSymbol: SFSymbol.gearshapeFill)
+                    Image(systemSymbol: SFSymbol.power)
                 })
             }
             HStack {
@@ -129,7 +132,7 @@ struct AppMenuBar: View {
         }
         .alert(isPresented: $didError) {
             Alert(title: Text("Error"),
-                  message: Text("Please enable System Events for New Spaces in System Preferences > Security & Privacy > Accessibility & Automation"),
+                  message: Text("Please enable System Events for Outer Spaces in System Preferences > Security & Privacy > Accessibility & Automation: " + (settingsViewModel.errorMessage ?? "")),
                   dismissButton: .default(Text("OK")))
         }
 
