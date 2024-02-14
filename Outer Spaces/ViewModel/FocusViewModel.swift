@@ -20,6 +20,7 @@ class FocusViewModel: ObservableObject {
 
     func deleteFocusPreset(focusPreset: Focus) {
         availableFocusPresets.removeAll(where: { $0 == focusPreset })
+        editingFocus = false
         selectedFocusPreset = nil
     }
 
