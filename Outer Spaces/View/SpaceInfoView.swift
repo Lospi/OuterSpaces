@@ -15,7 +15,6 @@ struct SpaceInfoView: View {
     var index: Int
     @Environment(\.managedObjectContext) var managedObjectContext
     @ObservedObject var focusViewModel: FocusViewModel
-    @State var isEditingName = false
     @State var customName = ""
     @Binding var isEditingSpace: Bool
     @State var isSelected = false
@@ -77,33 +76,6 @@ struct SpaceInfoView: View {
                 } label: {
                     Image(systemName: SFSymbol.display2.rawValue)
                 }
-                Button {
-                    isEditingName = !isEditingName
-                } label: {
-                    Image(systemName: SFSymbol.rectangleAndPencilAndEllipsis.rawValue)
-                }
-            }
-            if isEditingName {
-                TextField("Custom Name", text: $customName)
-                    .onSubmit {
-                        let request = NSFetchRequest<NSFetchRequestResult>(entityName: SpaceData.entity().name!)
-                        let spaceModelResult = try! managedObjectContext.fetch(request)
-                        let oldSpace = spaceModelResult.first(where: { ($0 as! SpaceData).spaceId == space.spaceID })
-                        if oldSpace != nil {
-                            managedObjectContext.delete(oldSpace! as! NSManagedObject)
-                        }
-
-                        let updatedSpace = SpaceData(context: managedObjectContext)
-
-                        updatedSpace.displayId = space.displayID
-                        updatedSpace.spaceId = space.spaceID
-                        updatedSpace.id = space.id
-                        updatedSpace.customName = customName.isEmpty ? "Desktop \(index)" : customName
-                        updatedSpace.spaceIndex = Int16(index)
-                        space = Space(id: updatedSpace.id!, displayID: updatedSpace.displayId!, spaceID: updatedSpace.spaceId!, customName: updatedSpace.customName, spaceIndex: Int(updatedSpace.spaceIndex))
-                        isEditingName = !isEditingName
-                        PersistenceController.shared.save()
-                    }
             }
         }
     }
