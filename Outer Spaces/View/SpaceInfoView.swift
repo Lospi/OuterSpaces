@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import Sentry
 import SFSafeSymbols
 import SwiftUI
 
@@ -66,7 +65,6 @@ struct SpaceInfoView: View {
                     } else {
                         if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
                             print("Script failed: \(errorDescription)")
-                            SentrySDK.capture(message: errorDescription)
                             if errorDescription.contains("System Events") {
                                 didError = true
                             }

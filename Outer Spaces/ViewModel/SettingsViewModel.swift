@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Sentry
 
 struct SettingsViewModel {
     var selectedFocusPresetId: UUID?
@@ -37,7 +36,6 @@ struct SettingsViewModel {
                     print(errorDescription)
                     self.errorMessage = errorDescription
                     if errorDescription.contains("System Events") {
-                        SentrySDK.capture(message: (error?["NSAppleScriptErrorMessage"] as? String)!)
                         didError = true
                     }
                 }
