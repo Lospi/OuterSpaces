@@ -23,6 +23,23 @@ struct SettingsView: View {
         _licensingViewModel = StateObject(wrappedValue: licensingViewModel)
     }
 
+    func formatRemainingTime(for startDate: Date) -> [String] {
+        let endDate = Calendar.current.date(byAdding: .day, value: 7, to: startDate)! // Add 7 days to starting date
+        let now = Date()
+
+        guard endDate > now else {
+            return ["Trial has ended"] // Handle case where trial has already ended
+        }
+
+        let remainingComponents = Calendar.current.dateComponents([.day, .hour, .minute], from: now, to: endDate)
+
+        let days = remainingComponents.day ?? 0
+        let hours = remainingComponents.hour ?? 0
+        let minutes = remainingComponents.minute ?? 0
+
+        return [String(format: "%02d", days), String(format: "%02d", hours), String(format: "%02d", minutes)]
+    }
+
     var body: some View {
         VStack {
             VStack {
@@ -65,6 +82,25 @@ struct SettingsView: View {
                 }
             }
             .padding()
+
+            if !licensingViewModel.trialSpent {
+                if !licensingViewModel.isOnTrial {
+                    Button("Start Free Trial") {
+                        licensingViewModel.startFreeTrialIfAvailable()
+                    }
+                    .padding()
+                }
+                else {
+                    Text("Trial Active!")
+                        .foregroundStyle(Color.green)
+                        .padding()
+                    Text("Your trial expires in: \(formatRemainingTime(for: licensingViewModel.trialStartDate!)[0]) days, \(formatRemainingTime(for: licensingViewModel.trialStartDate!)[1]) hours, \(formatRemainingTime(for: licensingViewModel.trialStartDate!)[2]) minutes")
+                }
+            }
+            else if licensingViewModel.trialSpent && !licensingViewModel.isLicenseRegistered {
+                Text("Trial Expired")
+                    .foregroundStyle(Color.red)
+            }
 
             Button("How to Use") {
                 openWindow(id: "how-to-use")

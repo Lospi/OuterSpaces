@@ -1,11 +1,15 @@
+import CryptoKit
+
 enum KeychainManager {
-    static let serviceName = "OuterSpacesTrialStateService"
-    static let licenseStateKey = "LicenseState"
+    static let serviceName = "OuterSpaces"
+    static let licenseStateKey = "LicenseKey"
     static let offlinePermissionKey = "OfflinePermission"
     static let offlinePermissionStartDateKey = "OfflinePermissionStartDate"
 
-    static func saveLicenseState(_ state: Bool) {
-        guard let data = "\(state)".data(using: .utf8) else { return }
+    static func saveLicenseStateKey() {
+        let key = SymmetricKey(size: .bits256)
+
+        guard let data = "\(key)".data(using: .utf8) else { return }
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -18,39 +22,31 @@ enum KeychainManager {
         SecItemAdd(query as CFDictionary, nil)
     }
 
-    static func loadLicenseState() -> Bool? {
+    static func loadLicenseKey() -> SymmetricKey? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceName,
             kSecAttrAccount as String: licenseStateKey,
             kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecReturnData as String: kCFBooleanTrue!
-        ]
+            kSecReturnData as String: kCFBooleanTrue]
 
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
+        print(status)
 
         if status == errSecSuccess, let data = result as? Data {
-            if let stateString = String(data: data, encoding: .utf8), let state = Bool(stateString) {
-                return state
-            }
+            let key = SymmetricKey(data: Data(data))
+            return key
+        } else {
+            saveLicenseStateKey()
+            return loadLicenseKey()
         }
-
-        return nil
     }
 
-    static func deleteLicenseState() {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: serviceName,
-            kSecAttrAccount as String: licenseStateKey
-        ]
+    static func saveOfflinePermissionKey() {
+        let key = SymmetricKey(size: .bits256)
 
-        SecItemDelete(query as CFDictionary)
-    }
-
-    static func saveOfflinePermission(_ state: Bool) {
-        guard let data = "\(state)".data(using: .utf8) else { return }
+        guard let data = "\(key)".data(using: .utf8) else { return }
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -63,7 +59,7 @@ enum KeychainManager {
         SecItemAdd(query as CFDictionary, nil)
     }
 
-    static func loadOfflinePermission() -> Bool? {
+    static func loadOfflinePermissionKey() -> SymmetricKey? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceName,
@@ -76,46 +72,12 @@ enum KeychainManager {
         let status = SecItemCopyMatching(query as CFDictionary, &result)
 
         if status == errSecSuccess, let data = result as? Data {
-            if let stateString = String(data: data, encoding: .utf8), let state = Bool(stateString) {
-                return state
-            }
+            let key = SymmetricKey(data: Data(data))
+            return key
+        } else {
+            saveOfflinePermissionKey()
+            return loadOfflinePermissionKey()
         }
-
-        return nil
-    }
-
-    static func saveOfflinePermissionStartDate(_ date: Date) {
-        guard let data = "\(date.timeIntervalSince1970)".data(using: .utf8) else { return }
-
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: serviceName,
-            kSecAttrAccount as String: offlinePermissionStartDateKey,
-            kSecValueData as String: data
-        ]
-
-        SecItemDelete(query as CFDictionary)
-        SecItemAdd(query as CFDictionary, nil)
-    }
-
-    static func loadOfflinePermissionStartDate() -> Date? {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: serviceName,
-            kSecAttrAccount as String: offlinePermissionStartDateKey,
-            kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecReturnData as String: kCFBooleanTrue!
-        ]
-
-        var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-
-        if status == errSecSuccess, let data = result as? Data {
-            if let timeIntervalString = String(data: data, encoding: .utf8), let timeInterval = TimeInterval(timeIntervalString) {
-                return Date(timeIntervalSince1970: timeInterval)
-            }
-        }
-
         return nil
     }
 }

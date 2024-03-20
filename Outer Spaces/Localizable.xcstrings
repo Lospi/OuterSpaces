@@ -111,17 +111,6 @@
         }
       }
     },
-    "Custom Name" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome personalizado"
-          }
-        }
-      }
-    },
     "Deactivate License" : {
       "localizations" : {
         "pt-BR" : {
@@ -364,6 +353,36 @@
         }
       }
     },
+    "Start Free Trial" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar Demonstração"
+          }
+        }
+      }
+    },
+    "Trial Active!" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demonstração ativa!"
+          }
+        }
+      }
+    },
+    "Trial Expired" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demonstração expirada"
+          }
+        }
+      }
+    },
     "Validating License..." : {
       "localizations" : {
         "pt-BR" : {
@@ -380,6 +399,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versão %@"
+          }
+        }
+      }
+    },
+    "Your trial expires in: %@ days, %@ hours, %@ minutes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Your trial expires in: %1$@ days, %2$@ hours, %3$@ minutes"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua demonstração expira em: %1$@ dias,  %2$@ horas, %3$@ minutos"
           }
         }
       }

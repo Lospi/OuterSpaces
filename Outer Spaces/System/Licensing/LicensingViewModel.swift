@@ -10,16 +10,26 @@ import Foundation
 import SwiftUI
 
 class LicensingViewModel: ObservableObject {
-    static var isLicensed: Bool = false
-    static var isOnTrial: Bool = false
+    var gameTimer: Timer?
     let entryURL = "https://8ixo388z6c.execute-api.us-east-1.amazonaws.com/Prod/users/"
     
     @Published var isLicenseRegistered: Bool = false
+    @Published var isOnTrial: Bool = false
+    @Published var trialStartDate: Date?
+    @Published var trialSpent = false
     @Published var isValidatingLicense: Bool = false
     @Published var failedToValidateLicense: Bool = false
     
     init() {
         fetchInitialValidation()
+    }
+    
+    func resetTrial() {
+        Repository.shared.updateTrialState(state: false)
+        Repository.shared.updateTrialEnd(false)
+        isOnTrial = false
+        trialStartDate = nil
+        trialSpent = false
     }
     
     func getDeviceUUID() -> String? {
@@ -42,28 +52,105 @@ class LicensingViewModel: ObservableObject {
     
     func fetchInitialValidation() {
         fetchUser()
+        checkFreeTrialInitialValidation()
+        Timer.scheduledTimer(withTimeInterval: 14400, repeats: true) { _ in
+            self.fetchUser()
+        }
+        Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+            self.revalidateFreeTrial()
+        }
     }
     
     func offlineValidation() {
-        print("Offline Permission Status: \(KeychainManager.loadOfflinePermission())")
-        print("License State: \(KeychainManager.loadLicenseState())")
-        if (KeychainManager.loadOfflinePermission() == false || KeychainManager.loadOfflinePermission() == nil) && KeychainManager.loadLicenseState() == true {
-            KeychainManager.saveOfflinePermission(true)
-            KeychainManager.saveOfflinePermissionStartDate(Date.now)
+        print("Offline Validation started")
+        print("License State: \(Repository.shared.fetchLicenseState())")
+        print("Offline Permission Status: \(Repository.shared.fetchOfflinePermissionStatus())")
+        print("Offline Date: \(Repository.shared.fetchOfflineDate())")
+        if !Repository.shared.fetchOfflinePermissionStatus(), Repository.shared.fetchLicenseState() == true {
+            Repository.shared.updateOfflinePermissionStatus(status: true)
+            Repository.shared.updateOfflineDate(Date.now)
+            print("Validation OK")
             isLicenseRegistered = true
         }
-        else if KeychainManager.loadOfflinePermission() == true, KeychainManager.loadLicenseState() == true {
-            if Date.now.timeIntervalSince(KeychainManager.loadOfflinePermissionStartDate()!) > 10080 {
-                KeychainManager.deleteLicenseState()
+        else if Repository.shared.fetchOfflinePermissionStatus(), Repository.shared.fetchLicenseState() {
+            if Date.now.timeIntervalSince(Repository.shared.fetchOfflineDate()!) > 10080 {
+                print("Past offline permission")
+                Repository.shared.updateLicenseState(state: false)
                 disableOfflinePermission()
             }
             else {
+                print("Validation OK, but past")
                 isLicenseRegistered = true
             }
         }
         else {
+            print("Validation failed")
             isLicenseRegistered = false
         }
+    }
+    
+    func isFreeTrialUsed() -> Bool {
+        return Repository.shared.fetchTrialState()
+    }
+    
+    func isFreeTrialExpired() -> Bool {
+        if !Repository.shared.fetchTrialEndState() {
+            if let trialStartDate = Repository.shared.fetchTrialDate() {
+                trialSpent = Date.now.timeIntervalSince(trialStartDate) > 604800
+                return Date.now.timeIntervalSince(trialStartDate) > 604800
+            }
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    
+    func revalidateFreeTrial() {
+        if isFreeTrialExpired() {
+            isOnTrial = false
+            trialSpent = true
+            Repository.shared.updateTrialEnd(true)
+        }
+    }
+    
+    func checkFreeTrialInitialValidation() {
+        print("Is Free Trial Used: \(isFreeTrialUsed())")
+        print("Is Free Trial Expired: \(isFreeTrialExpired())")
+        if isFreeTrialUsed(), !isFreeTrialExpired() {
+            trialStartDate = Repository.shared.fetchTrialDate()
+            isOnTrial = true
+        }
+        else {
+            if isFreeTrialExpired() {
+                isOnTrial = false
+                trialSpent = true
+                Repository.shared.updateTrialEnd(true)
+            }
+        }
+    }
+    
+    func checkFreeTrialEndedState() -> Bool {
+        return Repository.shared.fetchTrialEndState()
+    }
+    
+    func startFreeTrialIfAvailable() {
+        print("Starting Free Trial")
+        print("Is Free Trial Used: \(isFreeTrialUsed())")
+        print("Is Free Trial Expired: \(isFreeTrialExpired())")
+        print("Is Free Trial Ended: \(checkFreeTrialEndedState())")
+        if !isFreeTrialUsed(), !checkFreeTrialEndedState(), !isFreeTrialExpired() {
+            Repository.shared.updateTrialState(state: true)
+            Repository.shared.updateTrialDate(Date.now)
+            isOnTrial = true
+            trialStartDate = Repository.shared.fetchTrialDate()
+        }
+    }
+    
+    func forceTrialEnd() {
+        isOnTrial = false
+        trialSpent = true
+        Repository.shared.updateTrialEnd(true)
     }
     
     func validateLicense(license: String) async {
@@ -78,9 +165,10 @@ class LicensingViewModel: ObservableObject {
             switch response.result {
             case let .success(user):
                 self.isLicenseRegistered = user.isLicenseKeyValid
+                Repository.shared.updateOfflinePermissionStatus(status: true)
                 self.failedToValidateLicense = !(user.isLicenseKeyValid)
                 self.isValidatingLicense = false
-                KeychainManager.saveLicenseState(user.isLicenseKeyValid)
+                Repository.shared.updateLicenseState(state: user.isLicenseKeyValid)
             case let .failure(error):
                 print(error)
                 self.failedToValidateLicense = true
@@ -96,7 +184,7 @@ class LicensingViewModel: ObservableObject {
             switch response.result {
             case let .success(user):
                 self.isLicenseRegistered = user.isLicenseKeyValid
-                KeychainManager.saveLicenseState(user.isLicenseKeyValid)
+                Repository.shared.updateLicenseState(state: user.isLicenseKeyValid)
                 self.disableOfflinePermission()
                 print("Success fetching user: \(user)")
             case let .failure(error):
@@ -107,8 +195,7 @@ class LicensingViewModel: ObservableObject {
     }
     
     func disableOfflinePermission() {
-        KeychainManager.saveOfflinePermission(false)
-        print("Offline Permission Status: \(KeychainManager.loadOfflinePermission())")
+        Repository.shared.updateOfflinePermissionStatus(status: false)
     }
     
     func createUser() {
@@ -122,7 +209,7 @@ class LicensingViewModel: ObservableObject {
             (response: DataResponse<User, AFError>) in
             print("Response from creating user: \(response)")
             switch response.result {
-            case let .success(user):
+            case .success:
                 print("Success creating user")
             case let .failure(error):
                 print("Error creating user: \(error)")
@@ -138,7 +225,7 @@ class LicensingViewModel: ObservableObject {
             switch response.result {
             case .success:
                 print("License deactivated")
-                KeychainManager.deleteLicenseState()
+                Repository.shared.updateLicenseState(state: false)
                 self.fetchUser()
             case .failure:
                 print("Failed to deactivate license")
