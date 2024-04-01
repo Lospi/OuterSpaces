@@ -21,7 +21,6 @@
 		0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A42B10447700B95465 /* FocusViewModel.swift */; };
 		0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A62B1191E500B95465 /* SpacesViewModel.swift */; };
 		075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C09C52B543178005AF697 /* PresetTextInputView.swift */; };
-		075C09FD2B5DE335005AF697 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 075C09FC2B5DE335005AF697 /* GoogleService-Info.plist */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
 		07829F872B1A9C720031F608 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07829F862B1A9C720031F608 /* CoreDataManager.swift */; };
@@ -55,7 +54,6 @@
 		0742F4A42B10447700B95465 /* FocusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusViewModel.swift; sourceTree = "<group>"; };
 		0742F4A62B1191E500B95465 /* SpacesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesViewModel.swift; sourceTree = "<group>"; };
 		075C09C52B543178005AF697 /* PresetTextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetTextInputView.swift; sourceTree = "<group>"; };
-		075C09FC2B5DE335005AF697 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		076ED57A2B0EF773005931DB /* SpaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceInfoView.swift; sourceTree = "<group>"; };
 		076ED5842B0FED2D005931DB /* Focus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
 		07829F862B1A9C720031F608 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -126,13 +124,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		076E45182B83F91B0044ACC8 /* HowToUse */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = HowToUse;
-			sourceTree = "<group>";
-		};
 		07829F852B1A9C670031F608 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
@@ -169,8 +160,6 @@
 		07A626A22B06C6480013FE80 /* Outer Spaces */ = {
 			isa = PBXGroup;
 			children = (
-				076E45182B83F91B0044ACC8 /* HowToUse */,
-				075C09FC2B5DE335005AF697 /* GoogleService-Info.plist */,
 				07829F852B1A9C670031F608 /* Manager */,
 				0794FC6B2B14413A00FD7647 /* Repository */,
 				0742F4A32B10445A00B95465 /* ViewModel */,
@@ -330,7 +319,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07A626AB2B06C64A0013FE80 /* Preview Assets.xcassets in Resources */,
-				075C09FD2B5DE335005AF697 /* GoogleService-Info.plist in Resources */,
 				07A626A82B06C64A0013FE80 /* Assets.xcassets in Resources */,
 				07CD7B9B2B06D1F700D39387 /* Localizable.xcstrings in Resources */,
 			);
