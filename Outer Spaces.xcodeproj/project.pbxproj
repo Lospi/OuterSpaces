@@ -10,9 +10,7 @@
 		0705A7902B5241CF005CA574 /* AppleScriptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0705A78F2B5241CF005CA574 /* AppleScriptHelper.swift */; };
 		0715DE512B0AAB1600A6E46C /* AppMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0715DE502B0AAB1600A6E46C /* AppMenuBar.swift */; };
 		0715DE542B0AAC2700A6E46C /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 0715DE532B0AAC2700A6E46C /* SFSafeSymbols */; };
-		0726DA902B8F7B90007A0BE6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0726DA8F2B8F7B90007A0BE6 /* FirebaseCrashlytics */; };
 		0726DAB62B8FC989007A0BE6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0726DAB52B8FC989007A0BE6 /* User.swift */; };
-		0726DAB92B8FD2A0007A0BE6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0726DAB82B8FD2A0007A0BE6 /* Alamofire */; };
 		0731007A2B674C9C00F3D630 /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073100792B674C9C00F3D630 /* UpdateView.swift */; };
 		0731007C2B72BBA500F3D630 /* HowToUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0731007B2B72BBA500F3D630 /* HowToUseView.swift */; };
 		073BE5962B07AD3700B23112 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073BE58F2B07AD3700B23112 /* AppMain.swift */; };
@@ -88,9 +86,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0715DE542B0AAC2700A6E46C /* SFSafeSymbols in Frameworks */,
-				0726DAB92B8FD2A0007A0BE6 /* Alamofire in Frameworks */,
 				07417FF72B5F019C00B26423 /* Sparkle in Frameworks */,
-				0726DA902B8F7B90007A0BE6 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,8 +281,6 @@
 			packageProductDependencies = (
 				0715DE532B0AAC2700A6E46C /* SFSafeSymbols */,
 				07417FF62B5F019C00B26423 /* Sparkle */,
-				0726DA8F2B8F7B90007A0BE6 /* FirebaseCrashlytics */,
-				0726DAB82B8FD2A0007A0BE6 /* Alamofire */,
 			);
 			productName = "Outer Spaces";
 			productReference = 07A626A02B06C6480013FE80 /* Outer Spaces.app */;
@@ -320,8 +314,6 @@
 			packageReferences = (
 				0715DE522B0AAC2700A6E46C /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				07417FF52B5F019C00B26423 /* XCRemoteSwiftPackageReference "Sparkle" */,
-				0726DA7E2B8F7B90007A0BE6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				0726DAB72B8FD2A0007A0BE6 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 07A626A12B06C6480013FE80 /* Products */;
 			projectDirPath = "";
@@ -522,7 +514,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Outer Spaces/Preview Content\"";
@@ -545,7 +537,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -565,7 +557,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Outer Spaces/Preview Content\"";
 				DEVELOPMENT_TEAM = D8A3VX836S;
@@ -587,7 +579,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 1.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -629,22 +621,6 @@
 				minimumVersion = 4.1.1;
 			};
 		};
-		0726DA7E2B8F7B90007A0BE6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 10.21.0;
-			};
-		};
-		0726DAB72B8FD2A0007A0BE6 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.8.1;
-			};
-		};
 		07417FF52B5F019C00B26423 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle";
@@ -660,16 +636,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0715DE522B0AAC2700A6E46C /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
 			productName = SFSafeSymbols;
-		};
-		0726DA8F2B8F7B90007A0BE6 /* FirebaseCrashlytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0726DA7E2B8F7B90007A0BE6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
-		};
-		0726DAB82B8FD2A0007A0BE6 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0726DAB72B8FD2A0007A0BE6 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
 		};
 		07417FF62B5F019C00B26423 /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
