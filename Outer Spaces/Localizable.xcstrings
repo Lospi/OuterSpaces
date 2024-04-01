@@ -1,16 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "0. Activate a valid license for Outer Spaces" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "0. Ative uma licença válida para Outer Spaces"
-          }
-        }
-      }
-    },
     "1. Open the app and fetch the current available spaces (Desktops) (Only required on the first time or when new spaces are added)" : {
       "localizations" : {
         "pt-BR" : {
@@ -111,16 +101,6 @@
         }
       }
     },
-    "Deactivate License" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desativar Licença"
-          }
-        }
-      }
-    },
     "Developed by Lospi" : {
       "localizations" : {
         "pt-BR" : {
@@ -147,16 +127,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erro"
-          }
-        }
-      }
-    },
-    "Failed Validating License" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Falha ao validar licença"
           }
         }
       }
@@ -197,26 +167,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Atalhos de Teclado"
-          }
-        }
-      }
-    },
-    "License Key" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chave de ativação"
-          }
-        }
-      }
-    },
-    "License Key Active!" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Licença ativada!"
           }
         }
       }
@@ -353,68 +303,12 @@
         }
       }
     },
-    "Start Free Trial" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ativar Demonstração"
-          }
-        }
-      }
-    },
-    "Trial Active!" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Demonstração ativa!"
-          }
-        }
-      }
-    },
-    "Trial Expired" : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Demonstração expirada"
-          }
-        }
-      }
-    },
-    "Validating License..." : {
-      "localizations" : {
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Validando licença..."
-          }
-        }
-      }
-    },
     "Version %@" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versão %@"
-          }
-        }
-      }
-    },
-    "Your trial expires in: %@ days, %@ hours, %@ minutes" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Your trial expires in: %1$@ days, %2$@ hours, %3$@ minutes"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sua demonstração expira em: %1$@ dias,  %2$@ horas, %3$@ minutos"
           }
         }
       }

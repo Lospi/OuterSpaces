@@ -32,8 +32,6 @@ struct HowToUseView: View {
                 Text("How to Use")
                     .font(.title)
                     .padding()
-                Text("0. Activate a valid license for Outer Spaces")
-                    .fontWeight(.bold)
                 Text("1. Open the app and fetch the current available spaces (Desktops) (Only required on the first time or when new spaces are added)")
                 Text("2. Create a focus preset for each focus mode that you with to use")
                 Text("3. Assign the desired spaces to the focus preset")

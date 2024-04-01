@@ -18,7 +18,6 @@
 		073BE5962B07AD3700B23112 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073BE58F2B07AD3700B23112 /* AppMain.swift */; };
 		07417FF72B5F019C00B26423 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 07417FF62B5F019C00B26423 /* Sparkle */; };
 		07417FFA2B5F084500B26423 /* SparkleUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07417FF92B5F084500B26423 /* SparkleUpdater.swift */; };
-		07417FFD2B5F0E1200B26423 /* LicensingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07417FFC2B5F0E1200B26423 /* LicensingViewModel.swift */; };
 		0742F49E2B0FFC8700B95465 /* OuterSpace.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0742F49C2B0FFC8700B95465 /* OuterSpace.xcdatamodeld */; };
 		0742F4A22B1037FD00B95465 /* DisplaySpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */; };
 		0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A42B10447700B95465 /* FocusViewModel.swift */; };
@@ -53,7 +52,6 @@
 		0731007B2B72BBA500F3D630 /* HowToUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToUseView.swift; sourceTree = "<group>"; };
 		073BE58F2B07AD3700B23112 /* AppMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
 		07417FF92B5F084500B26423 /* SparkleUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkleUpdater.swift; sourceTree = "<group>"; };
-		07417FFC2B5F0E1200B26423 /* LicensingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicensingViewModel.swift; sourceTree = "<group>"; };
 		0742F49D2B0FFC8700B95465 /* OuterSpace.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OuterSpace.xcdatamodel; sourceTree = "<group>"; };
 		0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySpacesView.swift; sourceTree = "<group>"; };
 		0742F4A42B10447700B95465 /* FocusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusViewModel.swift; sourceTree = "<group>"; };
@@ -120,21 +118,6 @@
 				07417FF92B5F084500B26423 /* SparkleUpdater.swift */,
 			);
 			path = SparkleUpdater;
-			sourceTree = "<group>";
-		};
-		07417FFB2B5F0DC600B26423 /* Licensing */ = {
-			isa = PBXGroup;
-			children = (
-				07417FFC2B5F0E1200B26423 /* LicensingViewModel.swift */,
-			);
-			path = Licensing;
-			sourceTree = "<group>";
-		};
-		07417FFE2B62A00600B26423 /* Keychain */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Keychain;
 			sourceTree = "<group>";
 		};
 		0742F4A32B10445A00B95465 /* ViewModel */ = {
@@ -220,8 +203,6 @@
 		07CD7B912B06C8D300D39387 /* System */ = {
 			isa = PBXGroup;
 			children = (
-				07417FFE2B62A00600B26423 /* Keychain */,
-				07417FFB2B5F0DC600B26423 /* Licensing */,
 				07417FF82B5F081D00B26423 /* SparkleUpdater */,
 				0705A78E2B5241C3005CA574 /* Helper */,
 				07F3F5C62B0BD5CE00AB00CB /* Storage */,
@@ -388,7 +369,6 @@
 				0794FC6D2B14414500FD7647 /* Repository.swift in Sources */,
 				0742F49E2B0FFC8700B95465 /* OuterSpace.xcdatamodeld in Sources */,
 				075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */,
-				07417FFD2B5F0E1200B26423 /* LicensingViewModel.swift in Sources */,
 				0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */,
 				07E5D0F02B35A68500FE7B77 /* AboutView.swift in Sources */,
 				07829F892B1AC1CC0031F608 /* SettingsView.swift in Sources */,

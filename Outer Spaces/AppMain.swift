@@ -11,11 +11,10 @@ struct OuterSpacesApp: App {
     @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var focusViewModel = FocusViewModel()
     @StateObject var spacesViewModel = SpacesViewModel()
-    @StateObject var licensingViewModel = LicensingViewModel()
 
     var body: some Scene {
         Settings {
-            SettingsView(spacesViewModel: spacesViewModel, licensingViewModel: licensingViewModel)
+            SettingsView(spacesViewModel: spacesViewModel)
         }
 
         WindowGroup("How to Use", id: "how-to-use") {

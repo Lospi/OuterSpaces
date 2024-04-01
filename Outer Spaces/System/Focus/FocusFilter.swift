@@ -18,11 +18,8 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
     var spaceFilterPreset: SpaceAppEntity
 
     func perform() async throws -> some IntentResult {
-        if Repository.shared.fetchLicenseState() || (Repository.shared.fetchTrialState() && !Repository.shared.fetchTrialEndState()) {
-            let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
-            Repository.shared.updateAppDataModelStore(settingsModel)
-        }
-
+        let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
+        Repository.shared.updateAppDataModelStore(settingsModel)
         return .result()
     }
 }

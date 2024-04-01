@@ -24,7 +24,6 @@ struct SettingsViewModel {
             let result = try? NSAppleScript(source: scriptSource)!.executeAndReturnError(&error)
 
             if result != nil {
-                print(result)
                 if let stringValue = result?.stringValue {
                     print("Script executed successfully. Result: \(stringValue)")
                 } else {
