@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CHICO_BENTO</key>
+	<string>$(CHICO_BENTO)</string>
+	<key>Privacy - </key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>SUEnableDownloaderService</key>
+	<true/>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://lospi.github.io/OuterSpaces-Releases/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>Gxsr+PBAQUlmQWbxTksAaRjJmxRQB6+MAJu0X16L5Ds=</string>
+	<key>com.apple.security.temporary-exception.mach-lookup.global-name</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spks</string>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)-spki</string>
+	</array>
+</dict>
+</plist>

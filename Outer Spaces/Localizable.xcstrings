@@ -1,0 +1,318 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "1. Open the app and fetch the current available spaces (Desktops) (Only required on the first time or when new spaces are added)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Abra o app e obtenha os spaces (Mesas) disponíveis (necessário apenas na primeira vez, ou quando novas mesas surgirem)"
+          }
+        }
+      }
+    },
+    "2. Create a focus preset for each focus mode that you with to use" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Crie um foco pré-determinado para cada Foco que deseja utilizar"
+          }
+        }
+      }
+    },
+    "3. Assign the desired spaces to the focus preset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Atribua os spaces desejados no foco pré-determinado"
+          }
+        }
+      }
+    },
+    "4. Enable Automation and Accessibility permissions on the System Preferences > Security & Privacy > Accessibility for Outer Spaces (Might be prompted on the first time switching spaces)" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Autorize Outer Spaces em Automação e Acessibilidade em Ajustes do Sistema > Segurança e Privacidade para Outer Spaces (Poderá ser solicitado na primeira troca de spaces)"
+          }
+        }
+      }
+    },
+    "5. Open System Settings, Keyboard, Shortcuts, and enable Space switching shortcuts for every space on Mission Control" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5. Abra os Ajustes do Sistema, Teclado, Atalhos, e ative os atalhos de teclado para cada mesa no Mission Control"
+          }
+        }
+      }
+    },
+    "6. Switch to Focus on System Settings, and for each focus mode, assign the corresponding focus preset to the focus filter" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "6. Mude para a aba Foco nas Configurações, e para cada foco, atribua o foco pré-determinado respectivo no filtro de foco"
+          }
+        }
+      }
+    },
+    "7. Enjoy!" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7. Aproveite!"
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sobre"
+          }
+        }
+      }
+    },
+    "Check for Updates…" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verificar por atualizações..."
+          }
+        }
+      }
+    },
+    "Contact: admin@lospi.dev" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contato: admin@lospi.dev"
+          }
+        }
+      }
+    },
+    "Developed by Lospi" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desenvolvido por Lospi"
+          }
+        }
+      }
+    },
+    "Display %lld" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display %lld"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro"
+          }
+        }
+      }
+    },
+    "Focus Preset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foco pré-determinado"
+          }
+        }
+      }
+    },
+    "For a complete guide, visit our video guide on YouTube" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para um guia completo, acesse nosso vídeo no YouTube"
+          }
+        }
+      }
+    },
+    "How to Use" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como Usar"
+          }
+        }
+      }
+    },
+    "Keyboard Shortcuts" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalhos de Teclado"
+          }
+        }
+      }
+    },
+    "New Preset Name" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do foco"
+          }
+        }
+      }
+    },
+    "New Preset..." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo foco pré-determinado..."
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Open YouTube" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir YouTube"
+          }
+        }
+      }
+    },
+    "Outer Spaces" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outer Spaces"
+          }
+        }
+      }
+    },
+    "Privacy and Security" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacidade e Segurança"
+          }
+        }
+      }
+    },
+    "Refresh Available Spaces" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atualizar Mesas Disponíveis"
+          }
+        }
+      }
+    },
+    "Select Preset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar foco pré-determinado"
+          }
+        }
+      }
+    },
+    "Select Space" : {
+      "comment" : "Spaces não é traduzido",
+      "extractionState" : "manual",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecionar Mesa"
+          }
+        }
+      }
+    },
+    "Select your built preset with the desired spaces" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecione seu foco pré-definido com as mesas desejadas"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurações"
+          }
+        }
+      }
+    },
+    "Shortcuts" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalhos"
+          }
+        }
+      }
+    },
+    "Space" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesa"
+          }
+        }
+      }
+    },
+    "Version %@" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão %@"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
