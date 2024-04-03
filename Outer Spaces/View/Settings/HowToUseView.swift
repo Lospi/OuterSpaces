@@ -46,7 +46,7 @@ struct HowToUseView: View {
                 Text("For a complete guide, visit our video guide on YouTube")
                     .padding()
                 Button("Open YouTube") {
-                    NSWorkspace.shared.open(URL(string: "https://www.youtube.com/watch?v=2V3CfD8TP5A")!)
+                    NSWorkspace.shared.open(URL(string: "https://www.youtube.com/watch?v=DTPDoeVhLaQ")!)
                 }
             }
         }
