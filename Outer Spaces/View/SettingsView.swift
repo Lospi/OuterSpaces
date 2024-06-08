@@ -5,6 +5,7 @@
 //  Created by Roberto Camargo on 01/12/23.
 //
 
+import LaunchAtLogin
 import SFSafeSymbols
 import SwiftUI
 
@@ -23,18 +24,19 @@ struct SettingsView: View {
 
     var body: some View {
         VStack {
-            VStack {
-                Text("Settings")
-                    .font(.title)
-                    .padding()
-                UpdateView()
+            Text("Settings")
+                .padding()
+
+            LaunchAtLogin.Toggle {
+                Text("Launch at Login")
             }
-            .padding()
+
+            UpdateView()
+                .padding()
 
             Button("How to Use") {
                 openWindow(id: "how-to-use")
             }
-            .padding()
 
             VStack {
                 Text("Shortcuts")

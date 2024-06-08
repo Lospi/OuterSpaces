@@ -20,6 +20,7 @@
 		0742F4A22B1037FD00B95465 /* DisplaySpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */; };
 		0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A42B10447700B95465 /* FocusViewModel.swift */; };
 		0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A62B1191E500B95465 /* SpacesViewModel.swift */; };
+		0752F8AD2BC3043C00DE3349 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */; };
 		075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C09C52B543178005AF697 /* PresetTextInputView.swift */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
@@ -83,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0752F8AD2BC3043C00DE3349 /* LaunchAtLogin in Frameworks */,
 				0715DE542B0AAC2700A6E46C /* SFSafeSymbols in Frameworks */,
 				07417FF72B5F019C00B26423 /* Sparkle in Frameworks */,
 			);
@@ -270,6 +272,7 @@
 			packageProductDependencies = (
 				0715DE532B0AAC2700A6E46C /* SFSafeSymbols */,
 				07417FF62B5F019C00B26423 /* Sparkle */,
+				0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */,
 			);
 			productName = "Outer Spaces";
 			productReference = 07A626A02B06C6480013FE80 /* Outer Spaces.app */;
@@ -303,6 +306,7 @@
 			packageReferences = (
 				0715DE522B0AAC2700A6E46C /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				07417FF52B5F019C00B26423 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */,
 			);
 			productRefGroup = 07A626A12B06C6480013FE80 /* Products */;
 			projectDirPath = "";
@@ -617,6 +621,14 @@
 				minimumVersion = 2.5.2;
 			};
 		};
+		0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-modern";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -629,6 +641,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 07417FF52B5F019C00B26423 /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */;
+			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
 
