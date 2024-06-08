@@ -1,5 +1,6 @@
 import AppIntents
 import CoreData
+import SettingsAccess
 import SFSafeSymbols
 import Sparkle
 import SwiftUI
@@ -24,9 +25,10 @@ struct OuterSpacesApp: App {
         MenuBarExtra("Outer Spaces", systemImage: SFSymbol.displayAndArrowDown.rawValue) {
             AppMenuBar(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .openSettingsAccess()
         }
         .menuBarExtraStyle(.window)
-        .onChange(of: scenePhase) {
+        .onChange(of: scenePhase) { _ in
             persistenceController.save()
         }
     }
