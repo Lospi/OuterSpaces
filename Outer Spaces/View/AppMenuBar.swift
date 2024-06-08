@@ -6,6 +6,7 @@
 //
 
 import AppIntents
+import SettingsAccess
 import SFSafeSymbols
 import SwiftUI
 
@@ -17,6 +18,7 @@ struct AppMenuBar: View {
     @ObservedObject var spacesViewModel: SpacesViewModel
 
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.openSettings) private var openSettings
     @FetchRequest(sortDescriptors: []) var spaceModel: FetchedResults<SpaceData>
     @FetchRequest(sortDescriptors: []) var focusModel: FetchedResults<FocusData>
     @State var settingsViewModel = SettingsViewModel(settingsModel: SettingsModel())
@@ -27,13 +29,13 @@ struct AppMenuBar: View {
             Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName, spaceIndex: Int(space.spaceIndex))
         }
         var desktopIds: [String] = []
-        loadedSpaces.forEach {
-            if !desktopIds.contains($0.displayID) {
-                desktopIds.append($0.displayID)
+        for loadedSpace in loadedSpaces {
+            if !desktopIds.contains(loadedSpace.displayID) {
+                desktopIds.append(loadedSpace.displayID)
             }
         }
         var desktopSpaces: [DesktopSpaces] = []
-        desktopIds.forEach { desktopId in
+        for desktopId in desktopIds {
             let desktopPerSpace = loadedSpaces.filter { $0.displayID == desktopId }
             desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
         }
@@ -78,7 +80,7 @@ struct AppMenuBar: View {
                        label: { Text("Refresh Available Spaces")
                        })
                 Spacer()
-                SettingsLink(label: {
+                Button(action: { try? openSettings() }, label: {
                     Image(systemSymbol: SFSymbol.gearshape)
                 })
                 Button(action: {
@@ -122,7 +124,7 @@ struct AppMenuBar: View {
                 }
             }
         }
-        .onChange(of: appData) { _, newValue in
+        .onChange(of: appData) { newValue in
             let decoder = JSONDecoder()
             guard let appDataModelDecoded = try? decoder.decode(SettingsModel.self, from: newValue) else {
                 return
