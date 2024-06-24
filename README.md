@@ -26,6 +26,7 @@ Outer Spaces is a macOS application for switching your spaces according to your 
 
 * Create presets for your focus
 * Change your spaces automatically
+* Toggle Stage Manager per preset settings 
 
 <div>
 <img
