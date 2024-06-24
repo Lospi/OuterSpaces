@@ -36,11 +36,11 @@ struct SpaceInfoView: View {
                                     try managedObjectContext.execute(batchDeleteRequest)
                                 } catch {}
 
-                                focusViewModel.availableFocusPresets.forEach {
+                                for availableFocusPreset in focusViewModel.availableFocusPresets {
                                     let focus = FocusData(context: managedObjectContext)
-                                    focus.id = $0.id
-                                    focus.name = $0.name
-                                    focus.spacesIds = $0.spaces.map { $0.spaceID }
+                                    focus.id = availableFocusPreset.id
+                                    focus.name = availableFocusPreset.name
+                                    focus.spacesIds = availableFocusPreset.spaces.map { $0.spaceID }
                                     PersistenceController.shared.save()
                                 }
 
@@ -54,7 +54,7 @@ struct SpaceInfoView: View {
                 Button {
                     var error: NSDictionary?
 
-                    let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(index: index)
+                    let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(index: index, stageManager: focusViewModel.selectedFocusPreset?.stageManager, shouldAffectStage: focusViewModel.selectedFocusPreset != nil)
 
                     if let result = try? NSAppleScript(source: scriptSource)!.executeAndReturnError(&error) {
                         if let stringValue = result.stringValue {

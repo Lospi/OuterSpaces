@@ -19,8 +19,8 @@ struct SettingsViewModel {
         var error: NSDictionary?
         var didError = false
 
-        focus.spaces.forEach { space in
-            let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(index: space.spaceIndex)
+        for space in focus.spaces {
+            let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(index: space.spaceIndex, stageManager: focus.stageManager, shouldAffectStage: true)
             let result = try? NSAppleScript(source: scriptSource)!.executeAndReturnError(&error)
 
             if result != nil {
@@ -33,7 +33,7 @@ struct SettingsViewModel {
                 print(result)
                 if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
                     print(errorDescription)
-                    self.errorMessage = errorDescription
+                    errorMessage = errorDescription
                     if errorDescription.contains("System Events") {
                         didError = true
                     }

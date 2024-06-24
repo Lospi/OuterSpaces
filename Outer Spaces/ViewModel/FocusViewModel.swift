@@ -40,6 +40,14 @@ class FocusViewModel: ObservableObject {
         editingFocus = false
     }
 
+    func toggleFocusStageManager() {
+        let focusIndex = availableFocusPresets.firstIndex(of: selectedFocusPreset!)
+
+        selectedFocusPreset!.stageManager.toggle()
+
+        availableFocusPresets[focusIndex!].stageManager.toggle()
+    }
+
     func updateFocusSpaces(relatedSpace: Space) {
         let focusIndex = availableFocusPresets.firstIndex(of: selectedFocusPreset!)
         if selectedFocusPreset!.spaces.contains(where: { $0 == relatedSpace }) {
