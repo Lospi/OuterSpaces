@@ -171,6 +171,16 @@
         }
       }
     },
+    "Launch at Login" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir ao iniciar"
+          }
+        }
+      }
+    },
     "New Preset Name" : {
       "localizations" : {
         "pt-BR" : {
@@ -299,6 +309,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mesa"
+          }
+        }
+      }
+    },
+    "Stage Manager" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizador Visual"
           }
         }
       }

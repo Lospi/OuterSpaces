@@ -20,6 +20,8 @@
 		0742F4A22B1037FD00B95465 /* DisplaySpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A12B1037FD00B95465 /* DisplaySpacesView.swift */; };
 		0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A42B10447700B95465 /* FocusViewModel.swift */; };
 		0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0742F4A62B1191E500B95465 /* SpacesViewModel.swift */; };
+		074EBFA62C13DEE7009A8B23 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 074EBFA52C13DEE7009A8B23 /* SettingsAccess */; };
+		0752F8AD2BC3043C00DE3349 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */; };
 		075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C09C52B543178005AF697 /* PresetTextInputView.swift */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
@@ -83,6 +85,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				074EBFA62C13DEE7009A8B23 /* SettingsAccess in Frameworks */,
+				0752F8AD2BC3043C00DE3349 /* LaunchAtLogin in Frameworks */,
 				0715DE542B0AAC2700A6E46C /* SFSafeSymbols in Frameworks */,
 				07417FF72B5F019C00B26423 /* Sparkle in Frameworks */,
 			);
@@ -270,6 +274,8 @@
 			packageProductDependencies = (
 				0715DE532B0AAC2700A6E46C /* SFSafeSymbols */,
 				07417FF62B5F019C00B26423 /* Sparkle */,
+				074EBFA52C13DEE7009A8B23 /* SettingsAccess */,
+				0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */,
 			);
 			productName = "Outer Spaces";
 			productReference = 07A626A02B06C6480013FE80 /* Outer Spaces.app */;
@@ -303,6 +309,8 @@
 			packageReferences = (
 				0715DE522B0AAC2700A6E46C /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				07417FF52B5F019C00B26423 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				074EBFA42C13DEE7009A8B23 /* XCRemoteSwiftPackageReference "SettingsAccess" */,
+				0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */,
 			);
 			productRefGroup = 07A626A12B06C6480013FE80 /* Products */;
 			projectDirPath = "";
@@ -422,7 +430,7 @@
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -484,7 +492,7 @@
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -502,7 +510,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Outer Spaces/Preview Content\"";
@@ -524,8 +532,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.1.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -545,7 +553,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Outer Spaces/Preview Content\"";
 				DEVELOPMENT_TEAM = D8A3VX836S;
@@ -566,8 +574,8 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.1;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.1.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -617,6 +625,22 @@
 				minimumVersion = 2.5.2;
 			};
 		};
+		074EBFA42C13DEE7009A8B23 /* XCRemoteSwiftPackageReference "SettingsAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orchetect/SettingsAccess";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
+		0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-modern";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -629,6 +653,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 07417FF52B5F019C00B26423 /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		074EBFA52C13DEE7009A8B23 /* SettingsAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 074EBFA42C13DEE7009A8B23 /* XCRemoteSwiftPackageReference "SettingsAccess" */;
+			productName = SettingsAccess;
+		};
+		0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */;
+			productName = LaunchAtLogin;
 		};
 /* End XCSwiftPackageProductDependency section */
 
