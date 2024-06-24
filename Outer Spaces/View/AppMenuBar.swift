@@ -61,10 +61,10 @@ struct AppMenuBar: View {
             if focus.spacesIds != nil {
                 if !focus.spacesIds!.isEmpty {
                     focusData = Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.isEmpty ? [] : loadedSpaces.spaces.filter { focus.spacesIds!.contains($0.spaceID)
-                    })
+                    }, stageManager: focus.stageManager)
                 }
             }
-            return focusData ?? Focus(id: focus.id!, name: focus.name!, spaces: [])
+            return focusData ?? Focus(id: focus.id!, name: focus.name!, spaces: [], stageManager: false)
         }
 
         focusViewModel.availableFocusPresets = loadedFocus
@@ -105,6 +105,33 @@ struct AppMenuBar: View {
                 }
                 Spacer()
                 if focusViewModel.selectedFocusPreset != nil {
+                    Toggle(isOn: Binding(
+                        get: { focusViewModel.selectedFocusPreset!.stageManager },
+                        set: { _ in
+                            withAnimation {
+                                focusViewModel.toggleFocusStageManager()
+
+                                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FocusData")
+                                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+                                do {
+                                    try managedObjectContext.execute(batchDeleteRequest)
+                                } catch {}
+
+                                focusViewModel.availableFocusPresets.forEach {
+                                    let focus = FocusData(context: managedObjectContext)
+                                    focus.id = $0.id
+                                    focus.name = $0.name
+                                    focus.spacesIds = $0.spaces.map { $0.spaceID }
+                                    PersistenceController.shared.save()
+                                }
+
+                                FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
+                            }
+                        }
+                    )) {
+                        Image(systemSymbol: .squareOnSquare)
+                    }
                     Button {
                         focusViewModel.deleteFocusPreset(focusPreset: focusViewModel.selectedFocusPreset!)
                         CoreDataManager.shared.saveFocusToCoreData(focusViewModel: focusViewModel, managedObjectContext: managedObjectContext)

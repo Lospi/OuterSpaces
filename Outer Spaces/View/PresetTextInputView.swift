@@ -9,31 +9,38 @@ import SwiftUI
 
 struct PresetTextInputView: View {
     @State var newPresetName = ""
+    @State var hasStageManager = false
     @ObservedObject var focusViewModel: FocusViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
 
     var body: some View {
-        TextField("New Preset Name", text: $newPresetName)
-            .onSubmit {
-                focusViewModel.availableFocusPresets.append(Focus(name: newPresetName, spaces: []))
-                let focusFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FocusData")
-                let focusBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: focusFetchRequest)
-                do {
-                    try managedObjectContext.execute(focusBatchDeleteRequest)
-                } catch {}
+        HStack {
+            TextField("New Preset Name", text: $newPresetName)
+                .onSubmit {
+                    focusViewModel.availableFocusPresets.append(Focus(name: newPresetName, spaces: [], stageManager: hasStageManager))
+                    let focusFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FocusData")
+                    let focusBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: focusFetchRequest)
+                    do {
+                        try managedObjectContext.execute(focusBatchDeleteRequest)
+                    } catch {}
 
-                FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
+                    FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
 
-                focusViewModel.availableFocusPresets.forEach {
-                    let focus = FocusData(context: managedObjectContext)
-                    focus.id = $0.id
-                    focus.name = $0.name
-                    focus.spacesIds = $0.spaces.map { $0.spaceID }
-                    PersistenceController.shared.save()
+                    for availableFocusPreset in focusViewModel.availableFocusPresets {
+                        let focus = FocusData(context: managedObjectContext)
+                        focus.id = availableFocusPreset.id
+                        focus.name = availableFocusPreset.name
+                        focus.spacesIds = availableFocusPreset.spaces.map { $0.spaceID }
+                        focus.stageManager = availableFocusPreset.stageManager
+                        PersistenceController.shared.save()
+                    }
+
+                    focusViewModel.creatingPreset.toggle()
+                    newPresetName = ""
                 }
-
-                focusViewModel.creatingPreset.toggle()
-                newPresetName = ""
+            Toggle(isOn: $hasStageManager) {
+                Text("Stage Manager")
             }
+        }
     }
 }

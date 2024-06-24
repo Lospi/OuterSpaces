@@ -64,10 +64,10 @@ struct HowToUseView: View {
             if focus.spacesIds != nil {
                 if !focus.spacesIds!.isEmpty {
                     focusData = Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.isEmpty ? [] : loadedSpaces.spaces.filter { focus.spacesIds!.contains($0.spaceID)
-                    })
+                    }, stageManager: focus.stageManager)
                 }
             }
-            return focusData ?? Focus(id: focus.id!, name: focus.name!, spaces: [])
+            return focusData ?? Focus(id: focus.id!, name: focus.name!, spaces: [], stageManager: false)
         }
 
         focusViewModel.availableFocusPresets = loadedFocus
@@ -78,13 +78,13 @@ struct HowToUseView: View {
             Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName, spaceIndex: Int(space.spaceIndex))
         }
         var desktopIds: [String] = []
-        loadedSpaces.forEach {
-            if !desktopIds.contains($0.displayID) {
-                desktopIds.append($0.displayID)
+        for loadedSpace in loadedSpaces {
+            if !desktopIds.contains(loadedSpace.displayID) {
+                desktopIds.append(loadedSpace.displayID)
             }
         }
         var desktopSpaces: [DesktopSpaces] = []
-        desktopIds.forEach { desktopId in
+        for desktopId in desktopIds {
             let desktopPerSpace = loadedSpaces.filter { $0.displayID == desktopId }
             desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
         }

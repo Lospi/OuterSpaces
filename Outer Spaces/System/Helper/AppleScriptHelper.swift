@@ -23,13 +23,15 @@ enum NumberKeyCode {
 }
 
 enum AppleScriptHelper {
-    static func getCompleteAppleScriptPerIndex(index: Int) -> String {
+    static func getCompleteAppleScriptPerIndex(index: Int, stageManager: Bool?,
+                                               shouldAffectStage: Bool) -> String
+    {
         let desiredKeycode = NumberKeyCode.keycodeDictionary[(index + 1) % 10]
         print(desiredKeycode!)
         let hasOptionKey = index > 9
         print(hasOptionKey)
 
-        let scriptSource = hasOptionKey ?
+        let scriptSource = shouldAffectStage ? hasOptionKey ?
             """
             -- Set the index of the Space you want to switch to
             set targetSpaceIndex to \(desiredKeycode!) -- Change this to the desired Space index
@@ -41,8 +43,37 @@ enum AppleScriptHelper {
                 key code (targetSpaceIndex) using {control down, option down} -- Press Ctrl + (targetSpaceIndex)
             end tell
 
+            do shell script "defaults write com.apple.WindowManager GloballyEnabled -bool \(stageManager!)"
+
             """
             :
+            """
+            -- Set the index of the Space you want to switch to
+            set targetSpaceIndex to \(desiredKeycode!) -- Change this to the desired Space index
+
+            -- Change to the specified Space index
+            tell application "System Events"
+                key code (targetSpaceIndex) using {control down} -- Press Ctrl + (targetSpaceIndex)
+            end tell
+
+            do shell script "defaults write com.apple.WindowManager GloballyEnabled -bool \(stageManager!)"
+
+            """
+            : hasOptionKey ?
+            """
+            -- Set the index of the Space you want to switch to
+            set targetSpaceIndex to \(desiredKeycode!) -- Change this to the desired Space index
+
+            -- Change to the specified Space index
+            tell application "System Events" to activate
+
+            tell application "System Events"
+                key code (targetSpaceIndex) using {control down, option down} -- Press Ctrl + (targetSpaceIndex)
+            end tell
+
+
+            """ :
+
             """
             -- Set the index of the Space you want to switch to
             set targetSpaceIndex to \(desiredKeycode!) -- Change this to the desired Space index

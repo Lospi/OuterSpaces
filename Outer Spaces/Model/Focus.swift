@@ -12,6 +12,7 @@ struct Focus: Hashable, Codable, Identifiable {
     var id = UUID()
     var name: String
     var spaces: [Space]
+    var stageManager: Bool
 }
 
 class FocusManager {
@@ -46,7 +47,7 @@ class FocusManager {
         } catch {
             print("Error encoding Focus models: \(error)")
         }
-        
+
         SpaceAppEntityQuery.entities = loadFocusModels().map {
             SpaceAppEntity(id: $0.id, title: $0.name)
         }
