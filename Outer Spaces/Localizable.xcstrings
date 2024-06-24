@@ -313,6 +313,16 @@
         }
       }
     },
+    "Stage Manager" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organizador Visual"
+          }
+        }
+      }
+    },
     "Version %@" : {
       "localizations" : {
         "pt-BR" : {
