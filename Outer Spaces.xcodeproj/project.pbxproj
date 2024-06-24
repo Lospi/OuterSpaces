@@ -631,8 +631,8 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.4.0;
-                };
-        };
+			};
+		};
 		0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-modern";
@@ -658,7 +658,7 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 074EBFA42C13DEE7009A8B23 /* XCRemoteSwiftPackageReference "SettingsAccess" */;
 			productName = SettingsAccess;
-        };
+		};
 		0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0752F8AB2BC3043C00DE3349 /* XCRemoteSwiftPackageReference "LaunchAtLogin-modern" */;
