@@ -27,9 +27,7 @@ enum AppleScriptHelper {
                                                shouldAffectStage: Bool) -> String
     {
         let desiredKeycode = NumberKeyCode.keycodeDictionary[(index + 1) % 10]
-        print(desiredKeycode!)
         let hasOptionKey = index > 9
-        print(hasOptionKey)
 
         let scriptSource = shouldAffectStage ? hasOptionKey ?
             """
