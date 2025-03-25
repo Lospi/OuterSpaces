@@ -1,17 +1,14 @@
-//
-//  HowToUseView.swift
-//  Outer Spaces
-//
-//  Created by Roberto Camargo on 06/02/24.
-//
-
 import SwiftUI
 
 struct HowToUseView: View {
     @FetchRequest(sortDescriptors: []) var spaceModel: FetchedResults<SpaceData>
     @FetchRequest(sortDescriptors: []) var focusModel: FetchedResults<FocusData>
-    @StateObject var focusViewModel: FocusViewModel
-    @StateObject var spacesViewModel: SpacesViewModel
+    @ObservedObject var focusViewModel: FocusViewModel
+    @ObservedObject var spacesViewModel: SpacesViewModel
+    @Environment(\.managedObjectContext) var managedObjectContext
+
+    // Add a state property to track whether data has been loaded
+    @State private var dataLoaded = false
 
     var body: some View {
         VStack {
@@ -22,7 +19,7 @@ struct HowToUseView: View {
                 VStack(alignment: .leading) {
                     Text("Outer Spaces")
                         .font(.title)
-                    Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)")
+                    Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")")
                     Text("Developed by Lospi")
                     Text("Contact: admin@lospi.dev")
                 }
@@ -50,45 +47,24 @@ struct HowToUseView: View {
                 }
             }
         }
-        .onAppear(
+        .onAppear {
+            // Only load data if it hasn't been loaded yet
+            if !dataLoaded {
+                loadInitialData()
+                dataLoaded = true
+            }
+        }
+    }
+
+    private func loadInitialData() {
+        // Use our new CoreDataService to load data safely
+        let loadedData = CoreDataService.shared.loadSpaces(from: managedObjectContext)
+        spacesViewModel.loadSpaces(desktopSpaces: loadedData.desktops, allSpaces: loadedData.spaces)
+
+        let focusPresets = CoreDataService.shared.loadFocusPresets(
+            from: managedObjectContext,
+            allSpaces: loadedData.spaces
         )
-    }
-
-    func onAppear() {
-        let loadedSpaces = loadSpacesFromCoreData()
-        spacesViewModel.loadSpaces(desktopSpaces: loadedSpaces.desktops, allSpaces: loadedSpaces.spaces)
-        var loadedFocus: [Focus] = []
-
-        loadedFocus = focusModel.map { focus in
-            var focusData: Focus?
-            if focus.spacesIds != nil {
-                if !focus.spacesIds!.isEmpty {
-                    focusData = Focus(id: focus.id!, name: focus.name!, spaces: focus.spacesIds!.isEmpty ? [] : loadedSpaces.spaces.filter { focus.spacesIds!.contains($0.spaceID)
-                    }, stageManager: focus.stageManager)
-                }
-            }
-            return focusData ?? Focus(id: focus.id!, name: focus.name!, spaces: [], stageManager: false)
-        }
-
-        focusViewModel.availableFocusPresets = loadedFocus
-    }
-
-    func loadSpacesFromCoreData() -> (spaces: [Space], desktops: [DesktopSpaces]) {
-        let loadedSpaces = spaceModel.map { space in
-            Space(id: space.id!, displayID: space.displayId!, spaceID: space.spaceId!, customName: space.customName, spaceIndex: Int(space.spaceIndex))
-        }
-        var desktopIds: [String] = []
-        for loadedSpace in loadedSpaces {
-            if !desktopIds.contains(loadedSpace.displayID) {
-                desktopIds.append(loadedSpace.displayID)
-            }
-        }
-        var desktopSpaces: [DesktopSpaces] = []
-        for desktopId in desktopIds {
-            let desktopPerSpace = loadedSpaces.filter { $0.displayID == desktopId }
-            desktopSpaces.append(DesktopSpaces(desktopSpaces: desktopPerSpace))
-        }
-
-        return (spaces: loadedSpaces, desktops: desktopSpaces)
+        focusViewModel.availableFocusPresets = focusPresets
     }
 }

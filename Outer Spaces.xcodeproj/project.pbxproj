@@ -23,6 +23,7 @@
 		074EBFA62C13DEE7009A8B23 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 074EBFA52C13DEE7009A8B23 /* SettingsAccess */; };
 		0752F8AD2BC3043C00DE3349 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */; };
 		075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C09C52B543178005AF697 /* PresetTextInputView.swift */; };
+		0764C1052D90F1B5000B6D85 /* PermissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
 		07829F872B1A9C720031F608 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07829F862B1A9C720031F608 /* CoreDataManager.swift */; };
@@ -56,6 +57,7 @@
 		0742F4A42B10447700B95465 /* FocusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusViewModel.swift; sourceTree = "<group>"; };
 		0742F4A62B1191E500B95465 /* SpacesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesViewModel.swift; sourceTree = "<group>"; };
 		075C09C52B543178005AF697 /* PresetTextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetTextInputView.swift; sourceTree = "<group>"; };
+		0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionHandler.swift; sourceTree = "<group>"; };
 		076ED57A2B0EF773005931DB /* SpaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceInfoView.swift; sourceTree = "<group>"; };
 		076ED5842B0FED2D005931DB /* Focus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
 		07829F862B1A9C720031F608 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		0705A78E2B5241C3005CA574 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */,
 				0705A78F2B5241CF005CA574 /* AppleScriptHelper.swift */,
 			);
 			path = Helper;
@@ -352,6 +355,7 @@
 				07F3F5CF2B0C132D00AB00CB /* PersistenceController.swift in Sources */,
 				076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */,
 				0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */,
+				0764C1052D90F1B5000B6D85 /* PermissionHandler.swift in Sources */,
 				07417FFA2B5F084500B26423 /* SparkleUpdater.swift in Sources */,
 				07F3F5C82B0BD5E300AB00CB /* SpaceStore.swift in Sources */,
 				0794FC6D2B14414500FD7647 /* Repository.swift in Sources */,

@@ -20,7 +20,7 @@ struct DisplaySpacesView: View {
             Text("Display \(desktopIndex + 1)")
             ForEach(Array(desktopSpace.desktopSpaces.enumerated()), id: \.element) { index, space in
                 HStack {
-                    SpaceInfoView(space: space, index: desktopIndex != 0 ? startIndex + index : index, focusViewModel: focusViewModel, isEditingSpace: $editingFocus, didError: $didError)
+                    SpaceInfoView(space: space, index: desktopIndex != 0 ? startIndex + index : index, focusViewModel: focusViewModel, isEditingSpace: $editingFocus)
                 }
             }
         }
