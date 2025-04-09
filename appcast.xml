@@ -3,6 +3,14 @@
     <channel>
         <title>Outer Spaces</title>
         <item>
+            <title>2.0</title>
+            <pubDate>Wed, 09 Apr 2025 20:36:29 -0300</pubDate>
+            <sparkle:version>13</sparkle:version>
+            <sparkle:shortVersionString>2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/Lospi/OuterSpaces/releases/download/v2.0/OuterSpaces.dmg" length="3981630" type="application/octet-stream" sparkle:edSignature="uLoueaSJcE8BtcyrJw4Cv5llCqo0L1WDec6BKaXNns1/s+NIyEnnS8P5z/Urog+ZkNuq1RZ0Cz/ODIP2Y92sCQ=="/>
+        </item>
+        <item>
             <title>1.1.0</title>
             <pubDate>Sun, 23 Jun 2024 21:49:09 -0300</pubDate>
             <sparkle:version>12</sparkle:version>
