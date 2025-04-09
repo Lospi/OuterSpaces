@@ -7,9 +7,6 @@ struct HowToUseView: View {
     @ObservedObject var spacesViewModel: SpacesViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
 
-    // Add a state property to track whether data has been loaded
-    @State private var dataLoaded = false
-
     var body: some View {
         VStack {
             HStack {
@@ -47,24 +44,5 @@ struct HowToUseView: View {
                 }
             }
         }
-        .onAppear {
-            // Only load data if it hasn't been loaded yet
-            if !dataLoaded {
-                loadInitialData()
-                dataLoaded = true
-            }
-        }
-    }
-
-    private func loadInitialData() {
-        // Use our new CoreDataService to load data safely
-        let loadedData = CoreDataService.shared.loadSpaces(from: managedObjectContext)
-        spacesViewModel.loadSpaces(desktopSpaces: loadedData.desktops, allSpaces: loadedData.spaces)
-
-        let focusPresets = CoreDataService.shared.loadFocusPresets(
-            from: managedObjectContext,
-            allSpaces: loadedData.spaces
-        )
-        focusViewModel.availableFocusPresets = focusPresets
     }
 }

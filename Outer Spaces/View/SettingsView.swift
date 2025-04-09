@@ -10,6 +10,8 @@ import UserNotifications // For UNUserNotificationCenter
 struct SettingsView: View {
     @ObservedObject var spacesViewModel: SpacesViewModel
     @ObservedObject private var permissionHandler = PermissionHandler.shared
+    @ObservedObject var focusViewModel: FocusViewModel
+    @ObservedObject var focusStatusViewModel: FocusStatusViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.openWindow) var openWindow
     @AppStorage("showSpaceNumbers") private var showSpaceNumbers = true
@@ -63,6 +65,8 @@ struct SettingsView: View {
                             autoSwitchSpaces: $autoSwitchSpaces,
                             showResetConfirmation: $showResetConfirmation,
                             spacesViewModel: spacesViewModel,
+                            focusViewModel: focusViewModel,
+                            focusStatusViewModel: focusStatusViewModel,
                             managedObjectContext: managedObjectContext
                         )
                     case "about":
@@ -272,32 +276,34 @@ struct AdvancedSettingsView: View {
     @Binding var autoSwitchSpaces: Bool
     @Binding var showResetConfirmation: Bool
     @ObservedObject var spacesViewModel: SpacesViewModel
+    @ObservedObject var focusViewModel: FocusViewModel
+    @ObservedObject var focusStatusViewModel: FocusStatusViewModel
     var managedObjectContext: NSManagedObjectContext
     @State private var loggingEnabled = false
     @State private var debugMode = false
     @State private var validationResult: (success: Bool, message: String)? = nil
-    
+        
     var body: some View {
         SettingsSection(title: "Behavior") {
             Toggle("Auto-switch spaces with Focus modes", isOn: $autoSwitchSpaces)
                 .toggleStyle(SwitchToggleStyle())
-            
+                
             Button("Validate Space Organization") {
                 validateSpaces()
             }
             .buttonStyle(.bordered)
-            
+                
             // Show validation result if available
             if let result = validationResult {
                 HStack {
                     Image(systemSymbol: result.success ? .checkmarkCircleFill : .exclamationmarkTriangleFill)
                         .foregroundColor(result.success ? .green : .orange)
-                    
+                        
                     Text(result.message)
                         .foregroundColor(result.success ? .green : .orange)
-                    
+                        
                     Spacer()
-                    
+                        
                     if !result.success {
                         Button("Fix Issues") {
                             fixSpaceOrganization()
@@ -311,14 +317,33 @@ struct AdvancedSettingsView: View {
                 .padding(.top, 4)
             }
         }
-        
+            
+        // Add the Default Preset section
+        DefaultPresetSettingsView(focusStatusViewModel: focusStatusViewModel, focusViewModel: focusViewModel)
+            
+        SettingsSection(title: "Focus Status") {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Focus Mode Integration")
+                    .font(.headline)
+                    
+                Text("Outer Spaces integrates with macOS Focus modes. You can control spaces based on your current Focus status.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    
+                Button("Open Focus Settings") {
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Focus")!)
+                }
+                .buttonStyle(.bordered)
+            }
+        }
+            
         SettingsSection(title: "Debugging") {
             Toggle("Enable Logging", isOn: $loggingEnabled)
                 .toggleStyle(SwitchToggleStyle())
-            
+                
             Toggle("Debug Mode", isOn: $debugMode)
                 .toggleStyle(SwitchToggleStyle())
-            
+                
             if debugMode {
                 Button("Export Diagnostics") {
                     exportDiagnostics()
@@ -326,13 +351,13 @@ struct AdvancedSettingsView: View {
                 .buttonStyle(.bordered)
             }
         }
-        
+            
         SettingsSection(title: "Reset") {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Reset all settings, spaces, and focus presets to default values.")
                     .font(.caption)
                     .foregroundColor(.secondary)
-                
+                    
                 Button("Reset All Settings") {
                     showResetConfirmation = true
                 }

@@ -1,4 +1,3 @@
-import CoreData
 import SFSafeSymbols
 import SwiftUI
 
@@ -43,7 +42,6 @@ struct SpaceInfoView: View {
                                     }
                                     
                                     focus.stageManager = availableFocusPreset.stageManager
-                                    PersistenceController.shared.save()
                                 }
 
                                 FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)

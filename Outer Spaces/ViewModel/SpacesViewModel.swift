@@ -12,23 +12,57 @@ class SpacesViewModel: ObservableObject {
     let spaceObserver = SpaceObserver()
     @Published var desktopSpaces: [DesktopSpaces] = []
     @Published var allSpaces: [Space] = []
-
+    
+    static let shared = SpacesViewModel()
+    
+    init() {
+        loadSpaces()
+    }
+    
     @MainActor func updateSystemSpaces() async -> Bool {
         await spaceObserver.updateSpaceInformation()
-
+        
         let shouldUpdate = allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.id == $1.id })
             || allSpaces.isEmpty || allSpaces.count != spaceObserver.allSpaces.count
-
+        
         if shouldUpdate {
             desktopSpaces = spaceObserver.spaces
             allSpaces = spaceObserver.allSpaces
+            saveSpaces()
         }
         return shouldUpdate
     }
     
-    func loadSpaces(desktopSpaces: [DesktopSpaces], allSpaces: [Space]) {
-        self.desktopSpaces = desktopSpaces
-        self.allSpaces = allSpaces
+    func loadSpaces() {
+        let defaults = UserDefaults.standard
+        if let savedData = defaults.data(forKey: "AvailableSpaces") {
+            let decoder = JSONDecoder()
+            do {
+                allSpaces = try decoder.decode([Space].self, from: savedData)
+                // Map decoded spaces to DesktopSpaceslet displayIDs = Array(Set(spaces.map { $0.displayID }))
+                let displayIDs = Array(Set(allSpaces.map { $0.displayID }))
+                desktopSpaces = displayIDs.map { displayID in
+                    let spacesForDisplay = allSpaces.filter { $0.displayID == displayID }
+                    return DesktopSpaces(desktopSpaces: spacesForDisplay)
+                }
+                    
+            } catch {
+                print("Error decoding spaces: \(error)")
+            }
+        } else {
+            print("No saved spaces found")
+        }
+    }
+                
+    func saveSpaces() {
+        let encoder = JSONEncoder()
+        do {
+            let encodedData = try encoder.encode(allSpaces)
+            let defaults = UserDefaults.standard
+            defaults.set(encodedData, forKey: "AvailableSpaces")
+        } catch {
+            print("Error encoding spaces: \(error)")
+        }
     }
 }
 
