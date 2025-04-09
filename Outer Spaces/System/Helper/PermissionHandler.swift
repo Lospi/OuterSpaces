@@ -93,9 +93,11 @@ class PermissionHandler: ObservableObject {
     func openAccessibilitySettings() {
         if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
             NSWorkspace.shared.open(url)
+            self.requestAccessibilityPermission()
         } else {
             // Fallback for older macOS versions
             NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security")!)
+            self.requestAccessibilityPermission()
         }
     }
     

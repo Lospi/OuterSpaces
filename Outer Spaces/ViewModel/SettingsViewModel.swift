@@ -28,16 +28,15 @@ class SettingsViewModel {
     var selectedFocusPresetId: UUID?
     var errorMessage: String?
     
+    static let shared = SettingsViewModel()
+    
     // Dependency on PermissionHandler for consistent handling
     private let permissionHandler = PermissionHandler.shared
-
-    init(settingsModel: SettingsModel) {
-        self.selectedFocusPresetId = settingsModel.focusPresetId
-    }
     
     // Modern async implementation - removed 'mutating' keyword
     func updateSpacesOnScreen(focus: Focus) async throws -> Bool {
         var didError = false
+        print("Updating spaces on screen for focus: \(focus.name)")
         
         // Process spaces sequentially to avoid race conditions
         for space in focus.spaces {
@@ -88,8 +87,9 @@ class SettingsViewModel {
         var didError = false
         
         for space in focus.spaces {
+            print(space.spaceIndex)
             let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(
-                index: space.spaceIndex,
+                index: space.spaceIndex * space.displayIndex,
                 stageManager: focus.stageManager,
                 shouldAffectStage: true
             )
@@ -108,7 +108,7 @@ class SettingsViewModel {
             
             if error == nil {
                 // Success case
-                print("Script executed successfully for space \(space.spaceIndex).")
+                print("Script executed successfully for space \(space.spaceIndex * space.displayIndex).")
             } else {
                 // Error case
                 if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {

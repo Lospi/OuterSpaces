@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "(%@)" : {
+
+    },
     "%lld" : {
       "localizations" : {
         "pt-BR" : {
@@ -13,6 +16,9 @@
           }
         }
       }
+    },
+    "%lld Spaces" : {
+
     },
     "1. Open the app and fetch the current available spaces (Desktops) (Only required on the first time or when new spaces are added)" : {
       "localizations" : {
@@ -105,6 +111,7 @@
       }
     },
     "Accessibility permission needed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -204,6 +211,12 @@
         }
       }
     },
+    "Create New Preset" : {
+
+    },
+    "Current Status:" : {
+
+    },
     "Debug Mode" : {
       "localizations" : {
         "pt-BR" : {
@@ -214,6 +227,9 @@
         }
       }
     },
+    "Default Preset" : {
+
+    },
     "Delete Focus Preset" : {
       "localizations" : {
         "pt-BR" : {
@@ -223,6 +239,9 @@
           }
         }
       }
+    },
+    "Delete Preset" : {
+
     },
     "Developed by Lospi" : {
       "localizations" : {
@@ -263,6 +282,12 @@
           }
         }
       }
+    },
+    "Done Editing" : {
+
+    },
+    "Edit Preset" : {
+
     },
     "Editing \"%@\" - Select spaces to include" : {
       "localizations" : {
@@ -335,6 +360,7 @@
       }
     },
     "Fix" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -353,6 +379,15 @@
           }
         }
       }
+    },
+    "Focus active" : {
+
+    },
+    "Focus mode active" : {
+
+    },
+    "Focus Mode Integration" : {
+
     },
     "Focus Preset" : {
       "localizations" : {
@@ -424,6 +459,18 @@
         }
       }
     },
+    "No focus active" : {
+
+    },
+    "None" : {
+
+    },
+    "OK" : {
+
+    },
+    "Open Focus Settings" : {
+
+    },
     "Open macOS Focus Settings" : {
       "localizations" : {
         "pt-BR" : {
@@ -494,6 +541,9 @@
         }
       }
     },
+    "Outer Spaces integrates with macOS Focus modes. You can control spaces based on your current Focus status." : {
+
+    },
     "Outer Spaces needs accessibility permissions to switch spaces. \n\nPlease go to System Settings → Privacy & Security → Accessibility and enable Outer Spaces.\n\nError: %@" : {
       "localizations" : {
         "pt-BR" : {
@@ -503,6 +553,9 @@
           }
         }
       }
+    },
+    "Permissions" : {
+
     },
     "Preset Name" : {
       "localizations" : {
@@ -524,6 +577,18 @@
         }
       }
     },
+    "Quit Application" : {
+
+    },
+    "Refresh available spaces" : {
+
+    },
+    "Refresh Spaces" : {
+
+    },
+    "Refreshing available spaces..." : {
+
+    },
     "Report an Issue" : {
       "localizations" : {
         "pt-BR" : {
@@ -533,6 +598,12 @@
           }
         }
       }
+    },
+    "Request Focus Authorization" : {
+
+    },
+    "Request Notification Authorization" : {
+
     },
     "Required for switching between spaces" : {
       "localizations" : {
@@ -637,6 +708,7 @@
       }
     },
     "Space" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
@@ -696,6 +768,9 @@
         }
       }
     },
+    "This preset will be applied when no Focus mode is active" : {
+
+    },
     "This will reset all your spaces, focus presets, and settings to default values. This action cannot be undone." : {
       "localizations" : {
         "pt-BR" : {
@@ -705,6 +780,9 @@
           }
         }
       }
+    },
+    "Toggle Stage Manager" : {
+
     },
     "Validate Space Organization" : {
       "localizations" : {

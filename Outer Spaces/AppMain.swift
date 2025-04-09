@@ -1,5 +1,4 @@
 import AppIntents
-import CoreData
 import SettingsAccess
 import SFSafeSymbols
 import Sparkle
@@ -7,30 +6,24 @@ import SwiftUI
 
 @main
 struct OuterSpacesApp: App {
-    let persistenceController = PersistenceController.shared
     @Environment(\.scenePhase) var scenePhase
-    @StateObject var focusViewModel = FocusViewModel()
-    @StateObject var spacesViewModel = SpacesViewModel()
+    @StateObject var focusViewModel = FocusViewModel.shared
+    @StateObject var spacesViewModel = SpacesViewModel.shared
+    @StateObject var focusStatusViewModel = FocusStatusViewModel.shared
 
     var body: some Scene {
         Settings {
-            SettingsView(spacesViewModel: spacesViewModel)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            SettingsView(spacesViewModel: spacesViewModel, focusViewModel: focusViewModel, focusStatusViewModel: focusStatusViewModel)
         }
 
         WindowGroup("How to Use", id: "how-to-use") {
             HowToUseView(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
 
         MenuBarExtra("Outer Spaces", systemImage: SFSymbol.displayAndArrowDown.rawValue) {
-            AppMenuBar(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            AppMenuBar(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel, focusStatusViewModel: focusStatusViewModel)
                 .openSettingsAccess()
         }
         .menuBarExtraStyle(.window)
-        .onChange(of: scenePhase) { _ in
-            persistenceController.save()
-        }
     }
 }
