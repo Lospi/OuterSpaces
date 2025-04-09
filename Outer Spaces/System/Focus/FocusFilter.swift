@@ -13,13 +13,20 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
         spaceFilterPreset.displayRepresentation
     }
 
-    // A custom parameter called Category
+    // A custom parameter called Focus
     @Parameter(title: "Focus Preset", description: "Select Preset")
     var spaceFilterPreset: SpaceAppEntity
 
     func perform() async throws -> some IntentResult {
-        let settingsModel = SettingsModel(focusPresetId: spaceFilterPreset.id)
-        Repository.shared.updateAppDataModelStore(settingsModel)
+        let focus = FocusViewModel.shared.availableFocusPresets.first { $0.id == spaceFilterPreset.id }
+        print("Selected focus: \(focus?.name ?? "None")")
+        do {
+            let _ = try await SettingsViewModel.shared.updateSpacesOnScreen(focus: focus!)
+        }
+        catch {
+            print("Error updating spaces on screen: \(error)")
+        }
+
         return .result()
     }
 }

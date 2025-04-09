@@ -16,6 +16,7 @@ struct Repository {
     func updateAppDataModelStore(_ settings: SettingsModel) {
         let encoder = JSONEncoder()
         do {
+            print("Saving settings: \(settings)")
             let appDataModelEncoded = try encoder.encode(settings)
             Self.suiteUserDefaults.set(appDataModelEncoded, forKey: "AppData")
         } catch {}

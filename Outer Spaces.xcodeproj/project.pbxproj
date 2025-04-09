@@ -23,25 +23,52 @@
 		074EBFA62C13DEE7009A8B23 /* SettingsAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 074EBFA52C13DEE7009A8B23 /* SettingsAccess */; };
 		0752F8AD2BC3043C00DE3349 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0752F8AC2BC3043C00DE3349 /* LaunchAtLogin */; };
 		075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C09C52B543178005AF697 /* PresetTextInputView.swift */; };
+		0764C1052D90F1B5000B6D85 /* PermissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */; };
 		076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED57A2B0EF773005931DB /* SpaceInfoView.swift */; };
 		076ED5852B0FED2D005931DB /* Focus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076ED5842B0FED2D005931DB /* Focus.swift */; };
-		07829F872B1A9C720031F608 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07829F862B1A9C720031F608 /* CoreDataManager.swift */; };
 		07829F892B1AC1CC0031F608 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07829F882B1AC1CC0031F608 /* SettingsView.swift */; };
 		0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC672B143FC500FD7647 /* SettingsViewModel.swift */; };
 		0794FC6A2B143FCE00FD7647 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC692B143FCE00FD7647 /* Settings.swift */; };
 		0794FC6D2B14414500FD7647 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0794FC6C2B14414500FD7647 /* Repository.swift */; };
 		07A626A82B06C64A0013FE80 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07A626A72B06C64A0013FE80 /* Assets.xcassets */; };
 		07A626AB2B06C64A0013FE80 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07A626AA2B06C64A0013FE80 /* Preview Assets.xcassets */; };
+		07C824952D92FE85005C5B48 /* FocusStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C824942D92FE7F005C5B48 /* FocusStatusViewModel.swift */; };
+		07C824972D92FEDC005C5B48 /* DefaultPresetSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C824962D92FED8005C5B48 /* DefaultPresetSettingsView.swift */; };
+		07C824F72D9336D9005C5B48 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C824F62D9336D6005C5B48 /* Buttons.swift */; };
+		07C824FA2D933738005C5B48 /* FocusComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C824F92D933736005C5B48 /* FocusComponents.swift */; };
+		07C824FC2D933764005C5B48 /* SpaceComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C824FB2D933762005C5B48 /* SpaceComponents.swift */; };
+		07C824FE2D93378B005C5B48 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C824FD2D93378A005C5B48 /* Utilities.swift */; };
 		07CD7B942B06C8F200D39387 /* FocusFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD7B932B06C8F200D39387 /* FocusFilter.swift */; };
-		07CD7B972B06C9F600D39387 /* AppEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD7B962B06C9F600D39387 /* AppEntity.swift */; };
+		07CD7B972B06C9F600D39387 /* SpaceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD7B962B06C9F600D39387 /* SpaceEntity.swift */; };
 		07CD7B9B2B06D1F700D39387 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 07CD7B9A2B06D1F700D39387 /* Localizable.xcstrings */; };
 		07E5D0F02B35A68500FE7B77 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5D0EF2B35A68500FE7B77 /* AboutView.swift */; };
 		07F3F5C82B0BD5E300AB00CB /* SpaceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3F5C72B0BD5E300AB00CB /* SpaceStore.swift */; };
-		07F3F5CF2B0C132D00AB00CB /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F3F5CE2B0C132D00AB00CB /* PersistenceController.swift */; };
 		07FEE3302B07B2EA00419E50 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEE32D2B07B2EA00419E50 /* Space.swift */; };
 		07FEE3352B07B2EF00419E50 /* SpaceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEE3332B07B2EF00419E50 /* SpaceObserver.swift */; };
 		07FEE3392B07E53400419E50 /* DesktopSpaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEE3382B07E53400419E50 /* DesktopSpaces.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		07C824C92D930A0C005C5B48 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07C824DE2D930A82005C5B48 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0705A78F2B5241CF005CA574 /* AppleScriptHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptHelper.swift; sourceTree = "<group>"; };
@@ -56,9 +83,9 @@
 		0742F4A42B10447700B95465 /* FocusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusViewModel.swift; sourceTree = "<group>"; };
 		0742F4A62B1191E500B95465 /* SpacesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesViewModel.swift; sourceTree = "<group>"; };
 		075C09C52B543178005AF697 /* PresetTextInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetTextInputView.swift; sourceTree = "<group>"; };
+		0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionHandler.swift; sourceTree = "<group>"; };
 		076ED57A2B0EF773005931DB /* SpaceInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceInfoView.swift; sourceTree = "<group>"; };
 		076ED5842B0FED2D005931DB /* Focus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Focus.swift; sourceTree = "<group>"; };
-		07829F862B1A9C720031F608 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		07829F882B1AC1CC0031F608 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0794FC672B143FC500FD7647 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		0794FC692B143FCE00FD7647 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -67,13 +94,20 @@
 		07A626A72B06C64A0013FE80 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07A626AA2B06C64A0013FE80 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		07A626AC2B06C64A0013FE80 /* Outer_Spaces.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Outer_Spaces.entitlements; sourceTree = "<group>"; };
+		07C824942D92FE7F005C5B48 /* FocusStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusStatusViewModel.swift; sourceTree = "<group>"; };
+		07C824962D92FED8005C5B48 /* DefaultPresetSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPresetSettingsView.swift; sourceTree = "<group>"; };
+		07C824AC2D93074F005C5B48 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
+		07C824B72D93074F005C5B48 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		07C824F62D9336D6005C5B48 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		07C824F92D933736005C5B48 /* FocusComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusComponents.swift; sourceTree = "<group>"; };
+		07C824FB2D933762005C5B48 /* SpaceComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceComponents.swift; sourceTree = "<group>"; };
+		07C824FD2D93378A005C5B48 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		07CD7B932B06C8F200D39387 /* FocusFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusFilter.swift; sourceTree = "<group>"; };
 		07CD7B952B06C91D00D39387 /* Outer-Spaces-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Outer-Spaces-Info.plist"; sourceTree = SOURCE_ROOT; };
-		07CD7B962B06C9F600D39387 /* AppEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEntity.swift; sourceTree = "<group>"; };
+		07CD7B962B06C9F600D39387 /* SpaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceEntity.swift; sourceTree = "<group>"; };
 		07CD7B9A2B06D1F700D39387 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		07E5D0EF2B35A68500FE7B77 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		07F3F5C72B0BD5E300AB00CB /* SpaceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceStore.swift; sourceTree = "<group>"; };
-		07F3F5CE2B0C132D00AB00CB /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		07FEE32D2B07B2EA00419E50 /* Space.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		07FEE3332B07B2EF00419E50 /* SpaceObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceObserver.swift; sourceTree = "<group>"; };
 		07FEE3362B07B3C600419E50 /* OuterSpaces-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OuterSpaces-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -98,6 +132,7 @@
 		0705A78E2B5241C3005CA574 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */,
 				0705A78F2B5241CF005CA574 /* AppleScriptHelper.swift */,
 			);
 			path = Helper;
@@ -106,6 +141,8 @@
 		0731007D2B73F2AB00F3D630 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				07C824AC2D93074F005C5B48 /* Intents.framework */,
+				07C824B72D93074F005C5B48 /* IntentsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -121,19 +158,12 @@
 		0742F4A32B10445A00B95465 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				07C824942D92FE7F005C5B48 /* FocusStatusViewModel.swift */,
 				0742F4A42B10447700B95465 /* FocusViewModel.swift */,
 				0742F4A62B1191E500B95465 /* SpacesViewModel.swift */,
 				0794FC672B143FC500FD7647 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		07829F852B1A9C670031F608 /* Manager */ = {
-			isa = PBXGroup;
-			children = (
-				07829F862B1A9C720031F608 /* CoreDataManager.swift */,
-			);
-			path = Manager;
 			sourceTree = "<group>";
 		};
 		0794FC6B2B14413A00FD7647 /* Repository */ = {
@@ -164,7 +194,6 @@
 		07A626A22B06C6480013FE80 /* Outer Spaces */ = {
 			isa = PBXGroup;
 			children = (
-				07829F852B1A9C670031F608 /* Manager */,
 				0794FC6B2B14413A00FD7647 /* Repository */,
 				0742F4A32B10445A00B95465 /* ViewModel */,
 				07FEE3372B07B8ED00419E50 /* Model */,
@@ -189,6 +218,17 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		07C824F82D9336DC005C5B48 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				07C824FD2D93378A005C5B48 /* Utilities.swift */,
+				07C824FB2D933762005C5B48 /* SpaceComponents.swift */,
+				07C824F92D933736005C5B48 /* FocusComponents.swift */,
+				07C824F62D9336D6005C5B48 /* Buttons.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		07CD7B912B06C8D300D39387 /* System */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,7 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				07CD7B932B06C8F200D39387 /* FocusFilter.swift */,
-				07CD7B962B06C9F600D39387 /* AppEntity.swift */,
+				07CD7B962B06C9F600D39387 /* SpaceEntity.swift */,
 			);
 			path = Focus;
 			sourceTree = "<group>";
@@ -213,6 +253,7 @@
 		07E5D0EA2B359B5D00FE7B77 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				07C824962D92FED8005C5B48 /* DefaultPresetSettingsView.swift */,
 				07E5D0EF2B35A68500FE7B77 /* AboutView.swift */,
 				073100792B674C9C00F3D630 /* UpdateView.swift */,
 				0731007B2B72BBA500F3D630 /* HowToUseView.swift */,
@@ -224,7 +265,6 @@
 			isa = PBXGroup;
 			children = (
 				07F3F5C72B0BD5E300AB00CB /* SpaceStore.swift */,
-				07F3F5CE2B0C132D00AB00CB /* PersistenceController.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -232,6 +272,7 @@
 		07FEE3152B07AF5C00419E50 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				07C824F82D9336DC005C5B48 /* Core */,
 				07E5D0EA2B359B5D00FE7B77 /* Settings */,
 				0715DE502B0AAB1600A6E46C /* AppMenuBar.swift */,
 				076ED57A2B0EF773005931DB /* SpaceInfoView.swift */,
@@ -265,6 +306,8 @@
 				07A6269C2B06C6480013FE80 /* Sources */,
 				07A6269D2B06C6480013FE80 /* Frameworks */,
 				07A6269E2B06C6480013FE80 /* Resources */,
+				07C824C92D930A0C005C5B48 /* CopyFiles */,
+				07C824DE2D930A82005C5B48 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -288,7 +331,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					07A6269F2B06C6480013FE80 = {
@@ -340,23 +383,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				076ED5852B0FED2D005931DB /* Focus.swift in Sources */,
+				07C824952D92FE85005C5B48 /* FocusStatusViewModel.swift in Sources */,
 				073BE5962B07AD3700B23112 /* AppMain.swift in Sources */,
 				0742F4A22B1037FD00B95465 /* DisplaySpacesView.swift in Sources */,
-				07CD7B972B06C9F600D39387 /* AppEntity.swift in Sources */,
+				07C824972D92FEDC005C5B48 /* DefaultPresetSettingsView.swift in Sources */,
+				07CD7B972B06C9F600D39387 /* SpaceEntity.swift in Sources */,
+				07C824FC2D933764005C5B48 /* SpaceComponents.swift in Sources */,
 				0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */,
 				07FEE3352B07B2EF00419E50 /* SpaceObserver.swift in Sources */,
 				0794FC6A2B143FCE00FD7647 /* Settings.swift in Sources */,
+				07C824FE2D93378B005C5B48 /* Utilities.swift in Sources */,
 				0731007A2B674C9C00F3D630 /* UpdateView.swift in Sources */,
+				07C824F72D9336D9005C5B48 /* Buttons.swift in Sources */,
 				0726DAB62B8FC989007A0BE6 /* User.swift in Sources */,
 				0705A7902B5241CF005CA574 /* AppleScriptHelper.swift in Sources */,
-				07F3F5CF2B0C132D00AB00CB /* PersistenceController.swift in Sources */,
 				076ED57B2B0EF773005931DB /* SpaceInfoView.swift in Sources */,
 				0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */,
+				0764C1052D90F1B5000B6D85 /* PermissionHandler.swift in Sources */,
 				07417FFA2B5F084500B26423 /* SparkleUpdater.swift in Sources */,
 				07F3F5C82B0BD5E300AB00CB /* SpaceStore.swift in Sources */,
 				0794FC6D2B14414500FD7647 /* Repository.swift in Sources */,
 				0742F49E2B0FFC8700B95465 /* OuterSpace.xcdatamodeld in Sources */,
 				075C09C62B543178005AF697 /* PresetTextInputView.swift in Sources */,
+				07C824FA2D933738005C5B48 /* FocusComponents.swift in Sources */,
 				0742F4A52B10447700B95465 /* FocusViewModel.swift in Sources */,
 				07E5D0F02B35A68500FE7B77 /* AboutView.swift in Sources */,
 				07829F892B1AC1CC0031F608 /* SettingsView.swift in Sources */,
@@ -364,7 +413,6 @@
 				07FEE3302B07B2EA00419E50 /* Space.swift in Sources */,
 				07CD7B942B06C8F200D39387 /* FocusFilter.swift in Sources */,
 				0715DE512B0AAB1600A6E46C /* AppMenuBar.swift in Sources */,
-				07829F872B1A9C720031F608 /* CoreDataManager.swift in Sources */,
 				07FEE3392B07E53400419E50 /* DesktopSpaces.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,7 +558,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Outer Spaces/Preview Content\"";
@@ -528,12 +576,13 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This application requires AppleEvents to switch Spaces";
+				INFOPLIST_KEY_NSFocusStatusUsageDescription = "This app uses focus status to set default focus presets";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 2.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -553,7 +602,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Outer Spaces/Preview Content\"";
 				DEVELOPMENT_TEAM = D8A3VX836S;
@@ -570,12 +619,13 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "This application requires AppleEvents to switch Spaces";
+				INFOPLIST_KEY_NSFocusStatusUsageDescription = "This app uses focus status to set default focus presets";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 2.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -12,13 +12,17 @@ struct SpaceAppEntity: AppEntity {
         )
     }
 
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Space"
+    static var typeDisplayRepresentation: TypeDisplayRepresentation {
+        TypeDisplayRepresentation(
+            name: .init(stringLiteral: "Focus Preset"),
+        )
+    }
 
     static var defaultQuery = SpaceAppEntityQuery()
 }
 
 struct SpaceAppEntityQuery: EntityQuery {
-    static var entities: [SpaceAppEntity] = FocusManager.loadFocusModels().map {
+    static var entities: [SpaceAppEntity] = FocusViewModel.shared.availableFocusPresets.map {
         SpaceAppEntity(id: $0.id, title: $0.name)
     }
 

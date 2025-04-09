@@ -1,6 +1,25 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
+    "(%@)" : {
+
+    },
+    "%lld" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        }
+      }
+    },
+    "%lld Spaces" : {
+
+    },
     "1. Open the app and fetch the current available spaces (Desktops) (Only required on the first time or when new spaces are added)" : {
       "localizations" : {
         "pt-BR" : {
@@ -71,12 +90,63 @@
         }
       }
     },
-    "About" : {
+    "About Outer Spaces" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sobre"
+            "value" : "Sobre Outer Spaces"
+          }
+        }
+      }
+    },
+    "Accessibility" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acessibilidade"
+          }
+        }
+      }
+    },
+    "Accessibility permission needed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necessária permissão de Acessibilidade"
+          }
+        }
+      }
+    },
+    "Accessibility Permission Required" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necessária permissão de Acessibilidade"
+          }
+        }
+      }
+    },
+    "Auto-switch spaces with Focus modes" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trocar automaticamente spaces com Modo Foco"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
           }
         }
       }
@@ -91,6 +161,26 @@
         }
       }
     },
+    "Close" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
+          }
+        }
+      }
+    },
+    "Configure macOS Keyboard Shortcuts" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurar atalhos de teclado do macOS"
+          }
+        }
+      }
+    },
     "Contact: admin@lospi.dev" : {
       "localizations" : {
         "pt-BR" : {
@@ -101,12 +191,74 @@
         }
       }
     },
+    "Create" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar"
+          }
+        }
+      }
+    },
+    "Create New Focus Preset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar novo padrão de foco"
+          }
+        }
+      }
+    },
+    "Create New Preset" : {
+
+    },
+    "Current Status:" : {
+
+    },
+    "Debug Mode" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modo Debug"
+          }
+        }
+      }
+    },
+    "Default Preset" : {
+
+    },
+    "Delete Focus Preset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deletar padrão de foco"
+          }
+        }
+      }
+    },
+    "Delete Preset" : {
+
+    },
     "Developed by Lospi" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desenvolvido por Lospi"
+          }
+        }
+      }
+    },
+    "Disabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desabilitado"
           }
         }
       }
@@ -121,15 +273,121 @@
         }
       }
     },
-    "Error" : {
+    "Done" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro"
+            "value" : "Finalizado"
           }
         }
       }
+    },
+    "Done Editing" : {
+
+    },
+    "Edit Preset" : {
+
+    },
+    "Editing \"%@\" - Select spaces to include" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editando “%@” - Selecione os spaces a serem inclusos"
+          }
+        }
+      }
+    },
+    "Enable" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilitar"
+          }
+        }
+      }
+    },
+    "Enable Logging" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilitar registros"
+          }
+        }
+      }
+    },
+    "Enable Stage Manager" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilitar Organizador Visual"
+          }
+        }
+      }
+    },
+    "Enable/Disable Stage Manager" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilitar/Desabilitar Organizador Visual"
+          }
+        }
+      }
+    },
+    "Enabled" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Habilitado"
+          }
+        }
+      }
+    },
+    "Export Diagnostics" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exportar Diagnóstico"
+          }
+        }
+      }
+    },
+    "Fix" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrigir"
+          }
+        }
+      }
+    },
+    "Fix Issues" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrigir Problemas"
+          }
+        }
+      }
+    },
+    "Focus active" : {
+
+    },
+    "Focus mode active" : {
+
+    },
+    "Focus Mode Integration" : {
+
     },
     "Focus Preset" : {
       "localizations" : {
@@ -201,12 +459,44 @@
         }
       }
     },
+    "No focus active" : {
+
+    },
+    "None" : {
+
+    },
     "OK" : {
+
+    },
+    "Open Focus Settings" : {
+
+    },
+    "Open macOS Focus Settings" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "Abrir configurações de Foco no macOS"
+          }
+        }
+      }
+    },
+    "Open macOS Keyboard Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir configurações de teclado no macOS"
+          }
+        }
+      }
+    },
+    "Open Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ajustes"
           }
         }
       }
@@ -221,6 +511,16 @@
         }
       }
     },
+    "Open YouTube Tutorial" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir tutorial no YouTube"
+          }
+        }
+      }
+    },
     "Outer Spaces" : {
       "localizations" : {
         "pt-BR" : {
@@ -231,22 +531,126 @@
         }
       }
     },
-    "Privacy and Security" : {
+    "Outer Spaces helps you organize your Mac's desktop spaces with Focus modes, allowing for automatic workspace transitions based on your current activity." : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Privacidade e Segurança"
+            "value" : "Outer Spaces ajuda você a organizar suas mesas do Mac com Modos de Foco, permitindo a troca automática da sua área de trabalho na troca de foco"
           }
         }
       }
     },
-    "Refresh Available Spaces" : {
+    "Outer Spaces integrates with macOS Focus modes. You can control spaces based on your current Focus status." : {
+
+    },
+    "Outer Spaces needs accessibility permissions to switch spaces. \n\nPlease go to System Settings → Privacy & Security → Accessibility and enable Outer Spaces.\n\nError: %@" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atualizar Mesas Disponíveis"
+            "value" : "Outer Spaces requer permissões de Acessibilidade para trocar Spaces.\n\nVá para Ajustes do Sistema → Privacidade e Segurança → Acessibilidade e habilite Outer Spaces.\n\nErro: %@"
+          }
+        }
+      }
+    },
+    "Permissions" : {
+
+    },
+    "Preset Name" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome do padrão"
+          }
+        }
+      }
+    },
+    "Preview" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prévia"
+          }
+        }
+      }
+    },
+    "Quit Application" : {
+
+    },
+    "Refresh available spaces" : {
+
+    },
+    "Refresh Spaces" : {
+
+    },
+    "Refreshing available spaces..." : {
+
+    },
+    "Report an Issue" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reportar problema"
+          }
+        }
+      }
+    },
+    "Request Focus Authorization" : {
+
+    },
+    "Request Notification Authorization" : {
+
+    },
+    "Required for switching between spaces" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necessário para trocar spaces"
+          }
+        }
+      }
+    },
+    "Reset" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir"
+          }
+        }
+      }
+    },
+    "Reset All Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir todas as configurações"
+          }
+        }
+      }
+    },
+    "Reset all settings, spaces, and focus presets to default values." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir todas as configurações, Spaces, e padrões de foco para os valores padrão."
+          }
+        }
+      }
+    },
+    "Reset Outer Spaces?" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir Outer Spaces"
           }
         }
       }
@@ -293,22 +697,33 @@
         }
       }
     },
-    "Shortcuts" : {
+    "Show Space Numbers" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atalhos"
+            "value" : "Mostrar número dos Spaces"
           }
         }
       }
     },
     "Space" : {
+      "extractionState" : "stale",
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mesa"
+          }
+        }
+      }
+    },
+    "Space %lld" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Space %lld"
           }
         }
       }
@@ -323,12 +738,78 @@
         }
       }
     },
+    "Support" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suporte"
+          }
+        }
+      }
+    },
+    "System Shortcuts" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atalhos do Sistema"
+          }
+        }
+      }
+    },
+    "These shortcuts help you use Outer Spaces effectively. Make sure to enable space switching shortcuts in macOS System Settings." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esses atalhos ajudam você a usar Outer Spaces corretamente. Certifique-se de habilitar o atalho de troca de spaces nas configurações de sistema do seu macOS."
+          }
+        }
+      }
+    },
+    "This preset will be applied when no Focus mode is active" : {
+
+    },
+    "This will reset all your spaces, focus presets, and settings to default values. This action cannot be undone." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isso irá redefinir todos seus spaces, padrões de foco, e configurações para os valores padrão. Essa ação não pode ser desfeita"
+          }
+        }
+      }
+    },
+    "Toggle Stage Manager" : {
+
+    },
+    "Validate Space Organization" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Validar organização dos Spaces"
+          }
+        }
+      }
+    },
     "Version %@" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versão %@"
+          }
+        }
+      }
+    },
+    "View Documentation" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizar Documentação"
           }
         }
       }
