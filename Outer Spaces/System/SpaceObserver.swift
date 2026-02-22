@@ -69,23 +69,25 @@ class SpaceObserver: ObservableObject {
                 
                 // Process all spaces for this display
                 var spacesForDisplay: [Space] = []
-                
-                for (spaceIndex, spaceInfo) in spaces.enumerated() {
+                var regularSpaceIndex = 0
+
+                for spaceInfo in spaces {
                     // Skip spaces that aren't regular desktop spaces (like fullscreen apps)
                     guard let type = spaceInfo["type"] as? Int, type == 0,
                           let spaceID = spaceInfo["ManagedSpaceID"] as? Int
                     else {
                         continue
                     }
-                    
+
                     // Create the space object with display-specific indexing
                     let space = Space(
                         displayID: displayID,
                         displayIndex: displayIndex + 1, // 1-based for UI
                         spaceID: String(spaceID),
-                        spaceIndex: spaceIndex,
+                        spaceIndex: regularSpaceIndex,
                         isActive: spaceID == activeSpaceID
                     )
+                    regularSpaceIndex += 1
                     
                     spacesForDisplay.append(space)
                     allSpacesList.append(space)

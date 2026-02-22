@@ -24,6 +24,7 @@ enum SpaceSwitchResult {
 }
 
 // Changed from struct to class to avoid mutability issues
+@MainActor
 class SettingsViewModel {
     var selectedFocusPresetId: UUID?
     var errorMessage: String?
@@ -89,7 +90,7 @@ class SettingsViewModel {
         for space in focus.spaces {
             print(space.spaceIndex)
             let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(
-                index: space.spaceIndex * space.displayIndex,
+                index: space.spaceIndex,
                 stageManager: focus.stageManager,
                 shouldAffectStage: true
             )
@@ -108,7 +109,7 @@ class SettingsViewModel {
             
             if error == nil {
                 // Success case
-                print("Script executed successfully for space \(space.spaceIndex * space.displayIndex).")
+                print("Script executed successfully for space \(space.spaceIndex).")
             } else {
                 // Error case
                 if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
