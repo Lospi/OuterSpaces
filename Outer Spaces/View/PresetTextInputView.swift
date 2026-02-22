@@ -15,8 +15,8 @@ struct PresetTextInputView: View {
                         Focus(name: newPresetName, spaces: [], stageManager: hasStageManager)
                     )
 
-                    // Also save to UserDefaults via FocusManager
-                    FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
+                    // Persist to UserDefaults
+                    focusViewModel.saveFocusPresets()
 
                     // Reset UI state
                     focusViewModel.creatingPreset.toggle()

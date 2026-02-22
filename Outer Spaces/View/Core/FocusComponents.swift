@@ -139,7 +139,5 @@ struct NewPresetSheet: View {
         let newPreset = Focus(name: presetName, spaces: [], stageManager: hasStageManager)
         focusViewModel.availableFocusPresets.append(newPreset)
         focusViewModel.saveFocusPresets()
-        // Also update user defaults
-        FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
     }
 }
