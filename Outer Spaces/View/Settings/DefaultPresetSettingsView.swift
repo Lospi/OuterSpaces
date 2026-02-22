@@ -1,6 +1,4 @@
-import SwiftUI
-import UserNotifications
-
+import Intents
 import SwiftUI
 import UserNotifications
 
@@ -109,8 +107,10 @@ struct DefaultPresetSettingsView: View {
             }
         }
         .onAppear {
-            // Request focus authorization when the view appears
-            focusStatusViewModel.requestFocusAuthorization()
+            // Request focus authorization when the view appears (only if not already authorized)
+            if INFocusStatusCenter.default.authorizationStatus != .authorized {
+                focusStatusViewModel.requestFocusAuthorization()
+            }
             
             // Load saved default preset ID
             if let savedIDString = UserDefaults.standard.string(forKey: "DefaultPresetID"),

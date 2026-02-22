@@ -11,6 +11,7 @@ enum PermissionErrorType {
 }
 
 // This class handles checking and requesting accessibility permissions
+@MainActor
 class PermissionHandler: ObservableObject {
     @Published var hasAccessibilityPermission = false
     @Published var showingPermissionAlert = false

@@ -29,11 +29,6 @@ enum OperationStatus {
     }
 }
 
-import AppIntents
-import SettingsAccess
-import SFSafeSymbols
-import SwiftUI
-
 struct AppMenuBar: View {
     // MARK: - Environment & Storage
 
@@ -232,7 +227,6 @@ struct AppMenuBar: View {
                             set: { _ in
                                 withAnimation {
                                     focusViewModel.toggleFocusStageManager()
-                                    syncFocusPresets()
                                 }
                             }
                         )) {
@@ -257,7 +251,6 @@ struct AppMenuBar: View {
                         Button {
                             withAnimation {
                                 focusViewModel.deleteFocusPreset(focusPreset: selectedPreset)
-                                syncFocusPresets()
                             }
                         } label: {
                             Image(systemSymbol: .trashCircle)
@@ -366,25 +359,16 @@ struct AppMenuBar: View {
             }
             #endif
                 
-            DispatchQueue.main.async {
-                isRefreshing = false
-            }
+            isRefreshing = false
         }
     }
         
     private func handleSpaceError(_ message: String) {
-        DispatchQueue.main.async {
-            self.errorState = ErrorState(
-                title: "Space Switching Error",
-                message: "Please ensure Outer Spaces has the necessary permissions: \(message)",
-                isPermissionIssue: message.contains("permission") || message.contains("System Events")
-            )
-        }
-    }
-        
-    private func syncFocusPresets() {
-        // Also update user defaults
-        FocusManager.saveFocusModels(focusViewModel.availableFocusPresets)
+        errorState = ErrorState(
+            title: "Space Switching Error",
+            message: "Please ensure Outer Spaces has the necessary permissions: \(message)",
+            isPermissionIssue: message.contains("permission") || message.contains("System Events")
+        )
     }
         
     private func previousDisplaySpacesCount(forIndex index: Int) -> Int {
@@ -394,18 +378,6 @@ struct AppMenuBar: View {
             
         return (0 ..< index).reduce(0) { count, i in
             count + spacesViewModel.desktopSpaces[i].desktopSpaces.count
-        }
-    }
-        
-    private func applySelectedPreset() {
-        guard let selectedPreset = focusViewModel.selectedFocusPreset else { return }
-            
-        // Create settings model with the selected preset's ID
-        let settingsModel = SettingsModel(focusPresetId: selectedPreset.id)
-            
-        // Encode and update app data
-        if let encodedData = try? JSONEncoder().encode(settingsModel) {
-            appData = encodedData
         }
     }
         

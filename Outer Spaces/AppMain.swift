@@ -6,10 +6,9 @@ import SwiftUI
 
 @main
 struct OuterSpacesApp: App {
-    @Environment(\.scenePhase) var scenePhase
-    @StateObject var focusViewModel = FocusViewModel.shared
-    @StateObject var spacesViewModel = SpacesViewModel.shared
-    @StateObject var focusStatusViewModel = FocusStatusViewModel.shared
+    @ObservedObject var focusViewModel = FocusViewModel.shared
+    @ObservedObject var spacesViewModel = SpacesViewModel.shared
+    @ObservedObject var focusStatusViewModel = FocusStatusViewModel.shared
 
     var body: some Scene {
         Settings {
