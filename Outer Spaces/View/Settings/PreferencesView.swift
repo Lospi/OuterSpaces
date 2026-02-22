@@ -18,14 +18,8 @@ struct PreferencesView: View {
             Button("Open Keyboard Settings") {
                 NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.keyboard?Shortcuts")!)
             }
-            .onDrag {
-                NSItemProvider()
-            }
             Button("Open Privacy and Security Settings") {
                 NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension")!)
-            }
-            .onDrag {
-                NSItemProvider()
             }
         }
 

@@ -2,7 +2,6 @@ import AppKit // For NSUserNotification
 import LaunchAtLogin
 import SFSafeSymbols
 import Sparkle
-import StoreKit
 import SwiftUI
 import UniformTypeIdentifiers // For UTType
 import UserNotifications // For UNUserNotificationCenter
@@ -14,9 +13,6 @@ struct SettingsView: View {
     @ObservedObject var focusStatusViewModel: FocusStatusViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.openWindow) var openWindow
-    @AppStorage("showSpaceNumbers") private var showSpaceNumbers = true
-    @AppStorage("autoSwitchSpaces") private var autoSwitchSpaces = true
-    @AppStorage("useTrayMenuBar") private var useTrayMenuBar = true
     @State private var isDisplayingShortcutsPanel = false
     @State private var showResetConfirmation = false
     @State private var activeTab = "general"
@@ -56,13 +52,9 @@ struct SettingsView: View {
                             isDisplayingShortcutsPanel: $isDisplayingShortcutsPanel
                         )
                     case "appearance":
-                        AppearanceSettingsView(
-                            showSpaceNumbers: $showSpaceNumbers,
-                            useTrayMenuBar: $useTrayMenuBar
-                        )
+                        AppearanceSettingsView()
                     case "advanced":
                         AdvancedSettingsView(
-                            autoSwitchSpaces: $autoSwitchSpaces,
                             showResetConfirmation: $showResetConfirmation,
                             spacesViewModel: spacesViewModel,
                             focusViewModel: focusViewModel,
@@ -117,11 +109,7 @@ struct SettingsView: View {
         if let bundleID = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundleID)
         }
-        
-        // Reset app storage values
-        showSpaceNumbers = true
-        autoSwitchSpaces = true
-        useTrayMenuBar = true
+        Repository.suiteUserDefaults.removePersistentDomain(forName: "dev.Lospi.OuterSpaces")
         
         // Refresh spaces
         Task {
@@ -227,24 +215,14 @@ struct GeneralSettingsView: View {
 // MARK: - Appearance Settings View
 
 struct AppearanceSettingsView: View {
-    @Binding var showSpaceNumbers: Bool
-    @Binding var useTrayMenuBar: Bool
-    @State private var useCustomAppIcon = false
-    @State private var selectedIconIndex = 0
-    
-    let appIcons = ["Default", "Minimal", "Colorful", "Dark"]
-    
     var body: some View {
         SettingsSection(title: "Spaces") {
-            Toggle("Show Space Numbers", isOn: $showSpaceNumbers)
-                .toggleStyle(SwitchToggleStyle())
-            
             // Custom space layout preview
             VStack(alignment: .leading, spacing: 8) {
                 Text("Preview")
                     .font(.caption)
                     .foregroundColor(.secondary)
-                
+
                 HStack(spacing: 12) {
                     ForEach(1 ... 4, id: \.self) { index in
                         VStack(spacing: 4) {
@@ -252,10 +230,10 @@ struct AppearanceSettingsView: View {
                                 .fill(Color.secondary.opacity(0.2))
                                 .frame(width: 44, height: 36)
                                 .overlay(
-                                    Text(showSpaceNumbers ? "\(index)" : "")
+                                    Text("\(index)")
                                         .foregroundColor(.primary)
                                 )
-                            
+
                             Text("Space \(index)")
                                 .font(.caption)
                                 .lineLimit(1)
@@ -273,21 +251,16 @@ struct AppearanceSettingsView: View {
 // MARK: - Advanced Settings View
 
 struct AdvancedSettingsView: View {
-    @Binding var autoSwitchSpaces: Bool
     @Binding var showResetConfirmation: Bool
     @ObservedObject var spacesViewModel: SpacesViewModel
     @ObservedObject var focusViewModel: FocusViewModel
     @ObservedObject var focusStatusViewModel: FocusStatusViewModel
     var managedObjectContext: NSManagedObjectContext
-    @State private var loggingEnabled = false
     @State private var debugMode = false
     @State private var validationResult: (success: Bool, message: String)? = nil
         
     var body: some View {
         SettingsSection(title: "Behavior") {
-            Toggle("Auto-switch spaces with Focus modes", isOn: $autoSwitchSpaces)
-                .toggleStyle(SwitchToggleStyle())
-                
             Button("Validate Space Organization") {
                 validateSpaces()
             }
@@ -338,9 +311,6 @@ struct AdvancedSettingsView: View {
         }
             
         SettingsSection(title: "Debugging") {
-            Toggle("Enable Logging", isOn: $loggingEnabled)
-                .toggleStyle(SwitchToggleStyle())
-                
             Toggle("Debug Mode", isOn: $debugMode)
                 .toggleStyle(SwitchToggleStyle())
                 

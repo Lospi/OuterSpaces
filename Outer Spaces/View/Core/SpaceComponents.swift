@@ -43,16 +43,12 @@ struct DisplayCard: View {
 }
 
 struct SpaceCard: View {
-    @State var space: Space
+    let space: Space
     var index: Int
     @ObservedObject var focusViewModel: FocusViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
     @Binding var isEditingSpace: Bool
     var onError: (String) -> Void
-    
-    @State private var isHovering = false
-    @State private var isSelected = false
-    @State private var customName = ""
     
     var body: some View {
         VStack(spacing: 4) {
