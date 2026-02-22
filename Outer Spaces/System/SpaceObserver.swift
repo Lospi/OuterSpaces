@@ -3,12 +3,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-// Protocol for space observation updates
-protocol SpaceObserverDelegate: AnyObject {
-    func didUpdateSpaces(spaces: [Space])
-}
-
-// A more robust space observer with better error handling and optimization
+// Space observer with macOS private API integration
 // Note: This uses Swift concurrency, so the app's deployment target should be iOS 15+ or macOS 12+
 class SpaceObserver: ObservableObject {
     private let workspace = NSWorkspace.shared
@@ -128,32 +123,5 @@ class SpaceObserver: ObservableObject {
             ])
         }
         return displays
-    }
-}
-
-// Simple logging utility
-class Logger {
-    static let shared = Logger()
-    
-    private init() {}
-    
-    func logInfo(_ message: String) {
-        log(level: "INFO", message: message)
-    }
-    
-    func logError(_ message: String) {
-        log(level: "ERROR", message: message)
-    }
-    
-    func logWarning(_ message: String) {
-        log(level: "WARNING", message: message)
-    }
-    
-    private func log(level: String, message: String) {
-        #if DEBUG
-        print("[\(level)] \(Date()): \(message)")
-        #endif
-        
-        // Could also write to file or send to crash reporting service
     }
 }

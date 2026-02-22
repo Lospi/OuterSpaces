@@ -23,7 +23,7 @@ class SpacesViewModel: ObservableObject {
     func updateSystemSpaces() async -> Bool {
         await spaceObserver.updateSpaceInformation()
 
-        let shouldUpdate = !allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.id == $1.id })
+        let shouldUpdate = !allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.spaceID == $1.spaceID })
             || allSpaces.isEmpty
 
         if shouldUpdate {
@@ -36,7 +36,7 @@ class SpacesViewModel: ObservableObject {
 
     func loadSpaces() {
         let defaults = UserDefaults.standard
-        if let savedData = defaults.data(forKey: "AvailableSpaces") {
+        if let savedData = defaults.data(forKey: Constants.StorageKeys.availableSpaces) {
             let decoder = JSONDecoder()
             do {
                 allSpaces = try decoder.decode([Space].self, from: savedData)
@@ -59,7 +59,7 @@ class SpacesViewModel: ObservableObject {
         do {
             let encodedData = try encoder.encode(allSpaces)
             let defaults = UserDefaults.standard
-            defaults.set(encodedData, forKey: "AvailableSpaces")
+            defaults.set(encodedData, forKey: Constants.StorageKeys.availableSpaces)
         } catch {
             Logger.shared.logError("Error encoding spaces: \(error)")
         }

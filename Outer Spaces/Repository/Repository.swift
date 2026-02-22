@@ -8,5 +8,5 @@
 import Foundation
 
 struct Repository {
-    static var suiteUserDefaults: UserDefaults = UserDefaults(suiteName: "dev.Lospi.OuterSpaces") ?? .standard
+    static let suiteUserDefaults: UserDefaults = UserDefaults(suiteName: Constants.StorageKeys.suiteName) ?? .standard
 }

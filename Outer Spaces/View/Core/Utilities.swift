@@ -14,21 +14,21 @@ struct EmptyStateView: View {
     var subtitle: String
     var buttonTitle: String
     var action: () -> Void
-    
+
     var body: some View {
         VStack(spacing: 16) {
             Image(systemSymbol: icon)
                 .font(.system(size: 40))
-                .foregroundColor(.secondary)
-            
+                .foregroundStyle(.secondary)
+
             Text(title)
                 .font(.headline)
-            
+
             Text(subtitle)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-            
+
             Button(action: action) {
                 Text(buttonTitle)
                     .padding(.horizontal, 16)
@@ -42,34 +42,33 @@ struct EmptyStateView: View {
 }
 
 struct SuccessAnimationView: View {
-    @State private var scale: CGFloat = 0.5
     @State private var opacity: CGFloat = 0
-    
+
     var body: some View {
-        ZStack {
-            Color.black.opacity(0.3)
-                .edgesIgnoringSafeArea(.all)
-            
-            Circle()
-                .fill(Color.green)
-                .frame(width: 80, height: 80)
-                .overlay(
-                    Image(systemSymbol: .checkmark)
-                        .font(.system(size: 40, weight: .bold))
-                        .foregroundColor(.white)
-                )
-                .scaleEffect(scale)
-                .opacity(opacity)
+        VStack {
+            Spacer()
+
+            HStack(spacing: 8) {
+                Image(systemSymbol: .checkmarkCircleFill)
+                    .foregroundStyle(.green)
+                Text("Spaces updated")
+                    .font(.callout.weight(.medium))
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .opacity(opacity)
         }
+        .padding(.bottom, 8)
+        .allowsHitTesting(false)
         .onAppear {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                scale = 1.0
+            withAnimation(.easeIn(duration: 0.2)) {
                 opacity = 1.0
             }
-            
-            // Auto-dismiss after delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                withAnimation(.easeOut(duration: 0.2)) {
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                withAnimation(.easeOut(duration: 0.3)) {
                     opacity = 0
                 }
             }

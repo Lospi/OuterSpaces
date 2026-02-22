@@ -15,4 +15,10 @@ enum Constants {
         static let website = URL(string: "https://github.com/Lospi/OuterSpaces")!
     }
 
+    enum StorageKeys {
+        static let defaultPresetID = "DefaultPresetID"
+        static let focusPresets = "FocusPresets"
+        static let availableSpaces = "AvailableSpaces"
+        static let suiteName = "dev.Lospi.OuterSpaces"
+    }
 }

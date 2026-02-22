@@ -6,7 +6,6 @@
 //
 
 import Intents
-import IntentsUI
 import SwiftUI
 
 @MainActor

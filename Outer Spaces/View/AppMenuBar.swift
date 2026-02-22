@@ -3,39 +3,12 @@ import SettingsAccess
 import SFSafeSymbols
 import SwiftUI
 
-// Status enum for operations
-enum OperationStatus {
-    case idle
-    case loading
-    case success
-    case error(String)
-
-    var icon: SFSymbol {
-        switch self {
-        case .idle: return .circleFill
-        case .loading: return .clockFill
-        case .success: return .checkmarkCircleFill
-        case .error: return .exclamationmarkCircleFill
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .idle: return .gray
-        case .loading: return .blue
-        case .success: return .green
-        case .error: return .red
-        }
-    }
-}
-
 struct AppMenuBar: View {
     // MARK: - Environment & Storage
 
     @AppStorage("AppData", store: Repository.suiteUserDefaults)
     private var appData: Data = .init()
-        
-    @Environment(\.managedObjectContext) private var managedObjectContext
+
     @Environment(\.openSettings) private var openSettings
     @Environment(\.colorScheme) private var colorScheme
         
@@ -47,11 +20,12 @@ struct AppMenuBar: View {
         
     // MARK: - State
 
-    @State private var settingsViewModel = SettingsViewModel()
+    private let settingsViewModel = SettingsViewModel.shared
     @State private var errorState: ErrorState?
     @State private var isRefreshing = false
     @State private var showNewPresetSheet = false
     @State private var showSuccessAnimation = false
+    @State private var showDeleteConfirmation = false
         
     // MARK: - Constants
 
@@ -76,10 +50,23 @@ struct AppMenuBar: View {
             .sheet(isPresented: $showNewPresetSheet) {
                 NewPresetSheet(
                     focusViewModel: focusViewModel,
-                    managedObjectContext: managedObjectContext,
                     onDismiss: { showNewPresetSheet = false }
                 )
-                .frame(width: 200, height: 250)
+                .frame(width: 280, height: 220)
+            }
+            .alert("Delete Preset?", isPresented: $showDeleteConfirmation) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete", role: .destructive) {
+                    if let preset = focusViewModel.selectedFocusPreset {
+                        withAnimation {
+                            focusViewModel.deleteFocusPreset(focusPreset: preset)
+                        }
+                    }
+                }
+            } message: {
+                if let name = focusViewModel.selectedFocusPreset?.name {
+                    Text("Are you sure you want to delete \"\(name)\"? This action cannot be undone.")
+                }
             }
             .overlay {
                 if showSuccessAnimation {
@@ -92,9 +79,7 @@ struct AppMenuBar: View {
                 }
             }
             .onAppear {
-                Task {
-                    onAppear()
-                }
+                refreshSpaces()
             }
             .padding()
     }
@@ -122,6 +107,7 @@ struct AppMenuBar: View {
             }
         }
         .frame(width: 400)
+        .frame(maxHeight: 500)
     }
         
     private var headerBar: some View {
@@ -149,7 +135,7 @@ struct AppMenuBar: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
             .background(Color.secondary.opacity(0.1))
-            .cornerRadius(8)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(PlainButtonStyle())
         .disabled(isRefreshing)
@@ -176,13 +162,16 @@ struct AppMenuBar: View {
             }
             .buttonStyle(PlainButtonStyle())
             .help("Open Settings")
-                
+
+            Divider()
+                .frame(height: 16)
+
             Button {
                 NSApplication.shared.terminate(nil)
             } label: {
                 Image(systemSymbol: .power)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(.red.opacity(0.8))
+                    .foregroundStyle(.red.opacity(0.8))
             }
             .buttonStyle(PlainButtonStyle())
             .help("Quit Application")
@@ -198,13 +187,13 @@ struct AppMenuBar: View {
                         .frame(width: 8, height: 8)
                     Text("Focus mode active")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                     Spacer()
                 }
                 .padding(.vertical, 2)
                 .padding(.horizontal, 4)
-                .background(Color.green.opacity(0.07))
-                .cornerRadius(4)
+                .background(Color.green.opacity(0.15))
+                .clipShape(RoundedRectangle(cornerRadius: 4))
             }
         }
     }
@@ -242,19 +231,17 @@ struct AppMenuBar: View {
                             }
                         } label: {
                             Image(systemSymbol: focusViewModel.editingFocus ? .checkmarkCircle : .pencil)
-                                .foregroundColor(focusViewModel.editingFocus ? .green : .primary)
+                                .foregroundStyle(focusViewModel.editingFocus ? .green : .primary)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .help(focusViewModel.editingFocus ? "Done Editing" : "Edit Preset")
                             
                         // Delete button
                         Button {
-                            withAnimation {
-                                focusViewModel.deleteFocusPreset(focusPreset: selectedPreset)
-                            }
+                            showDeleteConfirmation = true
                         } label: {
                             Image(systemSymbol: .trashCircle)
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .help("Delete Preset")
@@ -266,11 +253,11 @@ struct AppMenuBar: View {
                 HStack {
                     Image(systemSymbol: .infoCircle)
                         .font(.caption)
-                        .foregroundColor(.blue)
+                        .foregroundStyle(.blue)
                         
                     Text("Editing \"\(selectedPreset.name)\" - Select spaces to include")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         
                     Spacer()
                         
@@ -285,13 +272,9 @@ struct AppMenuBar: View {
                 .padding(.horizontal, 6)
                 .padding(.vertical, 4)
                 .background(Color.blue.opacity(0.05))
-                .cornerRadius(4)
+                .clipShape(RoundedRectangle(cornerRadius: 4))
             }
                 
-            if focusViewModel.creatingPreset {
-                PresetTextInputView(focusViewModel: focusViewModel)
-                    .transition(.move(edge: .top).combined(with: .opacity))
-            }
         }
     }
         
@@ -303,7 +286,7 @@ struct AppMenuBar: View {
                 
             Text("Refreshing available spaces...")
                 .font(.callout)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: 200)
     }
@@ -389,11 +372,11 @@ struct AppMenuBar: View {
         if isDefaultPreset(preset.id) {
             // Unset default
             focusStatusViewModel.setDefaultPreset(id: nil)
-            UserDefaults.standard.removeObject(forKey: "DefaultPresetID")
+            UserDefaults.standard.removeObject(forKey: Constants.StorageKeys.defaultPresetID)
         } else {
             // Set as default
             focusStatusViewModel.setDefaultPreset(id: preset.id)
-            UserDefaults.standard.set(preset.id.uuidString, forKey: "DefaultPresetID")
+            UserDefaults.standard.set(preset.id.uuidString, forKey: Constants.StorageKeys.defaultPresetID)
         }
     }
 }
@@ -436,7 +419,7 @@ struct PresetMenuButton: View {
             .padding(.horizontal, 12)
             .padding(.vertical, 6)
             .background(Color.secondary.opacity(0.1))
-            .cornerRadius(8)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
             .frame(minWidth: 180)
         }
     }
@@ -455,23 +438,23 @@ struct SpacesDisplayCard: View {
             HStack {
                 Text("Display \(desktopIndex + 1)")
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 
                 if let firstSpace = desktopSpace.desktopSpaces.first {
                     Text("(\(firstSpace.displayID))")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
                 
                 Spacer()
                 
                 Text("\(desktopSpace.desktopSpaces.count) Spaces")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 2)
                     .background(Color.secondary.opacity(0.1))
-                    .cornerRadius(4)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             
             // Spaces grid
@@ -490,7 +473,7 @@ struct SpacesDisplayCard: View {
         }
         .padding(16)
         .background(Color.secondary.opacity(0.05))
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 

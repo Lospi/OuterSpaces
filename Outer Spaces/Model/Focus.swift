@@ -9,8 +9,15 @@ import Foundation
 import SwiftUI
 
 struct Focus: Hashable, Codable, Identifiable {
-    var id = UUID()
+    let id: UUID
     var name: String
     var spaces: [Space]
     var stageManager: Bool
+
+    init(id: UUID = UUID(), name: String, spaces: [Space], stageManager: Bool) {
+        self.id = id
+        self.name = name
+        self.spaces = spaces
+        self.stageManager = stageManager
+    }
 }

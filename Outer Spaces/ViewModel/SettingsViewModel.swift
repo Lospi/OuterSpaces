@@ -37,7 +37,7 @@ class SettingsViewModel {
     // Modern async implementation - removed 'mutating' keyword
     func updateSpacesOnScreen(focus: Focus) async throws -> Bool {
         var didError = false
-        print("Updating spaces on screen for focus: \(focus.name)")
+        Logger.shared.logInfo("Updating spaces on screen for focus: \(focus.name)")
         
         // Process spaces sequentially to avoid race conditions
         for space in focus.spaces {
@@ -88,7 +88,7 @@ class SettingsViewModel {
         var didError = false
         
         for space in focus.spaces {
-            print(space.spaceIndex)
+            Logger.shared.logInfo("Switching space index: \(space.spaceIndex)")
             let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(
                 index: space.spaceIndex,
                 stageManager: focus.stageManager,
@@ -109,11 +109,11 @@ class SettingsViewModel {
             
             if error == nil {
                 // Success case
-                print("Script executed successfully for space \(space.spaceIndex).")
+                Logger.shared.logInfo("Script executed successfully for space \(space.spaceIndex).")
             } else {
                 // Error case
                 if let errorDescription = error?["NSAppleScriptErrorMessage"] as? String {
-                    print("Script failed: \(errorDescription)")
+                    Logger.shared.logError("Script failed: \(errorDescription)")
                     errorMessage = errorDescription
                     
                     // Check for common permission errors across languages

@@ -1,18 +1,17 @@
 import SwiftUI
 
 struct HowToUseView: View {
-    @FetchRequest(sortDescriptors: []) var spaceModel: FetchedResults<SpaceData>
-    @FetchRequest(sortDescriptors: []) var focusModel: FetchedResults<FocusData>
     @ObservedObject var focusViewModel: FocusViewModel
     @ObservedObject var spacesViewModel: SpacesViewModel
-    @Environment(\.managedObjectContext) var managedObjectContext
 
     var body: some View {
         VStack {
             HStack {
-                Image(nsImage: NSImage(named: "AppIcon")!)
-                    .resizable()
-                    .frame(width: 100, height: 100)
+                if let appIcon = NSImage(named: "AppIcon") {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                }
                 VStack(alignment: .leading) {
                     Text("Outer Spaces")
                         .font(.title)

@@ -10,17 +10,16 @@ import Foundation
 class FocusViewModel: ObservableObject {
     @Published var availableFocusPresets: [Focus] = []
     @Published var selectedFocusPreset: Focus? = nil
-    @Published var creatingPreset = false
     @Published var editingFocus: Bool = false
 
     static let shared = FocusViewModel()
 
     func selectFocusPreset(preset: Focus) {
         selectedFocusPreset = preset
-        editingFocus = true
+        editingFocus = false
     }
 
-    init() {
+    private init() {
         loadFocusPresets()
     }
 
@@ -32,7 +31,7 @@ class FocusViewModel: ObservableObject {
     }
 
     func loadFocusPresets() {
-        if let data = Repository.suiteUserDefaults.data(forKey: "FocusPresets") {
+        if let data = Repository.suiteUserDefaults.data(forKey: Constants.StorageKeys.focusPresets) {
             let decoder = JSONDecoder()
             do {
                 availableFocusPresets = try decoder.decode([Focus].self, from: data)
@@ -46,7 +45,7 @@ class FocusViewModel: ObservableObject {
         let encoder = JSONEncoder()
         do {
             let appDataModelEncoded = try encoder.encode(availableFocusPresets)
-            Repository.suiteUserDefaults.set(appDataModelEncoded, forKey: "FocusPresets")
+            Repository.suiteUserDefaults.set(appDataModelEncoded, forKey: Constants.StorageKeys.focusPresets)
         } catch {
             Logger.shared.logError("Error encoding FocusPresets: \(error)")
         }
