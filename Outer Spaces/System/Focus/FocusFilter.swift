@@ -18,13 +18,15 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
     var spaceFilterPreset: SpaceAppEntity
 
     func perform() async throws -> some IntentResult {
-        let focus = FocusViewModel.shared.availableFocusPresets.first { $0.id == spaceFilterPreset.id }
-        print("Selected focus: \(focus?.name ?? "None")")
-        do {
-            let _ = try await SettingsViewModel.shared.updateSpacesOnScreen(focus: focus!)
+        guard let focus = FocusViewModel.shared.availableFocusPresets.first(where: { $0.id == spaceFilterPreset.id }) else {
+            Logger.shared.logError("No matching focus preset found for id: \(spaceFilterPreset.id)")
+            return .result()
         }
-        catch {
-            print("Error updating spaces on screen: \(error)")
+
+        do {
+            let _ = try await SettingsViewModel.shared.updateSpacesOnScreen(focus: focus)
+        } catch {
+            Logger.shared.logError("Error updating spaces on screen: \(error)")
         }
 
         return .result()

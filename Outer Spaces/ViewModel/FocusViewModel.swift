@@ -37,7 +37,7 @@ class FocusViewModel: ObservableObject {
             do {
                 availableFocusPresets = try decoder.decode([Focus].self, from: data)
             } catch {
-                print("Error decoding FocusPresets: \(error)")
+                Logger.shared.logError("Error decoding FocusPresets: \(error)")
             }
         }
     }
@@ -47,7 +47,9 @@ class FocusViewModel: ObservableObject {
         do {
             let appDataModelEncoded = try encoder.encode(availableFocusPresets)
             Repository.suiteUserDefaults.set(appDataModelEncoded, forKey: "FocusPresets")
-        } catch {}
+        } catch {
+            Logger.shared.logError("Error encoding FocusPresets: \(error)")
+        }
     }
 
     func updateSpacesFromNewRefresh(newSpaces: [Space]) {
@@ -55,8 +57,8 @@ class FocusViewModel: ObservableObject {
             if !availableFocusPresets.isEmpty {
                 for i in 0 ..< availableFocusPresets.count {
                     if availableFocusPresets[i].spaces.contains(where: { $0.spaceID == space.spaceID }) {
-                        let index = availableFocusPresets[i].spaces.firstIndex(where: { $0.spaceID == space.spaceID })
-                        availableFocusPresets[i].spaces[index!] = space
+                        guard let index = availableFocusPresets[i].spaces.firstIndex(where: { $0.spaceID == space.spaceID }) else { continue }
+                        availableFocusPresets[i].spaces[index] = space
                     }
                 }
             }
@@ -68,32 +70,39 @@ class FocusViewModel: ObservableObject {
     }
 
     func toggleFocusStageManager() {
-        let focusIndex = availableFocusPresets.firstIndex(of: selectedFocusPreset!)
+        guard var selected = selectedFocusPreset,
+              let focusIndex = availableFocusPresets.firstIndex(of: selected) else {
+            Logger.shared.logWarning("toggleFocusStageManager called with no selected preset")
+            return
+        }
 
-        selectedFocusPreset!.stageManager.toggle()
-
-        availableFocusPresets[focusIndex!].stageManager.toggle()
+        selected.stageManager.toggle()
+        selectedFocusPreset = selected
+        availableFocusPresets[focusIndex].stageManager.toggle()
         saveFocusPresets()
     }
 
     func updateFocusSpaces(relatedSpace: Space) {
-        let focusIndex = availableFocusPresets.firstIndex(of: selectedFocusPreset!)
-        if selectedFocusPreset!.spaces.contains(where: { $0 == relatedSpace }) {
-            selectedFocusPreset!.spaces.removeAll(where: { $0 == relatedSpace })
+        guard var selected = selectedFocusPreset,
+              let focusIndex = availableFocusPresets.firstIndex(of: selected) else { return }
+
+        if selected.spaces.contains(where: { $0 == relatedSpace }) {
+            selected.spaces.removeAll(where: { $0 == relatedSpace })
         } else {
-            if !selectedFocusPreset!.spaces.contains(where: { $0.displayID == relatedSpace.displayID }) {
-                selectedFocusPreset!.spaces.append(relatedSpace)
+            if !selected.spaces.contains(where: { $0.displayID == relatedSpace.displayID }) {
+                selected.spaces.append(relatedSpace)
             } else {
-                selectedFocusPreset!.spaces.removeAll(where: { $0.displayID == relatedSpace.displayID })
-                selectedFocusPreset!.spaces.append(relatedSpace)
+                selected.spaces.removeAll(where: { $0.displayID == relatedSpace.displayID })
+                selected.spaces.append(relatedSpace)
             }
         }
 
-        availableFocusPresets[focusIndex!].spaces = selectedFocusPreset!.spaces
+        selectedFocusPreset = selected
+        availableFocusPresets[focusIndex].spaces = selected.spaces
         saveFocusPresets()
     }
 
     func doesFocusHasSpace(space: Space) -> Bool {
-        return selectedFocusPreset!.spaces.contains(space)
+        return selectedFocusPreset?.spaces.contains(space) ?? false
     }
 }
