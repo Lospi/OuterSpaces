@@ -33,6 +33,7 @@ struct SettingsView: View {
     @ObservedObject private var permissionHandler = PermissionHandler.shared
     @ObservedObject var focusViewModel: FocusViewModel
     @ObservedObject var focusStatusViewModel: FocusStatusViewModel
+    let updater: SPUUpdater
     @Environment(\.openWindow) var openWindow
     @State private var isDisplayingShortcutsPanel = false
     @State private var showResetConfirmation = false
@@ -59,7 +60,8 @@ struct SettingsView: View {
                         GeneralSettingsView(
                             permissionHandler: permissionHandler,
                             focusStatusViewModel: focusStatusViewModel,
-                            isDisplayingShortcutsPanel: $isDisplayingShortcutsPanel
+                            isDisplayingShortcutsPanel: $isDisplayingShortcutsPanel,
+                            updater: updater
                         )
                     case .advanced:
                         AdvancedSettingsView(
@@ -138,6 +140,7 @@ struct GeneralSettingsView: View {
     @ObservedObject var permissionHandler: PermissionHandler
     @ObservedObject var focusStatusViewModel: FocusStatusViewModel
     @Binding var isDisplayingShortcutsPanel: Bool
+    let updater: SPUUpdater
 
     var body: some View {
         SettingsSection(title: "Startup") {
@@ -200,7 +203,7 @@ struct GeneralSettingsView: View {
         }
         
         SettingsSection(title: "Updates") {
-            UpdateView()
+            UpdateView(updater: updater)
                 .frame(height: 30)
         }
     }
