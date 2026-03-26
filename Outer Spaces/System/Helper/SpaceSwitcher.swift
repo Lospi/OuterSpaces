@@ -1,16 +1,16 @@
 import Foundation
 
 enum SpaceSwitchError: Error, LocalizedError {
-    case invalidSpaceID
-    case switchFailed
+    case invalidSpaceIndex
+    case switchFailed(String)
     case accessibilityNotGranted
 
     var errorDescription: String? {
         switch self {
-        case .invalidSpaceID:
-            return "Invalid space ID — unable to convert to numeric identifier"
-        case .switchFailed:
-            return "Failed to switch space via CGS API"
+        case .invalidSpaceIndex:
+            return "Invalid space index — no key code mapped for this index"
+        case .switchFailed(let detail):
+            return "Failed to switch space: \(detail)"
         case .accessibilityNotGranted:
             return "Accessibility permission is required to switch spaces"
         }
@@ -18,18 +18,55 @@ enum SpaceSwitchError: Error, LocalizedError {
 }
 
 enum SpaceSwitcher {
-    /// Switches a single space on its display via the CGS private API.
+    // Maps (spaceIndex + 1) % 10 → macOS key code for that digit key
+    private static let keycodeDictionary: [Int: Int] = [
+        0: 29, 1: 18, 2: 19, 3: 20, 4: 21,
+        5: 23, 6: 22, 7: 26, 8: 28, 9: 25
+    ]
+
+    /// Switches a space using Control+N keyboard simulation via System Events.
+    /// This goes through the standard macOS Mission Control transition, giving proper animations.
+    /// Spaces 0–8 use Control+1…9; spaces 9–18 use Control+Option+1…9.
     static func switchToSpace(_ space: Space) throws {
-        guard let numericID = Int(space.spaceID) else {
-            Logger.shared.logError("Invalid spaceID: \(space.spaceID)")
-            throw SpaceSwitchError.invalidSpaceID
+        let index = space.spaceIndex
+        guard let keycode = keycodeDictionary[(index + 1) % 10] else {
+            Logger.shared.logError("No key code for spaceIndex \(index)")
+            throw SpaceSwitchError.invalidSpaceIndex
         }
 
-        let conn = _CGSDefaultConnection()
-        let displayID = space.displayID as CFString
+        let useOptionKey = index >= 9
+        let script = makeSpaceSwitchScript(keycode: keycode, useOptionKey: useOptionKey)
 
-        Logger.shared.logInfo("Switching display \(space.displayID) to space \(numericID)")
-        CGSManagedDisplaySetCurrentSpace(conn, displayID, numericID)
+        var error: NSDictionary?
+        guard let appleScript = NSAppleScript(source: script) else {
+            throw SpaceSwitchError.switchFailed("Failed to create AppleScript")
+        }
+        appleScript.executeAndReturnError(&error)
+
+        if let errorDict = error,
+           let message = errorDict["NSAppleScriptErrorMessage"] as? String
+        {
+            Logger.shared.logError("AppleScript error switching to space \(index): \(message)")
+            throw SpaceSwitchError.switchFailed(message)
+        }
+
+        Logger.shared.logInfo("Switched to spaceIndex \(index) on display \(space.displayID)")
+    }
+
+    private static func makeSpaceSwitchScript(keycode: Int, useOptionKey: Bool) -> String {
+        if useOptionKey {
+            return """
+            tell application "System Events"
+                key code \(keycode) using {control down, option down}
+            end tell
+            """
+        } else {
+            return """
+            tell application "System Events"
+                key code \(keycode) using {control down}
+            end tell
+            """
+        }
     }
 
     /// Applies a full preset — switches one space per display, handles Stage Manager.
@@ -67,7 +104,7 @@ enum SpaceSwitcher {
         return false
     }
 
-    /// Sets the Stage Manager state via `defaults write` (no Automation permission needed).
+    /// Sets the Stage Manager state via `defaults write`.
     static func applyStageManager(enabled: Bool) {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/defaults")
