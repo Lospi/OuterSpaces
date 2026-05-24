@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AABBA0012F100001000B6D85 /* ManagedDisplaySpacesParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBA0022F100002000B6D85 /* ManagedDisplaySpacesParser.swift */; };
+		AABBA0032F100003000B6D85 /* SpaceSwitchCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABBA0042F100004000B6D85 /* SpaceSwitchCommand.swift */; };
+		AABC00012F200001000B6D85 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABC00022F200002000B6D85 /* ModelTests.swift */; };
+		AABC00032F200003000B6D85 /* ManagedDisplaySpacesParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABC00042F200004000B6D85 /* ManagedDisplaySpacesParserTests.swift */; };
+		AABC00052F200005000B6D85 /* SpaceSwitchCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABC00062F200006000B6D85 /* SpaceSwitchCommandTests.swift */; };
 		0705A7912B5241D0005CA574 /* SpaceSwitcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0705A7922B5241D0005CA574 /* SpaceSwitcher.swift */; };
 		0715DE512B0AAB1600A6E46C /* AppMenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0715DE502B0AAB1600A6E46C /* AppMenuBar.swift */; };
 		0715DE542B0AAC2700A6E46C /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 0715DE532B0AAC2700A6E46C /* SFSafeSymbols */; };
@@ -66,6 +71,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AABBA0022F100002000B6D85 /* ManagedDisplaySpacesParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedDisplaySpacesParser.swift; sourceTree = "<group>"; };
+		AABBA0042F100004000B6D85 /* SpaceSwitchCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSwitchCommand.swift; sourceTree = "<group>"; };
+		AABC00022F200002000B6D85 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		AABC00042F200004000B6D85 /* ManagedDisplaySpacesParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedDisplaySpacesParserTests.swift; sourceTree = "<group>"; };
+		AABC00062F200006000B6D85 /* SpaceSwitchCommandTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSwitchCommandTests.swift; sourceTree = "<group>"; };
+		AABC00072F200007000B6D85 /* Outer Spaces Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Outer Spaces Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0705A7922B5241D0005CA574 /* SpaceSwitcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSwitcher.swift; sourceTree = "<group>"; };
 		0715DE502B0AAB1600A6E46C /* AppMenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenuBar.swift; sourceTree = "<group>"; };
 		073100792B674C9C00F3D630 /* UpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateView.swift; sourceTree = "<group>"; };
@@ -105,6 +116,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AABC00082F200008000B6D85 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07A6269D2B06C6480013FE80 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -123,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				0764C1042D90F1B2000B6D85 /* PermissionHandler.swift */,
+				AABBA0042F100004000B6D85 /* SpaceSwitchCommand.swift */,
 				0705A7922B5241D0005CA574 /* SpaceSwitcher.swift */,
 			);
 			path = Helper;
@@ -168,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				07A626A22B06C6480013FE80 /* Outer Spaces */,
+				AABC00102F200010000B6D85 /* Outer Spaces Tests */,
 				07A626A12B06C6480013FE80 /* Products */,
 				0731007D2B73F2AB00F3D630 /* Frameworks */,
 			);
@@ -177,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				07A626A02B06C6480013FE80 /* Outer Spaces.app */,
+				AABC00072F200007000B6D85 /* Outer Spaces Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -225,6 +246,7 @@
 			children = (
 				07417FF82B5F081D00B26423 /* SparkleUpdater */,
 				0705A78E2B5241C3005CA574 /* Helper */,
+				AABBA0022F100002000B6D85 /* ManagedDisplaySpacesParser.swift */,
 				07FEE3332B07B2EF00419E50 /* SpaceObserver.swift */,
 				AABB00012D000001000B6D85 /* Logger.swift */,
 				07CD7B922B06C8E400D39387 /* Focus */,
@@ -273,9 +295,49 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		AABC00102F200010000B6D85 /* Outer Spaces Tests */ = {
+			isa = PBXGroup;
+			children = (
+				AABC00022F200002000B6D85 /* ModelTests.swift */,
+				AABC00042F200004000B6D85 /* ManagedDisplaySpacesParserTests.swift */,
+				AABC00062F200006000B6D85 /* SpaceSwitchCommandTests.swift */,
+			);
+			path = "Outer Spaces Tests";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
+/* Begin PBXContainerItemProxy section */
+		AABC00112F200011000B6D85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 07A626982B06C6480013FE80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 07A6269F2B06C6480013FE80;
+			remoteInfo = "Outer Spaces";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXNativeTarget section */
+		AABC000C2F20000C000B6D85 /* Outer Spaces Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AABC000D2F20000D000B6D85 /* Build configuration list for PBXNativeTarget "Outer Spaces Tests" */;
+			buildPhases = (
+				AABC00092F200009000B6D85 /* Sources */,
+				AABC00082F200008000B6D85 /* Frameworks */,
+				AABC000B2F20000B000B6D85 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AABC00122F200012000B6D85 /* PBXTargetDependency */,
+			);
+			name = "Outer Spaces Tests";
+			packageProductDependencies = (
+			);
+			productName = "Outer Spaces Tests";
+			productReference = AABC00072F200007000B6D85 /* Outer Spaces Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		07A6269F2B06C6480013FE80 /* Outer Spaces */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07A626AF2B06C64A0013FE80 /* Build configuration list for PBXNativeTarget "Outer Spaces" */;
@@ -314,6 +376,9 @@
 					07A6269F2B06C6480013FE80 = {
 						CreatedOnToolsVersion = 15.0.1;
 					};
+					AABC000C2F20000C000B6D85 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 				};
 			};
 			buildConfigurationList = 07A6269B2B06C6480013FE80 /* Build configuration list for PBXProject "Outer Spaces" */;
@@ -337,11 +402,19 @@
 			projectRoot = "";
 			targets = (
 				07A6269F2B06C6480013FE80 /* Outer Spaces */,
+				AABC000C2F20000C000B6D85 /* Outer Spaces Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AABC000B2F20000B000B6D85 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07A6269E2B06C6480013FE80 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -355,6 +428,16 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AABC00092F200009000B6D85 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AABC00012F200001000B6D85 /* ModelTests.swift in Sources */,
+				AABC00032F200003000B6D85 /* ManagedDisplaySpacesParserTests.swift in Sources */,
+				AABC00052F200005000B6D85 /* SpaceSwitchCommandTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		07A6269C2B06C6480013FE80 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -367,9 +450,11 @@
 				07C824FC2D933764005C5B48 /* SpaceComponents.swift in Sources */,
 				0742F4A72B1191E500B95465 /* SpacesViewModel.swift in Sources */,
 				07FEE3352B07B2EF00419E50 /* SpaceObserver.swift in Sources */,
+				AABBA0012F100001000B6D85 /* ManagedDisplaySpacesParser.swift in Sources */,
 				07C824FE2D93378B005C5B48 /* Utilities.swift in Sources */,
 				0731007A2B674C9C00F3D630 /* UpdateView.swift in Sources */,
 				07C824F72D9336D9005C5B48 /* Buttons.swift in Sources */,
+				AABBA0032F100003000B6D85 /* SpaceSwitchCommand.swift in Sources */,
 				0705A7912B5241D0005CA574 /* SpaceSwitcher.swift in Sources */,
 				0794FC682B143FC500FD7647 /* SettingsViewModel.swift in Sources */,
 				0764C1052D90F1B5000B6D85 /* PermissionHandler.swift in Sources */,
@@ -391,7 +476,63 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		AABC00122F200012000B6D85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 07A6269F2B06C6480013FE80 /* Outer Spaces */;
+			targetProxy = AABC00112F200011000B6D85 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		AABC000E2F20000E000B6D85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = D8A3VX836S;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Test bundle does not send Apple Events.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces.Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Outer Spaces.app/Contents/MacOS/Outer Spaces";
+				TEST_TARGET_NAME = "Outer Spaces";
+			};
+			name = Debug;
+		};
+		AABC000F2F20000F000B6D85 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = D8A3VX836S;
+				ENABLE_TESTING_SEARCH_PATHS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Test bundle does not send Apple Events.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "dev.lospi.Outer-Spaces.Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Outer Spaces.app/Contents/MacOS/Outer Spaces";
+				TEST_TARGET_NAME = "Outer Spaces";
+			};
+			name = Release;
+		};
 		07A626AD2B06C64A0013FE80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -610,6 +751,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AABC000D2F20000D000B6D85 /* Build configuration list for PBXNativeTarget "Outer Spaces Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AABC000E2F20000E000B6D85 /* Debug */,
+				AABC000F2F20000F000B6D85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		07A6269B2B06C6480013FE80 /* Build configuration list for PBXProject "Outer Spaces" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

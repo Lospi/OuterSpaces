@@ -1,0 +1,48 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - v2.1.0
+
+jobs:
+  pr-checks:
+    name: PR Checks
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project "Outer Spaces.xcodeproj" \
+            -scheme "Outer Spaces"
+
+      - name: Build without signing
+        run: |
+          xcodebuild \
+            -project "Outer Spaces.xcodeproj" \
+            -scheme "Outer Spaces" \
+            -configuration Debug \
+            -derivedDataPath build/DerivedData \
+            -destination "platform=macOS,arch=$(uname -m)" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Run unit tests
+        run: |
+          xcodebuild \
+            -project "Outer Spaces.xcodeproj" \
+            -scheme "Outer Spaces" \
+            -configuration Debug \
+            -derivedDataPath build/DerivedData \
+            -destination "platform=macOS,arch=$(uname -m)" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            test
