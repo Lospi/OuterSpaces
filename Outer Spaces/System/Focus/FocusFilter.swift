@@ -10,14 +10,19 @@ struct SpacesFocusFilter: SetFocusFilterIntent {
 
     // How a configured filter appears on the Focus details screen
     var displayRepresentation: DisplayRepresentation {
-        spaceFilterPreset.displayRepresentation
+        spaceFilterPreset?.displayRepresentation ?? DisplayRepresentation(title: "Select Preset")
     }
 
     // A custom parameter called Focus
     @Parameter(title: "Focus Preset", description: "Select Preset")
-    var spaceFilterPreset: SpaceAppEntity
+    var spaceFilterPreset: SpaceAppEntity?
 
     func perform() async throws -> some IntentResult {
+        guard let spaceFilterPreset else {
+            Logger.shared.logInfo("No focus preset selected for Focus filter")
+            return .result()
+        }
+
         guard let focus = FocusViewModel.shared.availableFocusPresets.first(where: { $0.id == spaceFilterPreset.id }) else {
             Logger.shared.logError("No matching focus preset found for id: \(spaceFilterPreset.id)")
             return .result()
