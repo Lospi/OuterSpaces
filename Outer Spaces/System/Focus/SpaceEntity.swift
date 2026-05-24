@@ -1,5 +1,4 @@
 import AppIntents
-import Combine
 import SwiftUI
 
 struct SpaceAppEntity: AppEntity {
@@ -22,15 +21,15 @@ struct SpaceAppEntity: AppEntity {
 }
 
 struct SpaceAppEntityQuery: EntityQuery {
-    static var entities: [SpaceAppEntity] = FocusViewModel.shared.availableFocusPresets.map {
-        SpaceAppEntity(id: $0.id, title: $0.name)
-    }
-
     func suggestedEntities() async throws -> [SpaceAppEntity] {
-        return SpaceAppEntityQuery.entities
+        return FocusViewModel.shared.availableFocusPresets.map {
+            SpaceAppEntity(id: $0.id, title: $0.name)
+        }
     }
 
     func entities(for identifiers: [UUID]) async throws -> [SpaceAppEntity] {
-        return SpaceAppEntityQuery.entities
+        return FocusViewModel.shared.availableFocusPresets
+            .filter { identifiers.contains($0.id) }
+            .map { SpaceAppEntity(id: $0.id, title: $0.name) }
     }
 }

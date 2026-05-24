@@ -6,14 +6,24 @@ import SwiftUI
 
 @main
 struct OuterSpacesApp: App {
-    @Environment(\.scenePhase) var scenePhase
     @StateObject var focusViewModel = FocusViewModel.shared
     @StateObject var spacesViewModel = SpacesViewModel.shared
     @StateObject var focusStatusViewModel = FocusStatusViewModel.shared
 
+    private let updaterController = SPUStandardUpdaterController(
+        startingUpdater: true,
+        updaterDelegate: nil,
+        userDriverDelegate: nil
+    )
+
     var body: some Scene {
         Settings {
-            SettingsView(spacesViewModel: spacesViewModel, focusViewModel: focusViewModel, focusStatusViewModel: focusStatusViewModel)
+            SettingsView(
+                spacesViewModel: spacesViewModel,
+                focusViewModel: focusViewModel,
+                focusStatusViewModel: focusStatusViewModel,
+                updater: updaterController.updater
+            )
         }
 
         WindowGroup("How to Use", id: "how-to-use") {

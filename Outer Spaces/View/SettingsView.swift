@@ -1,81 +1,77 @@
-import AppKit // For NSUserNotification
+import AppKit
 import LaunchAtLogin
 import SFSafeSymbols
 import Sparkle
-import StoreKit
 import SwiftUI
 import UniformTypeIdentifiers // For UTType
 import UserNotifications // For UNUserNotificationCenter
+
+enum SettingsTab: String, CaseIterable {
+    case general
+    case advanced
+    case about
+
+    var title: String {
+        switch self {
+        case .general: return "General"
+        case .advanced: return "Advanced"
+        case .about: return "About"
+        }
+    }
+
+    var symbol: SFSymbol {
+        switch self {
+        case .general: return .gearshape
+        case .advanced: return .wrenchAndScrewdriver
+        case .about: return .infoCircle
+        }
+    }
+}
 
 struct SettingsView: View {
     @ObservedObject var spacesViewModel: SpacesViewModel
     @ObservedObject private var permissionHandler = PermissionHandler.shared
     @ObservedObject var focusViewModel: FocusViewModel
     @ObservedObject var focusStatusViewModel: FocusStatusViewModel
-    @Environment(\.managedObjectContext) var managedObjectContext
+    let updater: SPUUpdater
     @Environment(\.openWindow) var openWindow
-    @AppStorage("showSpaceNumbers") private var showSpaceNumbers = true
-    @AppStorage("autoSwitchSpaces") private var autoSwitchSpaces = true
-    @AppStorage("useTrayMenuBar") private var useTrayMenuBar = true
     @State private var isDisplayingShortcutsPanel = false
     @State private var showResetConfirmation = false
-    @State private var activeTab = "general"
-    
+    @State private var activeTab: SettingsTab = .general
+
     var body: some View {
         VStack(spacing: 0) {
-            // Custom tab bar
             HStack(spacing: 0) {
-                TabButton(title: "General", systemSymbol: .gearshape, isActive: activeTab == "general") {
-                    activeTab = "general"
-                }
-                
-                TabButton(title: "Appearance", systemSymbol: .paintbrush, isActive: activeTab == "appearance") {
-                    activeTab = "appearance"
-                }
-                
-                TabButton(title: "Advanced", systemSymbol: .wrenchAndScrewdriver, isActive: activeTab == "advanced") {
-                    activeTab = "advanced"
-                }
-                
-                TabButton(title: "About", systemSymbol: .infoCircle, isActive: activeTab == "about") {
-                    activeTab = "about"
+                ForEach(SettingsTab.allCases, id: \.self) { tab in
+                    TabButton(title: tab.title, systemSymbol: tab.symbol, isActive: activeTab == tab) {
+                        activeTab = tab
+                    }
                 }
             }
             .padding(.horizontal)
             .background(Color(NSColor.windowBackgroundColor))
-            
+
             Divider()
-            
-            // Content area
+
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     switch activeTab {
-                    case "general":
+                    case .general:
                         GeneralSettingsView(
                             permissionHandler: permissionHandler,
-                            isDisplayingShortcutsPanel: $isDisplayingShortcutsPanel
+                            focusStatusViewModel: focusStatusViewModel,
+                            isDisplayingShortcutsPanel: $isDisplayingShortcutsPanel,
+                            updater: updater
                         )
-                    case "appearance":
-                        AppearanceSettingsView(
-                            showSpaceNumbers: $showSpaceNumbers,
-                            useTrayMenuBar: $useTrayMenuBar
-                        )
-                    case "advanced":
+                    case .advanced:
                         AdvancedSettingsView(
-                            autoSwitchSpaces: $autoSwitchSpaces,
                             showResetConfirmation: $showResetConfirmation,
                             spacesViewModel: spacesViewModel,
                             focusViewModel: focusViewModel,
-                            focusStatusViewModel: focusStatusViewModel,
-                            managedObjectContext: managedObjectContext
+                            focusStatusViewModel: focusStatusViewModel
                         )
-                    case "about":
+                    case .about:
                         AboutSettingsView()
-                    default:
-                        GeneralSettingsView(
-                            permissionHandler: permissionHandler,
-                            isDisplayingShortcutsPanel: $isDisplayingShortcutsPanel
-                        )
                     }
                 }
                 .padding()
@@ -98,31 +94,12 @@ struct SettingsView: View {
     }
     
     private func resetAllSettings() {
-        // Clear Core Data
-        let entities = ["SpaceData", "FocusData"]
-        
-        for entity in entities {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
-            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-            
-            do {
-                try managedObjectContext.execute(batchDeleteRequest)
-                try managedObjectContext.save()
-            } catch {
-                print("Error resetting \(entity): \(error)")
-            }
-        }
-        
         // Reset UserDefaults
         if let bundleID = Bundle.main.bundleIdentifier {
             UserDefaults.standard.removePersistentDomain(forName: bundleID)
         }
-        
-        // Reset app storage values
-        showSpaceNumbers = true
-        autoSwitchSpaces = true
-        useTrayMenuBar = true
-        
+        Repository.suiteUserDefaults.removePersistentDomain(forName: Constants.StorageKeys.suiteName)
+
         // Refresh spaces
         Task {
             await spacesViewModel.updateSystemSpaces()
@@ -150,8 +127,8 @@ struct TabButton: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
             .background(isActive ? Color.accentColor.opacity(0.1) : Color.clear)
-            .foregroundColor(isActive ? .accentColor : .primary)
-            .cornerRadius(8)
+            .foregroundStyle(isActive ? Color.accentColor : .primary)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .buttonStyle(PlainButtonStyle())
     }
@@ -161,8 +138,10 @@ struct TabButton: View {
 
 struct GeneralSettingsView: View {
     @ObservedObject var permissionHandler: PermissionHandler
+    @ObservedObject var focusStatusViewModel: FocusStatusViewModel
     @Binding var isDisplayingShortcutsPanel: Bool
-    
+    let updater: SPUUpdater
+
     var body: some View {
         SettingsSection(title: "Startup") {
             LaunchAtLogin.Toggle {
@@ -171,36 +150,42 @@ struct GeneralSettingsView: View {
             }
             .toggleStyle(SwitchToggleStyle())
         }
-        
+
         SettingsSection(title: "Permissions") {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Accessibility")
-                        .font(.headline)
-                    
-                    Text("Required for switching between spaces")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
-                Spacer()
-                
+            VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    Circle()
-                        .fill(permissionHandler.hasAccessibilityPermission ? Color.green : Color.red)
-                        .frame(width: 12, height: 12)
-                    
-                    Text(permissionHandler.hasAccessibilityPermission ? "Enabled" : "Disabled")
-                        .foregroundColor(permissionHandler.hasAccessibilityPermission ? .green : .red)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Accessibility")
+                            .font(.subheadline.weight(.medium))
+
+                        Text("Required for switching between spaces")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    HStack {
+                        Circle()
+                            .fill(permissionHandler.hasAccessibilityPermission ? Color.green : Color.red)
+                            .frame(width: 8, height: 8)
+
+                        Text(permissionHandler.hasAccessibilityPermission ? "Enabled" : "Disabled")
+                            .font(.caption)
+                            .foregroundStyle(permissionHandler.hasAccessibilityPermission ? .green : .red)
+                    }
+
+                    Button(permissionHandler.hasAccessibilityPermission ? "View in Settings" : "Enable") {
+                        permissionHandler.openAccessibilitySettings()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
                 }
-                
-                Button(permissionHandler.hasAccessibilityPermission ? "Settings" : "Enable") {
-                    permissionHandler.openAccessibilitySettings()
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(permissionHandler.hasAccessibilityPermission)
+
+                Divider()
+
+                PermissionsSettingsView(focusStatusViewModel: focusStatusViewModel)
             }
-            .padding(.vertical, 4)
         }
         
         SettingsSection(title: "System Integration") {
@@ -218,54 +203,8 @@ struct GeneralSettingsView: View {
         }
         
         SettingsSection(title: "Updates") {
-            UpdateView()
+            UpdateView(updater: updater)
                 .frame(height: 30)
-        }
-    }
-}
-
-// MARK: - Appearance Settings View
-
-struct AppearanceSettingsView: View {
-    @Binding var showSpaceNumbers: Bool
-    @Binding var useTrayMenuBar: Bool
-    @State private var useCustomAppIcon = false
-    @State private var selectedIconIndex = 0
-    
-    let appIcons = ["Default", "Minimal", "Colorful", "Dark"]
-    
-    var body: some View {
-        SettingsSection(title: "Spaces") {
-            Toggle("Show Space Numbers", isOn: $showSpaceNumbers)
-                .toggleStyle(SwitchToggleStyle())
-            
-            // Custom space layout preview
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Preview")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                HStack(spacing: 12) {
-                    ForEach(1 ... 4, id: \.self) { index in
-                        VStack(spacing: 4) {
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(Color.secondary.opacity(0.2))
-                                .frame(width: 44, height: 36)
-                                .overlay(
-                                    Text(showSpaceNumbers ? "\(index)" : "")
-                                        .foregroundColor(.primary)
-                                )
-                            
-                            Text("Space \(index)")
-                                .font(.caption)
-                                .lineLimit(1)
-                        }
-                    }
-                }
-                .padding(8)
-                .background(Color.secondary.opacity(0.05))
-                .cornerRadius(8)
-            }
         }
     }
 }
@@ -273,21 +212,15 @@ struct AppearanceSettingsView: View {
 // MARK: - Advanced Settings View
 
 struct AdvancedSettingsView: View {
-    @Binding var autoSwitchSpaces: Bool
     @Binding var showResetConfirmation: Bool
     @ObservedObject var spacesViewModel: SpacesViewModel
     @ObservedObject var focusViewModel: FocusViewModel
     @ObservedObject var focusStatusViewModel: FocusStatusViewModel
-    var managedObjectContext: NSManagedObjectContext
-    @State private var loggingEnabled = false
     @State private var debugMode = false
     @State private var validationResult: (success: Bool, message: String)? = nil
         
     var body: some View {
         SettingsSection(title: "Behavior") {
-            Toggle("Auto-switch spaces with Focus modes", isOn: $autoSwitchSpaces)
-                .toggleStyle(SwitchToggleStyle())
-                
             Button("Validate Space Organization") {
                 validateSpaces()
             }
@@ -297,10 +230,10 @@ struct AdvancedSettingsView: View {
             if let result = validationResult {
                 HStack {
                     Image(systemSymbol: result.success ? .checkmarkCircleFill : .exclamationmarkTriangleFill)
-                        .foregroundColor(result.success ? .green : .orange)
+                        .foregroundStyle(result.success ? .green : .orange)
                         
                     Text(result.message)
-                        .foregroundColor(result.success ? .green : .orange)
+                        .foregroundStyle(result.success ? .green : .orange)
                         
                     Spacer()
                         
@@ -313,7 +246,7 @@ struct AdvancedSettingsView: View {
                 }
                 .padding(8)
                 .background(Color(nsColor: result.success ? .controlBackgroundColor : NSColor.systemYellow.withAlphaComponent(0.2)))
-                .cornerRadius(6)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
                 .padding(.top, 4)
             }
         }
@@ -328,7 +261,7 @@ struct AdvancedSettingsView: View {
                     
                 Text("Outer Spaces integrates with macOS Focus modes. You can control spaces based on your current Focus status.")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     
                 Button("Open Focus Settings") {
                     NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.Focus")!)
@@ -338,9 +271,6 @@ struct AdvancedSettingsView: View {
         }
             
         SettingsSection(title: "Debugging") {
-            Toggle("Enable Logging", isOn: $loggingEnabled)
-                .toggleStyle(SwitchToggleStyle())
-                
             Toggle("Debug Mode", isOn: $debugMode)
                 .toggleStyle(SwitchToggleStyle())
                 
@@ -356,13 +286,13 @@ struct AdvancedSettingsView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Reset all settings, spaces, and focus presets to default values.")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     
                 Button("Reset All Settings") {
                     showResetConfirmation = true
                 }
                 .buttonStyle(.borderedProminent)
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .tint(.red)
             }
         }
@@ -386,7 +316,7 @@ struct AdvancedSettingsView: View {
             
             // Log issues
             for issue in issues {
-                print("Space validation issue: \(issue)")
+                Logger.shared.logWarning("Space validation issue: \(issue)")
             }
         }
     }
@@ -454,12 +384,7 @@ struct AdvancedSettingsView: View {
         savePanel.showsTagField = false
         savePanel.nameFieldStringValue = "OuterSpaces-Diagnostics.txt"
         
-        // Use compatible file type approach
-        if #available(macOS 11.0, *) {
-            savePanel.allowedContentTypes = [UTType.plainText]
-        } else {
-            savePanel.allowedFileTypes = ["txt", "text"]
-        }
+        savePanel.allowedContentTypes = [UTType.plainText]
         
         if let window = NSApplication.shared.windows.first {
             savePanel.beginSheetModal(for: window) { response in
@@ -467,7 +392,7 @@ struct AdvancedSettingsView: View {
                     do {
                         try diagnosticsText.write(to: url, atomically: true, encoding: .utf8)
                     } catch {
-                        print("Failed to save diagnostics: \(error)")
+                        Logger.shared.logError("Failed to save diagnostics: \(error)")
                     }
                 }
             }
@@ -481,21 +406,23 @@ struct AboutSettingsView: View {
     var body: some View {
         VStack(spacing: 24) {
             HStack(spacing: 20) {
-                Image(nsImage: NSImage(named: "AppIcon")!)
-                    .resizable()
-                    .frame(width: 100, height: 100)
+                if let appIcon = NSImage(named: "AppIcon") {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                }
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Outer Spaces")
                         .font(.title)
                     
                     Text("Version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")")
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                     
                     Text("Developed by Lospi")
                     
                     Text("Contact: admin@lospi.dev")
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
             }
             
@@ -561,7 +488,7 @@ struct ShortcutsPanel: View {
             Text("These shortcuts help you use Outer Spaces effectively. Make sure to enable space switching shortcuts in macOS System Settings.")
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             
             Divider()
             
@@ -575,7 +502,7 @@ struct ShortcutsPanel: View {
                         Spacer()
                         
                         Text(shortcut.1)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 8)
                     .padding(.horizontal, 16)
@@ -586,7 +513,7 @@ struct ShortcutsPanel: View {
                 }
             }
             .background(Color.secondary.opacity(0.05))
-            .cornerRadius(8)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
             .padding(.horizontal)
             
             Spacer()
@@ -631,7 +558,7 @@ struct SettingsSection<Content: View>: View {
             }
             .padding(16)
             .background(Color.secondary.opacity(0.05))
-            .cornerRadius(8)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
     }
 }
