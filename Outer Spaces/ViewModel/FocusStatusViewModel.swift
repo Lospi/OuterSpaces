@@ -14,12 +14,18 @@ class FocusStatusViewModel: ObservableObject {
 
     @Published var isFocusActive = false
     @Published var defaultPresetID: UUID? = nil
+    @Published var focusAuthorizationStatus: INFocusStatusAuthorizationStatus = .notDetermined
 
     var focusTimer: Timer?
 
     private init() {
+        focusAuthorizationStatus = INFocusStatusCenter.default.authorizationStatus
         updateCurrentFocusState()
         startFocusTimer()
+    }
+
+    deinit {
+        focusTimer?.invalidate()
     }
 
     /// Updates the current focus state and triggers preset changes if needed
@@ -71,6 +77,7 @@ class FocusStatusViewModel: ObservableObject {
     func requestFocusAuthorization() {
         INFocusStatusCenter.default.requestAuthorization { [weak self] status in
             Task { @MainActor in
+                self?.focusAuthorizationStatus = status
                 if status == .authorized {
                     self?.updateCurrentFocusState()
                 }
@@ -120,13 +127,23 @@ extension FocusStatusViewModel {
     }
 
     func startFocusTimer() {
-        focusTimer = Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { [weak self] _ in
+        stopFocusTimer()
+        focusTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             Task { @MainActor in
                 guard let self else { return }
+                let currentStatus = INFocusStatusCenter.default.authorizationStatus
+                if currentStatus != self.focusAuthorizationStatus {
+                    self.focusAuthorizationStatus = currentStatus
+                }
                 if INFocusStatusCenter.default.focusStatus.isFocused != self.isFocusActive {
                     self.updateCurrentFocusState()
                 }
             }
         }
+    }
+
+    func stopFocusTimer() {
+        focusTimer?.invalidate()
+        focusTimer = nil
     }
 }

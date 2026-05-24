@@ -31,7 +31,7 @@ struct SpaceCard: View {
                 .buttonStyle(SpaceCardButtonStyle())
             } else {
                 Button {
-                    switchToSpace(index: index)
+                    switchToSpace()
                 } label: {
                     SpaceCardContent(
                         space: space,
@@ -45,29 +45,15 @@ struct SpaceCard: View {
         }
     }
 
-    private func switchToSpace(index: Int) {
-        let scriptSource = AppleScriptHelper.getCompleteAppleScriptPerIndex(
-            index: index,
-            stageManager: focusViewModel.selectedFocusPreset?.stageManager,
-            shouldAffectStage: focusViewModel.selectedFocusPreset != nil
-        )
-
-        var error: NSDictionary?
-
-        guard let script = NSAppleScript(source: scriptSource) else {
-            onError("Failed to create AppleScript")
-            return
-        }
-
-        _ = script.executeAndReturnError(&error)
-
-        if let error = error {
-            if let errorDescription = error["NSAppleScriptErrorMessage"] as? String {
-                Logger.shared.logError("Script failed: \(errorDescription)")
-                onError(errorDescription)
-            } else {
-                onError("Unknown script execution error")
+    private func switchToSpace() {
+        do {
+            try SpaceSwitcher.switchToSpace(space)
+            if let preset = focusViewModel.selectedFocusPreset {
+                SpaceSwitcher.applyStageManager(enabled: preset.stageManager)
             }
+        } catch {
+            Logger.shared.logError("Space switch failed: \(error.localizedDescription)")
+            onError(error.localizedDescription)
         }
     }
 }

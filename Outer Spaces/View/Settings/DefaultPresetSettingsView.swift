@@ -95,13 +95,24 @@ struct PermissionsSettingsView: View {
 
                 Spacer()
 
-                Button {
-                    focusStatusViewModel.requestFocusAuthorization()
-                } label: {
-                    Text("Request Authorization")
+                HStack(spacing: 8) {
+                    if focusStatusViewModel.focusAuthorizationStatus != .notDetermined {
+                        Circle()
+                            .fill(focusStatusViewModel.focusAuthorizationStatus == .authorized ? Color.green : Color.red)
+                            .frame(width: 8, height: 8)
+                        Text(focusStatusViewModel.focusAuthorizationStatus == .authorized ? "Enabled" : "Disabled")
+                            .font(.caption)
+                            .foregroundStyle(focusStatusViewModel.focusAuthorizationStatus == .authorized ? .green : .red)
+                    }
+
+                    Button {
+                        focusStatusViewModel.requestFocusAuthorization()
+                    } label: {
+                        Text(focusStatusViewModel.focusAuthorizationStatus == .authorized ? "View in Settings" : "Request Authorization")
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
             }
 
             Divider()
@@ -143,6 +154,9 @@ struct PermissionsSettingsView: View {
             }
         }
         .onAppear {
+            checkNotificationAuthorizationStatus()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             checkNotificationAuthorizationStatus()
         }
     }
