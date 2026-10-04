@@ -78,6 +78,8 @@ struct SettingsView: View {
                 .animation(.easeInOut, value: activeTab)
             }
         }
+        .withAccessibilityPermissionHandling()
+        .onAppear { permissionHandler.checkAccessibilityPermission() }
         .frame(width: 600, height: 500)
         .sheet(isPresented: $isDisplayingShortcutsPanel) {
             ShortcutsPanel(isPresented: $isDisplayingShortcutsPanel)
@@ -472,7 +474,8 @@ struct ShortcutsPanel: View {
     
     let shortcuts = [
         ("Control + 1-9", "Switch to Desktop 1-9"),
-        ("Control + Option + 1-9", "Switch to Desktop 10-19"),
+        ("Control + Option + 0", "Switch to Desktop 10"),
+        ("Control + Option + 1-9", "Switch to Desktop 11-19"),
         ("Control + Command + F", "Toggle Stage Manager"),
         ("Control + Option + Command + S", "Refresh Spaces"),
         ("Control + Option + Command + P", "Create New Preset"),

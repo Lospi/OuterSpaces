@@ -81,6 +81,7 @@ struct AppMenuBar: View {
             .onAppear {
                 refreshSpaces()
             }
+            .withAccessibilityPermissionHandling()
             .padding()
     }
         

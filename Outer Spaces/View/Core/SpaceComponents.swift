@@ -46,14 +46,10 @@ struct SpaceCard: View {
     }
 
     private func switchToSpace() {
-        do {
-            try SpaceSwitcher.switchToSpace(space)
-            if let preset = focusViewModel.selectedFocusPreset {
-                SpaceSwitcher.applyStageManager(enabled: preset.stageManager)
-            }
-        } catch {
-            Logger.shared.logError("Space switch failed: \(error.localizedDescription)")
-            onError(error.localizedDescription)
+        Task { @MainActor in
+            do {
+                try await SettingsViewModel.shared.switchToSpace(space, stageManager: focusViewModel.selectedFocusPreset?.stageManager)
+            } catch { Logger.shared.logError("Manual switch failed: \(error.localizedDescription)") }
         }
     }
 }

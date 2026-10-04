@@ -11,7 +11,7 @@ struct OuterSpacesApp: App {
     @StateObject var focusStatusViewModel = FocusStatusViewModel.shared
 
     private let updaterController = SPUStandardUpdaterController(
-        startingUpdater: true,
+        startingUpdater: !Constants.isRunningTests,
         updaterDelegate: nil,
         userDriverDelegate: nil
     )

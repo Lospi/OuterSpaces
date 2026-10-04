@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class FocusViewModel: ObservableObject {
     @Published var availableFocusPresets: [Focus] = []
     @Published var selectedFocusPreset: Focus? = nil
@@ -63,8 +64,9 @@ class FocusViewModel: ObservableObject {
             }
         }
 
-        selectedFocusPreset = nil
-        editingFocus = false
+        if let id = selectedFocusPreset?.id {
+            selectedFocusPreset = availableFocusPresets.first { $0.id == id }
+        }
         saveFocusPresets()
     }
 

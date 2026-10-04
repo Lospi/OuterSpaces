@@ -4,6 +4,7 @@ struct ManagedDisplaySpacesSnapshot {
     var desktopSpaces: [DesktopSpaces]
     var allSpaces: [Space]
     var activeSpaceID: String?
+    var activeSpaceIDsByDisplay: [String: String] = [:]
 }
 
 enum ManagedDisplaySpacesParser {
@@ -11,6 +12,7 @@ enum ManagedDisplaySpacesParser {
         var allSpacesList: [Space] = []
         var desktopSpacesList: [DesktopSpaces] = []
         var mainDisplayActiveSpaceID: String?
+        var activeSpaceIDsByDisplay: [String: String] = [:]
 
         for (displayIndex, display) in displays.enumerated() {
             guard let currentSpace = display["Current Space"] as? [String: Any],
@@ -21,6 +23,7 @@ enum ManagedDisplaySpacesParser {
                 continue
             }
 
+            activeSpaceIDsByDisplay[displayID] = String(activeSpaceID)
             if displayIndex == 0 {
                 mainDisplayActiveSpaceID = String(activeSpaceID)
             }
@@ -60,7 +63,8 @@ enum ManagedDisplaySpacesParser {
         return ManagedDisplaySpacesSnapshot(
             desktopSpaces: desktopSpacesList,
             allSpaces: allSpacesList,
-            activeSpaceID: mainDisplayActiveSpaceID
+            activeSpaceID: mainDisplayActiveSpaceID,
+            activeSpaceIDsByDisplay: activeSpaceIDsByDisplay
         )
     }
 }
