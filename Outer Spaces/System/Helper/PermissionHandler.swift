@@ -1,3 +1,4 @@
+import Carbon
 import Cocoa
 import SwiftUI
 
@@ -5,58 +6,17 @@ import SwiftUI
 class PermissionHandler: ObservableObject {
     @Published var hasAccessibilityPermission = false
     @Published var showingPermissionAlert = false
-    @Published var lastError: String?
-
+    @Published private(set) var lastError: String?
+    @Published private(set) var switchError: SpaceSwitchError?
     static let shared = PermissionHandler()
 
-    private var permissionPollTimer: Timer?
+    init() { checkAccessibilityPermission() }
 
-    private init() {
-        checkAccessibilityPermission()
-    }
+    func checkAccessibilityPermission() { hasAccessibilityPermission = AXIsProcessTrusted() }
 
-    func checkAccessibilityPermission() {
-        var accessEnabled = AXIsProcessTrusted()
-
-        // Fallback: AXIsProcessTrusted() can return false on some macOS versions
-        // even when access is granted (stale TCC entry). Verify with a real AX call.
-        if !accessEnabled {
-            accessEnabled = verifyAccessibilityByAttempt()
-        }
-
-        hasAccessibilityPermission = accessEnabled
-        if accessEnabled {
-            stopPolling()
-        } else {
-            startPollingIfNeeded()
-        }
-    }
-
-    /// Attempts an actual AX operation to verify accessibility permission.
-    private func verifyAccessibilityByAttempt() -> Bool {
-        let systemWide = AXUIElementCreateSystemWide()
-        var value: AnyObject?
-        let result = AXUIElementCopyAttributeValue(
-            systemWide,
-            kAXFocusedApplicationAttribute as CFString,
-            &value
-        )
-        // .apiDisabled means accessibility is definitely not granted
-        return result != .apiDisabled
-    }
-
-    private func startPollingIfNeeded() {
-        guard permissionPollTimer == nil else { return }
-        permissionPollTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                self?.checkAccessibilityPermission()
-            }
-        }
-    }
-
-    private func stopPolling() {
-        permissionPollTimer?.invalidate()
-        permissionPollTimer = nil
+    static func automationStatus(prompt: Bool) -> Int {
+        let target = NSAppleEventDescriptor(bundleIdentifier: "com.apple.systemevents")
+        return Int(AEDeterminePermissionToAutomateTarget(target.aeDesc, typeWildCard, typeWildCard, prompt))
     }
 
     func requestAccessibilityPermission() {
@@ -65,44 +25,59 @@ class PermissionHandler: ObservableObject {
     }
 
     func openAccessibilitySettings() {
-        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
-            NSWorkspace.shared.open(url)
-            self.requestAccessibilityPermission()
-        } else {
-            NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security")!)
-            self.requestAccessibilityPermission()
-        }
+        openSettings("Privacy_Accessibility")
+        requestAccessibilityPermission()
     }
 
-    func handleSpaceSwitchError(_ message: String) {
-        self.lastError = message
-        self.showingPermissionAlert = true
-        Logger.shared.logError("Space switch error: \(message)")
+    func openAutomationSettings() {
+        _ = Self.automationStatus(prompt: true)
+        openSettings("Privacy_Automation")
+    }
+
+    private func openSettings(_ pane: String) {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?\(pane)") else { return }
+        NSWorkspace.shared.open(url)
+    }
+
+    func handleSpaceSwitchError(_ error: Error) {
+        let typed = error as? SpaceSwitchError ?? .scriptFailed(code: -1, message: error.localizedDescription)
+        switchError = typed
+        lastError = typed.localizedDescription
+        showingPermissionAlert = true
+        Logger.shared.logError("Space switch failed: \(typed)")
+        checkAccessibilityPermission()
+    }
+
+    func clearError() {
+        switchError = nil
+        lastError = nil
+        showingPermissionAlert = false
     }
 }
 
 struct AccessibilityPermissionModifier: ViewModifier {
-    @ObservedObject private var permissionHandler = PermissionHandler.shared
+    @ObservedObject private var handler = PermissionHandler.shared
 
     func body(content: Content) -> some View {
-        content
-            .alert("Accessibility Permission Required", isPresented: self.$permissionHandler.showingPermissionAlert) {
-                Button("Open Settings", action: self.permissionHandler.openAccessibilitySettings)
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text("""
-                Outer Spaces needs accessibility permissions to switch spaces.
-
-                Please go to System Settings → Privacy & Security → Accessibility and enable Outer Spaces.
-
-                Error: \(self.permissionHandler.lastError ?? "")
-                """)
+        content.alert("Space Switching Error", isPresented: $handler.showingPermissionAlert) {
+            switch handler.switchError {
+            case .accessibilityNotGranted:
+                Button("Open Accessibility Settings", action: handler.openAccessibilitySettings)
+            case .automationNotGranted:
+                Button("Allow Automation", action: handler.openAutomationSettings)
+            case .transitionFailed, .invalidSpaceIndex:
+                Button("Open Keyboard Settings") {
+                    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.keyboard?Shortcuts") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+            default: EmptyView()
             }
+            Button("OK", role: .cancel) {}
+        } message: { Text(handler.lastError ?? "") }
     }
 }
 
 extension View {
-    func withAccessibilityPermissionHandling() -> some View {
-        modifier(AccessibilityPermissionModifier())
-    }
+    func withAccessibilityPermissionHandling() -> some View { modifier(AccessibilityPermissionModifier()) }
 }

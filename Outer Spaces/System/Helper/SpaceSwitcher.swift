@@ -1,94 +1,144 @@
-import Foundation
+import Carbon
+import Cocoa
 
-enum SpaceSwitchError: Error, LocalizedError {
+// Preserve AppleScript codes so permission recovery never depends on translated error text.
+enum SpaceSwitchError: Error, LocalizedError, Equatable {
     case invalidSpaceIndex
-    case switchFailed(String)
+    case invalidTarget(String)
+    case snapshotUnavailable
     case accessibilityNotGranted
+    case automationNotGranted(Int)
+    case scriptFailed(code: Int, message: String)
+    case transitionFailed(String)
+    case stageManagerFailed(Int)
+
+    static func scriptError(code: Int, message: String) -> SpaceSwitchError {
+        switch code {
+        case -1743, -1744: return .automationNotGranted(code)
+        case 1002: return .accessibilityNotGranted
+        default: return .scriptFailed(code: code, message: message)
+        }
+    }
 
     var errorDescription: String? {
         switch self {
-        case .invalidSpaceIndex:
-            return "Invalid space index — no key code mapped for this index"
-        case .switchFailed(let detail):
-            return "Failed to switch space: \(detail)"
-        case .accessibilityNotGranted:
-            return "Accessibility permission is required to switch spaces"
+        case .invalidSpaceIndex: return String(localized: "Only Desktop shortcuts 1–19 are supported.")
+        case .invalidTarget(let id): return String(localized: "A preset target is unavailable. Refresh Spaces and edit the preset.") + " (\(id))"
+        case .snapshotUnavailable: return String(localized: "The current desktop layout could not be read.")
+        case .accessibilityNotGranted: return String(localized: "Allow Outer Spaces in Privacy & Security → Accessibility.")
+        case .automationNotGranted(let code): return String(localized: "Allow Outer Spaces to control System Events in Privacy & Security → Automation.") + " (\(code))"
+        case .scriptFailed(let code, let message): return "\(message) (\(code))"
+        case .transitionFailed(let id): return String(localized: "The desktop did not change. Check the Mission Control keyboard shortcuts.") + " (\(id))"
+        case .stageManagerFailed(let code): return String(localized: "Stage Manager could not be updated.") + " (\(code))"
         }
     }
 }
 
-enum SpaceSwitcher {
-    /// Switches a space using Control+N keyboard simulation via System Events.
-    /// This goes through the standard macOS Mission Control transition, giving proper animations.
-    /// Spaces 0–8 use Control+1…9; spaces 9–18 use Control+Option+1…9.
-    static func switchToSpace(_ space: Space) throws {
-        let index = space.spaceIndex
-        let command = try SpaceSwitchCommandFactory.command(forSpaceIndex: index)
-        let script = command.appleScriptSource
+@MainActor
+final class SpaceSwitcher {
+    static let shared = SpaceSwitcher()
+    private var operationRevision = 0
+    private let snapshot: @MainActor () async throws -> ManagedDisplaySpacesSnapshot
+    private let accessibility: @MainActor () -> Bool
+    private let automation: @MainActor () -> Int
+    private let execute: @MainActor (String) throws -> Void
+    private let stageManager: @MainActor (Bool) throws -> Void
+    private let wait: @MainActor () async throws -> Void
 
-        var error: NSDictionary?
-        guard let appleScript = NSAppleScript(source: script) else {
-            throw SpaceSwitchError.switchFailed("Failed to create AppleScript")
-        }
-        appleScript.executeAndReturnError(&error)
-
-        if let errorDict = error,
-           let message = errorDict["NSAppleScriptErrorMessage"] as? String
-        {
-            Logger.shared.logError("AppleScript error switching to space \(index): \(message)")
-            throw SpaceSwitchError.switchFailed(message)
-        }
-
-        Logger.shared.logInfo("Switched to spaceIndex \(index) on display \(space.displayID)")
+    init(snapshot: @escaping @MainActor () async throws -> ManagedDisplaySpacesSnapshot = { try SpacesViewModel.shared.refreshSnapshot() },
+         accessibility: @escaping @MainActor () -> Bool = { AXIsProcessTrusted() },
+         automation: @escaping @MainActor () -> Int = { PermissionHandler.automationStatus(prompt: false) },
+         execute: @escaping @MainActor (String) throws -> Void = { try SpaceSwitcher.executeScript($0) },
+         stageManager: @escaping @MainActor (Bool) throws -> Void = { try SpaceSwitcher.applyStageManager(enabled: $0) },
+         wait: @escaping @MainActor () async throws -> Void = { try await Task.sleep(nanoseconds: 100_000_000) }) {
+        self.snapshot = snapshot
+        self.accessibility = accessibility
+        self.automation = automation
+        self.execute = execute
+        self.stageManager = stageManager
+        self.wait = wait
     }
 
-    /// Applies a full preset — switches one space per display, handles Stage Manager.
-    /// Returns `true` if an error occurred (matches existing convention in SettingsViewModel).
-    @MainActor
-    static func applyPreset(_ focus: Focus) -> Bool {
-        let permissionHandler = PermissionHandler.shared
-        permissionHandler.checkAccessibilityPermission()
-
-        guard permissionHandler.hasAccessibilityPermission else {
-            Logger.shared.logWarning("Accessibility permission not granted — cannot switch spaces")
-            permissionHandler.handleSpaceSwitchError(
-                SpaceSwitchError.accessibilityNotGranted.localizedDescription
-            )
-            return true
-        }
-
-        // Group by displayID — last space per display wins
-        var spacesByDisplay: [String: Space] = [:]
-        for space in focus.spaces {
-            spacesByDisplay[space.displayID] = space
-        }
-
-        for (_, space) in spacesByDisplay {
-            do {
-                try switchToSpace(space)
-            } catch {
-                Logger.shared.logError("Failed to switch space: \(error.localizedDescription)")
-                permissionHandler.handleSpaceSwitchError(error.localizedDescription)
-                return true
+    static func targets(for spaces: [Space], in snapshot: ManagedDisplaySpacesSnapshot) throws -> [(Space, Int)] {
+        guard !spaces.isEmpty else { throw SpaceSwitchError.invalidTarget("empty preset") }
+        var displays = Set<String>()
+        return try spaces.map { saved in
+            guard let index = snapshot.allSpaces.firstIndex(where: {
+                $0.spaceID == saved.spaceID && $0.displayID == saved.displayID
+            }), displays.insert(saved.displayID).inserted else {
+                throw SpaceSwitchError.invalidTarget(saved.spaceID)
             }
-        }
-
-        applyStageManager(enabled: focus.stageManager)
-        return false
+            _ = try SpaceSwitchCommandFactory.command(forSpaceIndex: index)
+            return (snapshot.allSpaces[index], index)
+        }.sorted { $0.1 < $1.1 }
     }
 
-    /// Sets the Stage Manager state via `defaults write`.
-    static func applyStageManager(enabled: Bool) {
+    func applyPreset(_ focus: Focus, onlyInactive: Bool = false,
+                     isCurrent: @escaping @MainActor () -> Bool = { true }) async throws {
+        try await switchSpaces(focus.spaces, isCurrent: isCurrent)
+        guard isCurrent(), !Task.isCancelled else { throw CancellationError() }
+        if !onlyInactive { try stageManager(focus.stageManager) }
+    }
+
+    func switchToSpace(_ space: Space) async throws {
+        try await switchSpaces([space], isCurrent: { true })
+    }
+
+    private func switchSpaces(_ spaces: [Space], isCurrent: @escaping @MainActor () -> Bool) async throws {
+        operationRevision += 1
+        let revision = operationRevision
+        let callerIsCurrent = isCurrent
+        let isCurrent = { self.operationRevision == revision && callerIsCurrent() }
+        let initial = try await snapshot()
+        let targets = try Self.targets(for: spaces, in: initial)
+        guard isCurrent(), !Task.isCancelled else { throw CancellationError() }
+        if targets.contains(where: { initial.activeSpaceIDsByDisplay[$0.0.displayID] != $0.0.spaceID }) {
+            guard accessibility() else { throw SpaceSwitchError.accessibilityNotGranted }
+            let status = automation()
+            guard status == 0 else { throw SpaceSwitchError.automationNotGranted(status) }
+        }
+        for (target, _) in targets {
+            // Re-resolve after each transition; a display or Space can disappear during an await.
+            let current = try await snapshot()
+            guard let (freshTarget, index) = try Self.targets(for: [target], in: current).first else {
+                throw SpaceSwitchError.invalidTarget(target.spaceID)
+            }
+            guard isCurrent(), !Task.isCancelled else { throw CancellationError() }
+            if current.activeSpaceIDsByDisplay[freshTarget.displayID] == freshTarget.spaceID { continue }
+            try execute(SpaceSwitchCommandFactory.command(forSpaceIndex: index).appleScriptSource)
+            var reachedTarget = false
+            for _ in 0..<20 {
+                try await wait()
+                let updated = try await snapshot()
+                guard isCurrent(), !Task.isCancelled else { throw CancellationError() }
+                if updated.activeSpaceIDsByDisplay[freshTarget.displayID] == freshTarget.spaceID {
+                    reachedTarget = true
+                    break
+                }
+            }
+            guard reachedTarget else { throw SpaceSwitchError.transitionFailed(freshTarget.spaceID) }
+        }
+    }
+
+    static func executeScript(_ source: String) throws {
+        guard let script = NSAppleScript(source: source) else {
+            throw SpaceSwitchError.scriptFailed(code: -1, message: "Could not create AppleScript")
+        }
+        var error: NSDictionary?
+        script.executeAndReturnError(&error)
+        if let error {
+            let code = (error[NSAppleScript.errorNumber] as? NSNumber)?.intValue ?? -1
+            let message = error[NSAppleScript.errorMessage] as? String ?? "AppleScript failed"
+            throw SpaceSwitchError.scriptError(code: code, message: message)
+        }
+    }
+
+    static func applyStageManager(enabled: Bool) throws {
         let process = Process()
         process.executableURL = URL(fileURLWithPath: "/usr/bin/defaults")
         process.arguments = ["write", "com.apple.WindowManager", "GloballyEnabled", "-bool", enabled ? "true" : "false"]
-
-        do {
-            try process.run()
-            process.waitUntilExit()
-            Logger.shared.logInfo("Stage Manager set to \(enabled)")
-        } catch {
-            Logger.shared.logError("Failed to set Stage Manager: \(error.localizedDescription)")
-        }
+        try process.run()
+        process.waitUntilExit()
+        guard process.terminationStatus == 0 else { throw SpaceSwitchError.stageManagerFailed(Int(process.terminationStatus)) }
     }
 }

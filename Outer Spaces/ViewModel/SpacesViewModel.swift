@@ -1,68 +1,75 @@
-//
-//  SpacesViewModel.swift
-//  Outer Spaces
-//
-//  Created by Roberto Camargo on 24/11/23.
-//
-
+import Combine
 import Foundation
 import SwiftUI
 
 @MainActor
 class SpacesViewModel: ObservableObject {
-    let spaceObserver = SpaceObserver()
+    let spaceObserver: SpaceObserver
+    @Published private(set) var snapshot: ManagedDisplaySpacesSnapshot?
     @Published var desktopSpaces: [DesktopSpaces] = []
     @Published var allSpaces: [Space] = []
-
     static let shared = SpacesViewModel()
+    private let defaults: UserDefaults
+    private var observation: AnyCancellable?
 
-    init() {
+    init(observer: SpaceObserver? = nil, defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        spaceObserver = observer ?? SpaceObserver()
         loadSpaces()
+        observation = spaceObserver.$snapshot.sink { [weak self] value in
+            self?.accept(value)
+        }
+    }
+
+    @discardableResult
+    func refreshSnapshot() throws -> ManagedDisplaySpacesSnapshot {
+        _ = try spaceObserver.refresh()
+        guard let snapshot else { throw SpaceSwitchError.snapshotUnavailable }
+        return snapshot
     }
 
     func updateSystemSpaces() async -> Bool {
-        await spaceObserver.updateSpaceInformation()
+        do { _ = try refreshSnapshot(); return true }
+        catch { Logger.shared.logError("Space refresh failed: \(error.localizedDescription)"); return false }
+    }
 
-        let shouldUpdate = !allSpaces.elementsEqual(spaceObserver.allSpaces, by: { $0.spaceID == $1.spaceID })
-            || allSpaces.isEmpty
-
-        if shouldUpdate {
-            desktopSpaces = spaceObserver.spaces
-            allSpaces = spaceObserver.allSpaces
-            saveSpaces()
+    private func accept(_ value: ManagedDisplaySpacesSnapshot?) {
+        guard var value else { snapshot = nil; return }
+        // Preserve user-facing identity and names while accepting every live field.
+        value.allSpaces = value.allSpaces.map { fresh in
+            guard let previous = allSpaces.first(where: { $0.spaceID == fresh.spaceID }) else { return fresh }
+            return Space(id: previous.id, displayID: fresh.displayID, displayIndex: fresh.displayIndex,
+                         spaceID: fresh.spaceID, customName: previous.customName,
+                         spaceIndex: fresh.spaceIndex, isActive: fresh.isActive)
         }
-        return shouldUpdate
+        value.desktopSpaces = value.desktopSpaces.map { display in
+            DesktopSpaces(displayID: display.displayID, displayIndex: display.displayIndex,
+                          spaces: value.allSpaces.filter { $0.displayID == display.displayID })
+        }
+        let persistedFields: (Space) -> Space = { space in
+            var copy = space
+            copy.isActive = false
+            return copy
+        }
+        let layoutChanged = allSpaces.map(persistedFields) != value.allSpaces.map(persistedFields)
+        allSpaces = value.allSpaces
+        desktopSpaces = value.desktopSpaces
+        snapshot = value
+        if layoutChanged { saveSpaces() }
     }
 
     func loadSpaces() {
-        let defaults = UserDefaults.standard
-        if let savedData = defaults.data(forKey: Constants.StorageKeys.availableSpaces) {
-            let decoder = JSONDecoder()
-            do {
-                allSpaces = try decoder.decode([Space].self, from: savedData)
-                let displayIDs = Array(Set(allSpaces.map { $0.displayID }))
-                desktopSpaces = displayIDs.map { displayID in
-                    let spacesForDisplay = allSpaces.filter { $0.displayID == displayID }
-                    return DesktopSpaces(desktopSpaces: spacesForDisplay)
-                }
-
-            } catch {
-                Logger.shared.logError("Error decoding spaces: \(error)")
-            }
-        } else {
-            Logger.shared.logInfo("No saved spaces found")
-        }
+        guard let data = defaults.data(forKey: Constants.StorageKeys.availableSpaces) else { return }
+        do {
+            allSpaces = try JSONDecoder().decode([Space].self, from: data)
+            desktopSpaces = Dictionary(grouping: allSpaces, by: \.displayID).values
+                .map { DesktopSpaces(desktopSpaces: $0) }.sorted { $0.displayIndex < $1.displayIndex }
+        } catch { Logger.shared.logError("Error decoding spaces: \(error)") }
     }
 
     func saveSpaces() {
-        let encoder = JSONEncoder()
-        do {
-            let encodedData = try encoder.encode(allSpaces)
-            let defaults = UserDefaults.standard
-            defaults.set(encodedData, forKey: Constants.StorageKeys.availableSpaces)
-        } catch {
-            Logger.shared.logError("Error encoding spaces: \(error)")
-        }
+        do { defaults.set(try JSONEncoder().encode(allSpaces), forKey: Constants.StorageKeys.availableSpaces) }
+        catch { Logger.shared.logError("Error encoding spaces: \(error)") }
     }
 }
 

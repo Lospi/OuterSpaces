@@ -1,6 +1,136 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Only Desktop shortcuts 1–19 are supported." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Somente atalhos para as Mesas 1–19 são compatíveis."
+          }
+        }
+      }
+    },
+    "A preset target is unavailable. Refresh Spaces and edit the preset." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma mesa da predefinição está indisponível. Atualize as mesas e edite a predefinição."
+          }
+        }
+      }
+    },
+    "The current desktop layout could not be read." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível ler a disposição atual das mesas."
+          }
+        }
+      }
+    },
+    "Allow Outer Spaces in Privacy & Security → Accessibility." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permita o Outer Spaces em Privacidade e Segurança → Acessibilidade."
+          }
+        }
+      }
+    },
+    "Allow Outer Spaces to control System Events in Privacy & Security → Automation." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permita que o Outer Spaces controle o System Events em Privacidade e Segurança → Automação."
+          }
+        }
+      }
+    },
+    "The desktop did not change. Check the Mission Control keyboard shortcuts." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A mesa não mudou. Verifique os atalhos de teclado do Mission Control."
+          }
+        }
+      }
+    },
+    "Stage Manager could not be updated." : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível atualizar o Organizador Visual."
+          }
+        }
+      }
+    },
+    "Open Accessibility Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ajustes de Acessibilidade"
+          }
+        }
+      }
+    },
+    "Allow Automation" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permitir Automação"
+          }
+        }
+      }
+    },
+    "Open Keyboard Settings" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ajustes de Teclado"
+          }
+        }
+      }
+    },
+    "Focus status unavailable" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estado do Foco indisponível"
+          }
+        }
+      }
+    },
+    "Switch to Desktop 10" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternar para a Mesa 10"
+          }
+        }
+      }
+    },
+    "Switch to Desktop 11-19" : {
+      "localizations" : {
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alternar para as Mesas 11–19"
+          }
+        }
+      }
+    },
     "(%@)" : {
 
     },

@@ -28,7 +28,7 @@ enum SpaceSwitchCommandFactory {
     ]
 
     static func command(forSpaceIndex spaceIndex: Int) throws -> SpaceSwitchCommand {
-        guard spaceIndex >= 0,
+        guard (0...18).contains(spaceIndex),
               let keyCode = keyCodeByDigit[(spaceIndex + 1) % 10]
         else {
             throw SpaceSwitchError.invalidSpaceIndex

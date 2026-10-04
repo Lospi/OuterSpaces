@@ -1,69 +1,45 @@
 import Cocoa
 import Combine
-import Foundation
-import SwiftUI
 
-// Space observer with macOS private API integration
-// Note: This uses Swift concurrency, so the app's deployment target should be iOS 15+ or macOS 12+
-class SpaceObserver: ObservableObject {
-    private let workspace = NSWorkspace.shared
-    private let conn = _CGSDefaultConnection()
+@MainActor
+final class SpaceObserver: ObservableObject {
+    @Published private(set) var snapshot: ManagedDisplaySpacesSnapshot?
+    @Published private(set) var lastError: Error?
     private var cancellables = Set<AnyCancellable>()
-    private let logger = Logger.shared
-    
-    @Published var spaces: [DesktopSpaces] = []
-    @Published var allSpaces: [Space] = []
-    @Published var activeSpaceID: String?
-    @Published var isRefreshing: Bool = false
-    
-    init() {
-        setupObservers()
-    }
-    
-    private func setupObservers() {
-        NotificationCenter.default.publisher(for: NSWorkspace.activeSpaceDidChangeNotification)
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+    private let fetch: () throws -> [NSDictionary]
+
+    init(notificationCenter: NotificationCenter = NSWorkspace.shared.notificationCenter,
+         debounce: RunLoop.SchedulerTimeType.Stride = .milliseconds(300),
+         fetch: @escaping () throws -> [NSDictionary] = {
+             guard let displays = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection()) as? [NSDictionary] else {
+                 throw SpaceSwitchError.snapshotUnavailable
+             }
+             return displays
+         }) {
+        self.fetch = fetch
+        notificationCenter.publisher(for: NSWorkspace.activeSpaceDidChangeNotification)
+            .debounce(for: debounce, scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 Task { @MainActor in
-                    await self?.updateSpaceInformation()
+                    do { _ = try self?.refresh() }
+                    catch { Logger.shared.logError("Space refresh failed: \(error.localizedDescription)") }
                 }
             }
             .store(in: &cancellables)
     }
-    
-    @MainActor
-    func updateSpaceInformation() async {
-        isRefreshing = true
-        defer { isRefreshing = false }
-        
-        do {
-            let displays = try fetchDisplaySpaces()
-            let snapshot = ManagedDisplaySpacesParser.parse(displays)
 
-            allSpaces = snapshot.allSpaces
-            spaces = snapshot.desktopSpaces
-            activeSpaceID = snapshot.activeSpaceID
-            
-            // Log for debugging
-            logger.logInfo("Updated spaces: \(spaces.count) displays, \(allSpaces.count) total spaces")
-            for (i, display) in spaces.enumerated() {
-                logger.logInfo("Display \(i + 1) (\(display.displayID)): \(display.desktopSpaces.count) spaces")
-                for space in display.desktopSpaces {
-                    logger.logInfo("  - \(space.debugDescription)")
-                }
-            }
-            
+    @discardableResult
+    func refresh() throws -> ManagedDisplaySpacesSnapshot {
+        do {
+            let value = ManagedDisplaySpacesParser.parse(try fetch())
+            guard !value.activeSpaceIDsByDisplay.isEmpty else { throw SpaceSwitchError.snapshotUnavailable }
+            lastError = nil
+            snapshot = value
+            return value
         } catch {
-            logger.logError("Failed to update space information: \(error.localizedDescription)")
+            lastError = error
+            snapshot = nil
+            throw error
         }
-    }
-    
-    private func fetchDisplaySpaces() throws -> [NSDictionary] {
-        guard let displays = CGSCopyManagedDisplaySpaces(conn) as? [NSDictionary] else {
-            throw NSError(domain: "com.outerSpaces.error", code: 1, userInfo: [
-                NSLocalizedDescriptionKey: "Failed to get display spaces information"
-            ])
-        }
-        return displays
     }
 }

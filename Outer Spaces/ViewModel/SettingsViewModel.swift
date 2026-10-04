@@ -2,25 +2,36 @@ import Foundation
 
 @MainActor
 class SettingsViewModel {
-    var selectedFocusPresetId: UUID?
-    var errorMessage: String?
-
     static let shared = SettingsViewModel()
+    private let switcher: SpaceSwitcher
+    private let permissions: PermissionHandler
 
-    func updateSpacesOnScreen(focus: Focus) async throws -> Bool {
-        return applyPresetToScreen(focus: focus)
+    init(switcher: SpaceSwitcher? = nil, permissions: PermissionHandler? = nil) {
+        self.switcher = switcher ?? .shared
+        self.permissions = permissions ?? .shared
     }
 
-    func updateSpacesOnScreen(focus: Focus) -> Bool {
-        return applyPresetToScreen(focus: focus)
-    }
-
-    private func applyPresetToScreen(focus: Focus) -> Bool {
-        Logger.shared.logInfo("Updating spaces on screen for focus: \(focus.name)")
-        let didError = SpaceSwitcher.applyPreset(focus)
-        if didError {
-            errorMessage = PermissionHandler.shared.lastError
+    func updateSpacesOnScreen(focus: Focus, onlyInactive: Bool = false,
+                              isCurrent: @escaping @MainActor () -> Bool = { true }) async throws {
+        do {
+            try await switcher.applyPreset(focus, onlyInactive: onlyInactive, isCurrent: isCurrent)
+            permissions.clearError()
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            permissions.handleSpaceSwitchError(error)
+            throw error
         }
-        return didError
+    }
+
+    func switchToSpace(_ space: Space, stageManager: Bool?) async throws {
+        do {
+            try await switcher.switchToSpace(space)
+            if let stageManager { try SpaceSwitcher.applyStageManager(enabled: stageManager) }
+            permissions.clearError()
+        } catch {
+            permissions.handleSpaceSwitchError(error)
+            throw error
+        }
     }
 }
