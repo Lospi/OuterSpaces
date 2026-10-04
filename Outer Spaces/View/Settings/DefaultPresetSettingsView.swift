@@ -18,11 +18,7 @@ struct DefaultPresetSettingsView: View {
                     get: { focusStatusViewModel.defaultPresetID },
                     set: { newValue in
                         focusStatusViewModel.setDefaultPreset(id: newValue)
-                        if let presetID = newValue {
-                            UserDefaults.standard.set(presetID.uuidString, forKey: Constants.StorageKeys.defaultPresetID)
-                        } else {
-                            UserDefaults.standard.removeObject(forKey: Constants.StorageKeys.defaultPresetID)
-                        }
+
                     }
                 )) {
                     Text("None").tag(nil as UUID?)
@@ -56,7 +52,7 @@ struct DefaultPresetSettingsView: View {
                             Circle()
                                 .fill(Color.secondary)
                                 .frame(width: 8, height: 8)
-                            Text("No focus active")
+                            Text(focusStatusViewModel.activity == .unknown ? "Focus status unavailable" : "No focus active")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -64,14 +60,7 @@ struct DefaultPresetSettingsView: View {
                 }
             }
         }
-        .onAppear {
-            // Load saved default preset ID
-            if let savedIDString = UserDefaults.standard.string(forKey: Constants.StorageKeys.defaultPresetID),
-               let savedID = UUID(uuidString: savedIDString)
-            {
-                focusStatusViewModel.setDefaultPreset(id: savedID)
-            }
-        }
+
     }
 }
 

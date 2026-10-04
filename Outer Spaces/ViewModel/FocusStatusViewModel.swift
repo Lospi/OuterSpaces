@@ -1,89 +1,159 @@
-//
-//  FocusStatusViewModel.swift
-//  Outer Spaces
-//
-//  Created by Roberto Camargo on 25/03/25.
-//
-
+import AppIntents
 import Intents
 import SwiftUI
+import UserNotifications
+
+enum FocusActivity: Equatable {
+    case active, inactive, unknown
+    static func resolve(authorized: Bool, focused: Bool?) -> Self {
+        guard authorized, let focused else { return .unknown }
+        return focused ? .active : .inactive
+    }
+}
+
+enum FocusFilterState: Equatable {
+    case unknown, unconfigured, preset(UUID)
+    var presetID: UUID? {
+        if case .preset(let id) = self { return id }
+        return nil
+    }
+}
 
 @MainActor
 class FocusStatusViewModel: ObservableObject {
-    static let shared = FocusStatusViewModel()
-
-    @Published var isFocusActive = false
-    @Published var defaultPresetID: UUID? = nil
+    static let shared = FocusStatusViewModel(startsAutomatically: !Constants.isRunningTests)
+    @Published private(set) var activity: FocusActivity = .unknown
+    @Published private(set) var filterState: FocusFilterState = .unknown
+    @Published private(set) var defaultPresetID: UUID?
     @Published var focusAuthorizationStatus: INFocusStatusAuthorizationStatus = .notDetermined
+    var activePresetID: UUID? { filterState.presetID }
+    var isFocusActive: Bool { activePresetID != nil || activity == .active }
+    private(set) var filterRevision = 0
+    private var refreshID: UUID?
+    private var lastDefaultAttempt: UUID?
+    private var focusTimer: Timer?
+    private let defaults: UserDefaults
+    private let status: @MainActor () -> (INFocusStatusAuthorizationStatus, Bool?)
+    private let currentFilter: @MainActor () async throws -> UUID?
+    private let presets: @MainActor () -> [Focus]
+    private let apply: @MainActor (Focus, @escaping @MainActor () -> Bool) async throws -> Void
 
-    var focusTimer: Timer?
-
-    private init() {
-        focusAuthorizationStatus = INFocusStatusCenter.default.authorizationStatus
-        updateCurrentFocusState()
-        startFocusTimer()
-    }
-
-    deinit {
-        focusTimer?.invalidate()
-    }
-
-    /// Updates the current focus state and triggers preset changes if needed
-    private func updateCurrentFocusState() {
-        let focusStatus = INFocusStatusCenter.default
-
-        let authorized = focusStatus.authorizationStatus == .authorized
-
-        guard authorized else {
-            isFocusActive = false
-            applyDefaultPresetIfNeeded()
-            return
+    init(defaults: UserDefaults = .standard, startsAutomatically: Bool = true,
+         status: @escaping @MainActor () -> (INFocusStatusAuthorizationStatus, Bool?) = {
+             let center = INFocusStatusCenter.default
+             return (center.authorizationStatus, center.focusStatus.isFocused)
+         },
+         currentFilter: @escaping @MainActor () async throws -> UUID? = {
+             try await SpacesFocusFilter.current.spaceFilterPreset?.id
+         },
+         presets: @escaping @MainActor () -> [Focus] = { FocusViewModel.shared.availableFocusPresets },
+         apply: @escaping @MainActor (Focus, @escaping @MainActor () -> Bool) async throws -> Void = { focus, isCurrent in
+             try await SettingsViewModel.shared.updateSpacesOnScreen(focus: focus, isCurrent: isCurrent)
+         }) {
+        self.defaults = defaults
+        self.status = status
+        self.currentFilter = currentFilter
+        self.presets = presets
+        self.apply = apply
+        defaultPresetID = defaults.string(forKey: Constants.StorageKeys.defaultPresetID).flatMap(UUID.init(uuidString:))
+        if startsAutomatically {
+            startFocusTimer()
+            Task { await refreshCurrentFilter() }
         }
+    }
 
-        let isFocusActive = focusStatus.focusStatus.isFocused ?? false
-        self.isFocusActive = isFocusActive
+    deinit { focusTimer?.invalidate() }
 
-        if !isFocusActive {
-            applyDefaultPresetIfNeeded()
+    func refreshCurrentFilter() async {
+        let request = UUID()
+        refreshID = request
+        let revision = filterRevision
+        do {
+            let id = try await currentFilter()
+            guard refreshID == request, filterRevision == revision else { return }
+            setFilterState(id.map(FocusFilterState.preset) ?? .unconfigured)
+            await refreshActivity()
+        } catch {
+            guard refreshID == request, filterRevision == revision else { return }
+            setFilterState(.unknown)
+            Logger.shared.logError("Could not read current Focus filter: \(error)")
         }
     }
 
-    /// Sets the default preset ID to use when no focus is active
+    func receiveFilter(presetID: UUID?) async throws {
+        // Every callback invalidates in-flight configuration reads, even duplicate callbacks.
+        filterRevision += 1
+        refreshID = nil
+        setFilterState(presetID.map(FocusFilterState.preset) ?? .unconfigured)
+        guard let presetID else { await refreshActivity(); return }
+        guard let focus = presets().first(where: { $0.id == presetID }) else {
+            let error = SpaceSwitchError.invalidTarget(presetID.uuidString)
+            PermissionHandler.shared.handleSpaceSwitchError(error)
+            throw error
+        }
+        let revision = filterRevision
+        try await apply(focus, { [weak self] in
+            self?.filterRevision == revision && self?.activePresetID == presetID
+        })
+    }
+
+    private func setFilterState(_ state: FocusFilterState) {
+        if filterState != state {
+            filterRevision += 1
+            lastDefaultAttempt = nil
+            filterState = state
+        }
+    }
+
+    func refreshActivity() async {
+        let (authorization, focused) = status()
+        focusAuthorizationStatus = authorization
+        let next = FocusActivity.resolve(authorized: authorization == .authorized, focused: focused)
+        if activity != next {
+            activity = next
+            if next != .inactive { lastDefaultAttempt = nil }
+        }
+        await applyDefaultPresetIfNeeded()
+    }
+
     func setDefaultPreset(id: UUID?) {
         defaultPresetID = id
-
-        if !isFocusActive {
-            applyDefaultPresetIfNeeded()
-        }
+        defaults.set(id?.uuidString, forKey: Constants.StorageKeys.defaultPresetID)
+        lastDefaultAttempt = nil
+        Task { await applyDefaultPresetIfNeeded() }
     }
 
-    /// Applies the default preset if one is set and no focus is active
-    private func applyDefaultPresetIfNeeded() {
-        guard let presetID = defaultPresetID, !isFocusActive else {
-            return
-        }
-
-        applyPreset(id: presetID)
+    private func applyDefaultPresetIfNeeded() async {
+        guard activity == .inactive, filterState == .unconfigured,
+              let id = defaultPresetID, lastDefaultAttempt != id,
+              let preset = presets().first(where: { $0.id == id }) else { return }
+        lastDefaultAttempt = id
+        let revision = filterRevision
+        do {
+            try await apply(preset, { [weak self] in
+                guard let self else { return false }
+                return self.filterRevision == revision && self.activity == .inactive
+                    && self.filterState == .unconfigured && self.defaultPresetID == id
+            })
+        } catch is CancellationError {
+            Logger.shared.logInfo("Default preset cancelled after Focus changed")
+        } catch { Logger.shared.logError("Default preset failed: \(error)") }
     }
 
-    /// Applies a specific preset by ID
-    private func applyPreset(id: UUID) {
-        if let preset = FocusViewModel.shared.availableFocusPresets.first(where: { $0.id == id }) {
-            let _ = SettingsViewModel.shared.updateSpacesOnScreen(focus: preset)
-        }
-    }
-
-    /// Request authorization to access focus status if needed
     func requestFocusAuthorization() {
-        INFocusStatusCenter.default.requestAuthorization { [weak self] status in
-            Task { @MainActor in
-                self?.focusAuthorizationStatus = status
-                if status == .authorized {
-                    self?.updateCurrentFocusState()
-                }
-            }
+        INFocusStatusCenter.default.requestAuthorization { [weak self] _ in
+            Task { @MainActor in await self?.refreshActivity() }
         }
     }
+
+    func startFocusTimer() {
+        stopFocusTimer()
+        focusTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            Task { @MainActor in await self?.refreshActivity() }
+        }
+    }
+
+    func stopFocusTimer() { focusTimer?.invalidate(); focusTimer = nil }
 }
 
 extension FocusStatusViewModel {
@@ -126,24 +196,4 @@ extension FocusStatusViewModel {
         }
     }
 
-    func startFocusTimer() {
-        stopFocusTimer()
-        focusTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                guard let self else { return }
-                let currentStatus = INFocusStatusCenter.default.authorizationStatus
-                if currentStatus != self.focusAuthorizationStatus {
-                    self.focusAuthorizationStatus = currentStatus
-                }
-                if INFocusStatusCenter.default.focusStatus.isFocused != self.isFocusActive {
-                    self.updateCurrentFocusState()
-                }
-            }
-        }
-    }
-
-    func stopFocusTimer() {
-        focusTimer?.invalidate()
-        focusTimer = nil
-    }
 }

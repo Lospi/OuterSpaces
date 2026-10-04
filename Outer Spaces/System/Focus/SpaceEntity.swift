@@ -22,13 +22,13 @@ struct SpaceAppEntity: AppEntity {
 
 struct SpaceAppEntityQuery: EntityQuery {
     func suggestedEntities() async throws -> [SpaceAppEntity] {
-        return FocusViewModel.shared.availableFocusPresets.map {
+        return await FocusViewModel.shared.availableFocusPresets.map {
             SpaceAppEntity(id: $0.id, title: $0.name)
         }
     }
 
     func entities(for identifiers: [UUID]) async throws -> [SpaceAppEntity] {
-        return FocusViewModel.shared.availableFocusPresets
+        return await FocusViewModel.shared.availableFocusPresets
             .filter { identifiers.contains($0.id) }
             .map { SpaceAppEntity(id: $0.id, title: $0.name) }
     }
