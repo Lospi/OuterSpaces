@@ -69,7 +69,11 @@ This README file was heavily inspired by [Reminders MenuBar repository](https://
 
 ## Building and validating Focus switching
 
-Use the `Outer Spaces` scheme with a stable **Apple Development** signing identity
+Use a stable build location outside temporary directories, and keep the signing identity consistent with the app whose privacy permissions you granted. During acceptance, TCC logged a stored Developer ID requirement rejecting an Apple Development-signed build with the same bundle ID. An off/on toggle retained that old requirement. The same source signed with the project's Developer ID identity was recognized as authorized. This reproduces a local signing mismatch, not necessarily the historical cause of issue #8.
+
+If using development signing, explicitly grant that exact development app after removing its stale entry through System Settings. If testing against the existing distributed app's grant, use the project's matching Developer ID identity. Do not broadly reset privacy databases. Register and launch the exact stable app copy before granting permissions; TCC cannot attach a valid requirement when Launch Services cannot resolve the bundle.
+
+For a separate development permission setup, use the `Outer Spaces` scheme with a stable **Apple Development** signing identity
 and your own development team. Keep the same bundle identifier and build location
 between runs. A build with code signing disabled checks compilation only; it does
 not validate macOS privacy permissions or Focus-filter registration.
