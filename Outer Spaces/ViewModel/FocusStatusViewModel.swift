@@ -32,6 +32,8 @@ class FocusStatusViewModel: ObservableObject {
     private var refreshID: UUID?
     private var lastDefaultAttempt: UUID?
     private var focusTimer: Timer?
+    private var focusPollInFlight = false
+    private var lastMappedApplicationID: UUID?
     private let defaults: UserDefaults
     private let status: @MainActor () -> (INFocusStatusAuthorizationStatus, Bool?)
     private let currentFilter: @MainActor () async throws -> UUID?
@@ -58,25 +60,29 @@ class FocusStatusViewModel: ObservableObject {
         defaultPresetID = defaults.string(forKey: Constants.StorageKeys.defaultPresetID).flatMap(UUID.init(uuidString:))
         if startsAutomatically {
             startFocusTimer()
-            Task { await refreshCurrentFilter() }
+            Task { await pollFocus() }
         }
     }
 
     deinit { focusTimer?.invalidate() }
 
-    func refreshCurrentFilter() async {
+    @discardableResult
+    func refreshCurrentFilter() async -> Bool {
         let request = UUID()
         refreshID = request
         let revision = filterRevision
         do {
             let id = try await currentFilter()
-            guard refreshID == request, filterRevision == revision else { return }
+            guard refreshID == request, filterRevision == revision else { return false }
             setFilterState(id.map(FocusFilterState.preset) ?? .unconfigured)
+            if id == nil { lastMappedApplicationID = nil }
             await refreshActivity()
+            return true
         } catch {
-            guard refreshID == request, filterRevision == revision else { return }
+            guard refreshID == request, filterRevision == revision else { return false }
             setFilterState(.unknown)
             Logger.shared.logError("Could not read current Focus filter: \(error)")
+            return false
         }
     }
 
@@ -85,7 +91,12 @@ class FocusStatusViewModel: ObservableObject {
         filterRevision += 1
         refreshID = nil
         setFilterState(presetID.map(FocusFilterState.preset) ?? .unconfigured)
+        lastMappedApplicationID = presetID
         guard let presetID else { await refreshActivity(); return }
+        try await applyMappedPreset(presetID)
+    }
+
+    private func applyMappedPreset(_ presetID: UUID) async throws {
         guard let focus = presets().first(where: { $0.id == presetID }) else {
             let error = SpaceSwitchError.invalidTarget(presetID.uuidString)
             PermissionHandler.shared.handleSpaceSwitchError(error)
@@ -95,6 +106,24 @@ class FocusStatusViewModel: ObservableObject {
         try await apply(focus, { [weak self] in
             self?.filterRevision == revision && self?.activePresetID == presetID
         })
+    }
+
+    /// Reconcile with the supported current-filter API when a system callback is missed.
+    /// A failed switch is attempted once per observed mapping, never on every poll.
+    func pollFocus() async {
+        guard !focusPollInFlight else { return }
+        focusPollInFlight = true
+        defer { focusPollInFlight = false }
+        guard await refreshCurrentFilter(), let presetID = activePresetID,
+              lastMappedApplicationID != presetID else { return }
+        lastMappedApplicationID = presetID
+        do {
+            try await applyMappedPreset(presetID)
+        } catch is CancellationError {
+            Logger.shared.logInfo("Recovered Focus application cancelled after Focus changed")
+        } catch {
+            Logger.shared.logError("Recovered Focus application failed: \(error)")
+        }
     }
 
     private func setFilterState(_ state: FocusFilterState) {
@@ -149,7 +178,7 @@ class FocusStatusViewModel: ObservableObject {
     func startFocusTimer() {
         stopFocusTimer()
         focusTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            Task { @MainActor in await self?.refreshActivity() }
+            Task { @MainActor in await self?.pollFocus() }
         }
     }
 

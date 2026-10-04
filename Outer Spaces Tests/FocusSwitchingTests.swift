@@ -199,6 +199,88 @@ struct FocusSwitchingTests {
         #expect(model.activePresetID == preset.id)
     }
 
+    @Test("Polling recovers missed activation and deactivation without repeated switching")
+    func missedCallbacks() async throws {
+        let suite = "FocusSwitchingTests-\(UUID())"
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let preset = Focus(name: "Work", spaces: snapshot().allSpaces, stageManager: false)
+        var current: UUID? = preset.id
+        var applications = 0
+        let model = FocusStatusViewModel(defaults: defaults, startsAutomatically: false,
+            status: { (.denied, nil) }, currentFilter: { current }, presets: { [preset] },
+            apply: { _, _ in applications += 1 })
+        await model.pollFocus()
+        let revision = model.filterRevision
+        await model.pollFocus()
+        #expect(model.activePresetID == preset.id)
+        #expect(applications == 1)
+        #expect(model.filterRevision == revision)
+        current = nil
+        await model.pollFocus()
+        #expect(model.filterState == .unconfigured)
+        current = preset.id
+        await model.pollFocus()
+        #expect(applications == 2)
+    }
+
+    @Test("Polling does not repeat a callback's application or a failed switch", arguments: [true, false])
+    func pollingDoesNotRetry(callbackDelivered: Bool) async throws {
+        let suite = "FocusSwitchingTests-\(UUID())"
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let preset = Focus(name: "Work", spaces: snapshot().allSpaces, stageManager: false)
+        var applications = 0
+        var readFails = false
+        let model = FocusStatusViewModel(defaults: defaults, startsAutomatically: false,
+            status: { (.denied, nil) }, currentFilter: {
+                if readFails { throw CancellationError() }
+                return preset.id
+            }, presets: { [preset] }, apply: { _, _ in
+                applications += 1
+                throw SpaceSwitchError.accessibilityNotGranted
+            })
+        if callbackDelivered {
+            await #expect(throws: SpaceSwitchError.accessibilityNotGranted) {
+                try await model.receiveFilter(presetID: preset.id)
+            }
+        } else {
+            await model.pollFocus()
+        }
+        await model.pollFocus()
+        readFails = true
+        await model.pollFocus()
+        #expect(model.filterState == .unknown)
+        readFails = false
+        await model.pollFocus()
+        #expect(applications == 1)
+    }
+
+    @Test("Concurrent polls coalesce and a late poll cannot undo a callback")
+    func overlappingPolls() async throws {
+        let suite = "FocusSwitchingTests-\(UUID())"
+        let defaults = try #require(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let preset = Focus(name: "Work", spaces: snapshot().allSpaces, stageManager: false)
+        var continuation: CheckedContinuation<UUID?, Never>?
+        var reads = 0
+        var applications = 0
+        let model = FocusStatusViewModel(defaults: defaults, startsAutomatically: false,
+            status: { (.authorized, true) }, currentFilter: {
+                reads += 1
+                return await withCheckedContinuation { continuation = $0 }
+            }, presets: { [preset] }, apply: { _, _ in applications += 1 })
+        let poll = Task { await model.pollFocus() }
+        while continuation == nil { await Task.yield() }
+        await model.pollFocus()
+        try await model.receiveFilter(presetID: preset.id)
+        continuation?.resume(returning: nil)
+        await poll.value
+        #expect(reads == 1)
+        #expect(applications == 1)
+        #expect(model.activePresetID == preset.id)
+    }
+
     @Test("Active-only snapshots update the view model without replacing UI identity")
     func activeSnapshots() throws {
         let suite = "FocusSwitchingTests-\(UUID())"
