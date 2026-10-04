@@ -1,6 +1,106 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+  "Automatically return to Focus Spaces": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Voltar automaticamente às mesas do Foco"
+        }
+      }
+    }
+  },
+  "Return after %lld minutes": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Voltar após %lld minutos"
+        }
+      }
+    }
+  },
+  "Return Now": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Voltar agora"
+        }
+      }
+    }
+  },
+  "Pause for This Focus": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Pausar neste Foco"
+        }
+      }
+    }
+  },
+  "Resume": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Retomar"
+        }
+      }
+    }
+  },
+  "On Focus Spaces": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Nas mesas do Foco"
+        }
+      }
+    }
+  },
+  "Returning soon": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Retornando em breve"
+        }
+      }
+    }
+  },
+  "Returning…": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Retornando…"
+        }
+      }
+    }
+  },
+  "Automatic return paused": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Retorno automático pausado"
+        }
+      }
+    }
+  },
+  "Waiting for Focus Spaces": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "Aguardando as mesas do Foco"
+        }
+      }
+    }
+  },
     "Only Desktop shortcuts 1–19 are supported." : {
       "localizations" : {
         "pt-BR" : {

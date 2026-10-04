@@ -106,4 +106,13 @@ class FocusViewModel: ObservableObject {
     func doesFocusHasSpace(space: Space) -> Bool {
         return selectedFocusPreset?.spaces.contains(space) ?? false
     }
+
+    func updateAutoReturn(_ settings: AutoReturnSettings) {
+        guard var selected = selectedFocusPreset,
+              let index = availableFocusPresets.firstIndex(where: { $0.id == selected.id }) else { return }
+        selected.autoReturn = settings
+        selectedFocusPreset = selected
+        availableFocusPresets[index].autoReturn = settings
+        saveFocusPresets()
+    }
 }

@@ -97,3 +97,14 @@ switching and Focus dependencies do not send keystrokes or change real Focus mod
 Signed runtime checks are still required for permission recovery, shortcut mappings,
 fullscreen desktops, and multiple displays. Issue #8's original signing/TCC cause
 must not be considered reproduced solely because an unsigned build or unit test passes.
+
+
+### Automatic return to Focus Spaces
+
+Edit a preset in the menu and enable **Automatically return to Focus Spaces**. Choose a whole-minute delay from 1–60 (default: five). Existing presets stay disabled until opted in. Assign the preset to a macOS Focus filter to activate automatic return; selecting it in the editor alone does not activate it.
+
+Leaving any configured display starts one deadline, visible beside the menu-bar icon and in the menu. Further departures do not extend it. Returning all displays manually cancels it. **Return Now** switches only displays still away. **Pause for This Focus** survives duplicate filter callbacks and preset edits; **Resume** starts a full new delay if still away. A different mapped preset or filter deactivation clears the pause. Two Focus modes using the same preset are indistinguishable through the available filter configuration.
+
+Missing targets/displays suspend return. Deleting or disabling the preset cancels it. Target/delay edits start a fresh deadline when eligible. Sleep cancels pending work; wake and launch reload the filter and Spaces before starting a fresh delay. Countdown and temporary pause are never persisted. A failed return surfaces an error and pauses retries until Resume.
+
+For signed acceptance, use a valid disposable preset with a one-minute delay. Verify departures, additional switches without extending the deadline, manual return cancellation, Return Now, pause/resume, target edits/deletion, filter changes, sleep/wake, and actual return after expiry. Repeat with fullscreen and multiple displays. Confirm a denied permission or disabled shortcut produces an error and no retry loop. Restore any test configuration afterward. Automated virtual-time tests validate controller behavior; they do not establish macOS permission or shortcut acceptance.

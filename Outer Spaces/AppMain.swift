@@ -10,6 +10,8 @@ struct OuterSpacesApp: App {
     @StateObject var spacesViewModel = SpacesViewModel.shared
     @StateObject var focusStatusViewModel = FocusStatusViewModel.shared
 
+    @ObservedObject private var returnController = FocusReturnCoordinator.shared.controller
+
     private let updaterController = SPUStandardUpdaterController(
         startingUpdater: !Constants.isRunningTests,
         updaterDelegate: nil,
@@ -30,9 +32,17 @@ struct OuterSpacesApp: App {
             HowToUseView(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel)
         }
 
-        MenuBarExtra("Outer Spaces", systemImage: SFSymbol.displayAndArrowDown.rawValue) {
-            AppMenuBar(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel, focusStatusViewModel: focusStatusViewModel)
+        MenuBarExtra {
+            AppMenuBar(focusViewModel: focusViewModel, spacesViewModel: spacesViewModel, focusStatusViewModel: focusStatusViewModel, returnController: returnController)
                 .openSettingsAccess()
+        }
+        label: {
+            HStack {
+                Image(systemSymbol: .displayAndArrowDown)
+                if let countdown = returnController.countdownText {
+                    Text(countdown).monospacedDigit()
+                }
+            }
         }
         .menuBarExtraStyle(.window)
     }
