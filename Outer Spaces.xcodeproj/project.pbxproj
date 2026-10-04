@@ -47,6 +47,11 @@
 		AABB00012D000002000B6D85 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00012D000001000B6D85 /* Logger.swift */; };
 		AABB00022D000003000B6D85 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00022D000004000B6D85 /* Constants.swift */; };
 		A53F15BEF4548DE1B2B3C022 /* FocusSwitchingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969EEB3E2B26D4001A08F40 /* FocusSwitchingTests.swift */; };
+		B39E92844A04FFD80E66B5AD /* AutoReturnSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E1C64C1DB72B98CD3B2839 /* AutoReturnSettings.swift */; };
+		E7F2CA032056DF867013258D /* FocusReturnController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA0F48E7ED2F01E7DEC25C1 /* FocusReturnController.swift */; };
+		F1C06F05942237E933F410CC /* FocusReturnCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD0DE6BDD5FCB26758526ED1 /* FocusReturnCoordinator.swift */; };
+		043513954C77E90B633CAB0F /* FocusReturnControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB9ED71EFF32C526AE572BF /* FocusReturnControls.swift */; };
+		950B60C4A4CC8F694F082C23 /* FocusReturnTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF407FBA184BCEEFF9006FF /* FocusReturnTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -115,6 +120,11 @@
 		AABB00012D000001000B6D85 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		AABB00022D000004000B6D85 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6969EEB3E2B26D4001A08F40 /* FocusSwitchingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSwitchingTests.swift"; sourceTree = "<group>"; };
+		A8E1C64C1DB72B98CD3B2839 /* AutoReturnSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoReturnSettings.swift"; sourceTree = "<group>"; };
+		9EA0F48E7ED2F01E7DEC25C1 /* FocusReturnController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusReturnController.swift"; sourceTree = "<group>"; };
+		DD0DE6BDD5FCB26758526ED1 /* FocusReturnCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusReturnCoordinator.swift"; sourceTree = "<group>"; };
+		1EB9ED71EFF32C526AE572BF /* FocusReturnControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusReturnControls.swift"; sourceTree = "<group>"; };
+		AEF407FBA184BCEEFF9006FF /* FocusReturnTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusReturnTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +179,8 @@
 		0742F4A32B10445A00B95465 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DD0DE6BDD5FCB26758526ED1 /* FocusReturnCoordinator.swift */,
+				9EA0F48E7ED2F01E7DEC25C1 /* FocusReturnController.swift */,
 				07C824942D92FE7F005C5B48 /* FocusStatusViewModel.swift */,
 				0742F4A42B10447700B95465 /* FocusViewModel.swift */,
 				0742F4A62B1191E500B95465 /* SpacesViewModel.swift */,
@@ -235,6 +247,7 @@
 		07C824F82D9336DC005C5B48 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				1EB9ED71EFF32C526AE572BF /* FocusReturnControls.swift */,
 				07C824FD2D93378A005C5B48 /* Utilities.swift */,
 				07C824FB2D933762005C5B48 /* SpaceComponents.swift */,
 				07C824F92D933736005C5B48 /* FocusComponents.swift */,
@@ -289,6 +302,7 @@
 		07FEE3372B07B8ED00419E50 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A8E1C64C1DB72B98CD3B2839 /* AutoReturnSettings.swift */,
 				07FEE32D2B07B2EA00419E50 /* Space.swift */,
 				07FEE3382B07E53400419E50 /* DesktopSpaces.swift */,
 				076ED5842B0FED2D005931DB /* Focus.swift */,
@@ -300,6 +314,7 @@
 		AABC00102F200010000B6D85 /* Outer Spaces Tests */ = {
 			isa = PBXGroup;
 			children = (
+				AEF407FBA184BCEEFF9006FF /* FocusReturnTests.swift */,
 				6969EEB3E2B26D4001A08F40 /* FocusSwitchingTests.swift */,
 				AABC00022F200002000B6D85 /* ModelTests.swift */,
 				AABC00042F200004000B6D85 /* ManagedDisplaySpacesParserTests.swift */,
@@ -435,6 +450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				950B60C4A4CC8F694F082C23 /* FocusReturnTests.swift in Sources */,
 				A53F15BEF4548DE1B2B3C022 /* FocusSwitchingTests.swift in Sources */,
 				AABC00012F200001000B6D85 /* ModelTests.swift in Sources */,
 				AABC00032F200003000B6D85 /* ManagedDisplaySpacesParserTests.swift in Sources */,
@@ -446,6 +462,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043513954C77E90B633CAB0F /* FocusReturnControls.swift in Sources */,
+				F1C06F05942237E933F410CC /* FocusReturnCoordinator.swift in Sources */,
+				E7F2CA032056DF867013258D /* FocusReturnController.swift in Sources */,
+				B39E92844A04FFD80E66B5AD /* AutoReturnSettings.swift in Sources */,
 				076ED5852B0FED2D005931DB /* Focus.swift in Sources */,
 				07C824952D92FE85005C5B48 /* FocusStatusViewModel.swift in Sources */,
 				073BE5962B07AD3700B23112 /* AppMain.swift in Sources */,

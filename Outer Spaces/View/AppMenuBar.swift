@@ -17,6 +17,7 @@ struct AppMenuBar: View {
     @StateObject var focusViewModel: FocusViewModel
     @StateObject var spacesViewModel: SpacesViewModel
     @StateObject var focusStatusViewModel: FocusStatusViewModel
+    @ObservedObject var returnController: FocusReturnController
         
     // MARK: - State
 
@@ -92,6 +93,8 @@ struct AppMenuBar: View {
         VStack(spacing: 16) {
             headerBar
                 
+            FocusReturnStatusView(controller: returnController)
+
             focusStatusBar
                 
             presetSelectionBar
@@ -251,6 +254,7 @@ struct AppMenuBar: View {
             }
                 
             if focusViewModel.editingFocus, let selectedPreset = focusViewModel.selectedFocusPreset {
+                AutoReturnPresetControls(focusViewModel: focusViewModel)
                 HStack {
                     Image(systemSymbol: .infoCircle)
                         .font(.caption)
