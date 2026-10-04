@@ -69,7 +69,11 @@ This README file was heavily inspired by [Reminders MenuBar repository](https://
 
 ## Building and validating Focus switching
 
-Use the `Outer Spaces` scheme with a stable **Apple Development** signing identity
+Use a stable build location outside temporary directories, and keep the signing identity consistent with the app whose privacy permissions you granted. During acceptance, TCC logged a stored Developer ID requirement rejecting an Apple Development-signed build with the same bundle ID. An off/on toggle retained that old requirement. The same source signed with the project's Developer ID identity was recognized as authorized. This reproduces a local signing mismatch, not necessarily the historical cause of issue #8.
+
+If using development signing, explicitly grant that exact development app after removing its stale entry through System Settings. If testing against the existing distributed app's grant, use the project's matching Developer ID identity. Do not broadly reset privacy databases. Register and launch the exact stable app copy before granting permissions; TCC cannot attach a valid requirement when Launch Services cannot resolve the bundle.
+
+For a separate development permission setup, use the `Outer Spaces` scheme with a stable **Apple Development** signing identity
 and your own development team. Keep the same bundle identifier and build location
 between runs. A build with code signing disabled checks compilation only; it does
 not validate macOS privacy permissions or Focus-filter registration.
@@ -108,3 +112,9 @@ Leaving any configured display starts one deadline, visible beside the menu-bar 
 Missing targets/displays suspend return. Deleting or disabling the preset cancels it. Target/delay edits start a fresh deadline when eligible. Sleep cancels pending work; wake and launch reload the filter and Spaces before starting a fresh delay. Countdown and temporary pause are never persisted. A failed return surfaces an error and pauses retries until Resume.
 
 For signed acceptance, use a valid disposable preset with a one-minute delay. Verify departures, additional switches without extending the deadline, manual return cancellation, Return Now, pause/resume, target edits/deletion, filter changes, sleep/wake, and actual return after expiry. Repeat with fullscreen and multiple displays. Confirm a denied permission or disabled shortcut produces an error and no retry loop. Restore any test configuration afterward. Automated virtual-time tests validate controller behavior; they do not establish macOS permission or shortcut acceptance.
+
+### Recovery from missed Focus callbacks
+
+While running, Outer Spaces reconciles its mapped preset once per second using Apple's [`SetFocusFilterIntent.current`](https://developer.apple.com/documentation/appintents/setfocusfilterintent/current) API. This also runs at startup. Overlapping polls are coalesced, and a newer filter callback invalidates an older read. An unchanged mapping does not reapply the preset or reset its automatic-return deadline/pause. Failed applications are not retried by polling until the observed mapping changes or deactivates.
+
+During signed acceptance on macOS 27.2 (26B5091g), the Focus daemon found the correct app but rejected its App Intents ApplicationService connection with POSIX error 1 (`Operation not permitted`). Reading the current filter remained functional. Reconciliation recovers this missed delivery without changing system permissions; it does not repair the OS connection itself. A failed configuration read remains unknown and never activates the default preset.

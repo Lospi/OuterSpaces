@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+  "System Events could not be found.": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "O System Events não foi encontrado."
+        }
+      }
+    }
+  },
+  "Automation preflight failed.": {
+    "localizations": {
+      "pt-BR": {
+        "stringUnit": {
+          "state": "translated",
+          "value": "A verificação de automação falhou."
+        }
+      }
+    }
+  },
   "Automatically return to Focus Spaces": {
     "localizations": {
       "pt-BR": {
