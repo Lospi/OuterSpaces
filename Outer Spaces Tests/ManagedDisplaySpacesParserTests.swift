@@ -70,6 +70,16 @@ struct ManagedDisplaySpacesParserTests {
         #expect(snapshot.allSpaces.map(\.spaceID) == ["101"])
     }
 
+    @Test("Fullscreen current spaces remain visible in the per-display active map")
+    func fullscreenActiveSpace() {
+        let snapshot = ManagedDisplaySpacesParser.parse([
+            display(id: "main", activeSpaceID: 102, spaces: [regularSpace(id: 101), fullscreenSpace(id: 102)]),
+            display(id: "secondary", activeSpaceID: 201, spaces: [regularSpace(id: 201)]),
+        ])
+        #expect(snapshot.activeSpaceIDsByDisplay == ["main": "102", "secondary": "201"])
+        #expect(snapshot.allSpaces.contains { $0.spaceID == "102" } == false)
+    }
+
     private func display(id: String, activeSpaceID: Int, spaces: [[String: Any]]) -> NSDictionary {
         NSDictionary(dictionary: [
             "Display Identifier": id,

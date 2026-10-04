@@ -46,6 +46,7 @@
 		07FEE3392B07E53400419E50 /* DesktopSpaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FEE3382B07E53400419E50 /* DesktopSpaces.swift */; };
 		AABB00012D000002000B6D85 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00012D000001000B6D85 /* Logger.swift */; };
 		AABB00022D000003000B6D85 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB00022D000004000B6D85 /* Constants.swift */; };
+		A53F15BEF4548DE1B2B3C022 /* FocusSwitchingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6969EEB3E2B26D4001A08F40 /* FocusSwitchingTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,6 +114,7 @@
 		07FEE3382B07E53400419E50 /* DesktopSpaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopSpaces.swift; sourceTree = "<group>"; };
 		AABB00012D000001000B6D85 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		AABB00022D000004000B6D85 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		6969EEB3E2B26D4001A08F40 /* FocusSwitchingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusSwitchingTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -298,6 +300,7 @@
 		AABC00102F200010000B6D85 /* Outer Spaces Tests */ = {
 			isa = PBXGroup;
 			children = (
+				6969EEB3E2B26D4001A08F40 /* FocusSwitchingTests.swift */,
 				AABC00022F200002000B6D85 /* ModelTests.swift */,
 				AABC00042F200004000B6D85 /* ManagedDisplaySpacesParserTests.swift */,
 				AABC00062F200006000B6D85 /* SpaceSwitchCommandTests.swift */,
@@ -432,6 +435,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A53F15BEF4548DE1B2B3C022 /* FocusSwitchingTests.swift in Sources */,
 				AABC00012F200001000B6D85 /* ModelTests.swift in Sources */,
 				AABC00032F200003000B6D85 /* ManagedDisplaySpacesParserTests.swift in Sources */,
 				AABC00052F200005000B6D85 /* SpaceSwitchCommandTests.swift in Sources */,

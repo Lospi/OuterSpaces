@@ -29,6 +29,13 @@ struct SpaceSwitchCommandTests {
         #expect(command.appleScriptSource.contains("key code 29 using {control down, option down}"))
     }
 
+    @Test("Unsupported positive indexes do not alias another desktop", arguments: [19, 20, 29, Int.max])
+    func rejectsUnsupportedIndexes(index: Int) {
+        #expect(throws: SpaceSwitchError.invalidSpaceIndex) {
+            try SpaceSwitchCommandFactory.command(forSpaceIndex: index)
+        }
+    }
+
     @Test("Negative space indexes throw invalid index error")
     func negativeIndexesThrowInvalidIndexError() {
         do {
