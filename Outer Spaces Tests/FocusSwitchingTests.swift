@@ -13,7 +13,7 @@ struct FocusSwitchingTests {
                                            activeSpaceID: active, activeSpaceIDsByDisplay: ["main": active])
     }
 
-    @Test("Script errors retain permission category and numeric code", arguments: [-1743, -1744, 1002, -1712])
+    @Test("Script errors retain permission category and numeric code", arguments: [-1743, -1744, 1002, -1712, -600])
     func scriptErrors(code: Int) {
         let error = SpaceSwitchError.scriptError(code: code, message: "failure")
         switch code {
@@ -52,6 +52,59 @@ struct FocusSwitchingTests {
                                      execute: { _ in events += 1 }, stageManager: { _ in }, wait: {})
         await #expect(throws: SpaceSwitchError.automationNotGranted(-1743)) {
             try await switcher.switchToSpace(current.allSpaces[1])
+        }
+        #expect(events == 0)
+    }
+
+    @Test("Automation preflight launches its target before checking without prompting")
+    func automationLaunchOrder() async throws {
+        var events: [String] = []
+        let status = try await PermissionHandler.automationStatus(prompt: false, launch: {
+            events.append("launch")
+        }, check: { prompt in
+            #expect(!prompt)
+            events.append("check")
+            return 0
+        })
+        #expect(status == 0)
+        #expect(events == ["launch", "check"])
+    }
+
+    @Test("Launch failures prevent permission checks and preserve the error")
+    func automationLaunchFailure() async {
+        var checks = 0
+        let failure = SpaceSwitchError.scriptFailed(code: -600, message: "launch failed")
+        await #expect(throws: failure) {
+            _ = try await PermissionHandler.automationStatus(prompt: false, launch: { throw failure },
+                check: { _ in checks += 1; return 0 })
+        }
+        #expect(checks == 0)
+    }
+
+    @Test("A missing Automation process is not reported as permission denial")
+    func automationProcessFailure() async {
+        let current = snapshot()
+        var events = 0
+        let switcher = SpaceSwitcher(snapshot: { current }, accessibility: { true }, automation: { -600 },
+                                     execute: { _ in events += 1 }, stageManager: { _ in }, wait: {})
+        await #expect(throws: SpaceSwitchError.scriptFailed(code: -600, message: String(localized: "Automation preflight failed."))) {
+            try await switcher.switchToSpace(current.allSpaces[1])
+        }
+        #expect(events == 0)
+    }
+
+    @Test("Focus changes while Automation launches cancel the switch")
+    func cancellationDuringAutomationLaunch() async {
+        let current = snapshot()
+        var valid = true
+        var events = 0
+        let switcher = SpaceSwitcher(snapshot: { current }, accessibility: { true }, automation: {
+            valid = false
+            return 0
+        }, execute: { _ in events += 1 }, stageManager: { _ in }, wait: {})
+        await #expect(throws: CancellationError.self) {
+            try await switcher.applyPreset(Focus(name: "Work", spaces: [current.allSpaces[1]], stageManager: false),
+                                           isCurrent: { valid })
         }
         #expect(events == 0)
     }

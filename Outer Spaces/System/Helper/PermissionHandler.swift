@@ -14,9 +14,35 @@ class PermissionHandler: ObservableObject {
 
     func checkAccessibilityPermission() { hasAccessibilityPermission = AXIsProcessTrusted() }
 
-    static func automationStatus(prompt: Bool) -> Int {
-        let target = NSAppleEventDescriptor(bundleIdentifier: "com.apple.systemevents")
-        return Int(AEDeterminePermissionToAutomateTarget(target.aeDesc, typeWildCard, typeWildCard, prompt))
+    static func automationStatus(
+        prompt: Bool,
+        launch: @MainActor () async throws -> Void = { try await launchSystemEvents() },
+        check: @MainActor (Bool) -> Int = { prompt in
+            let target = NSAppleEventDescriptor(bundleIdentifier: "com.apple.systemevents")
+            return Int(AEDeterminePermissionToAutomateTarget(target.aeDesc, typeWildCard, typeWildCard, prompt))
+        }
+    ) async throws -> Int {
+        // Apple Events permission preflight requires a running target application.
+        try await launch()
+        try Task.checkCancellation()
+        return check(prompt)
+    }
+
+    private static func launchSystemEvents() async throws {
+        let identifier = "com.apple.systemevents"
+        guard NSRunningApplication.runningApplications(withBundleIdentifier: identifier).isEmpty else { return }
+        guard let url = NSWorkspace.shared.urlForApplication(withBundleIdentifier: identifier) else {
+            throw SpaceSwitchError.scriptFailed(code: -600, message: String(localized: "System Events could not be found."))
+        }
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.activates = false
+        configuration.hides = true
+        do {
+            _ = try await NSWorkspace.shared.openApplication(at: url, configuration: configuration)
+        } catch {
+            let underlying = error as NSError
+            throw SpaceSwitchError.scriptFailed(code: underlying.code, message: underlying.localizedDescription)
+        }
     }
 
     func requestAccessibilityPermission() {
@@ -30,8 +56,12 @@ class PermissionHandler: ObservableObject {
     }
 
     func openAutomationSettings() {
-        _ = Self.automationStatus(prompt: true)
-        openSettings("Privacy_Automation")
+        Task {
+            do {
+                _ = try await Self.automationStatus(prompt: true)
+                openSettings("Privacy_Automation")
+            } catch { handleSpaceSwitchError(error) }
+        }
     }
 
     private func openSettings(_ pane: String) {

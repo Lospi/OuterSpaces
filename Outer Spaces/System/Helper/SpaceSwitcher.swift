@@ -40,14 +40,14 @@ final class SpaceSwitcher {
     private var operationRevision = 0
     private let snapshot: @MainActor () async throws -> ManagedDisplaySpacesSnapshot
     private let accessibility: @MainActor () -> Bool
-    private let automation: @MainActor () -> Int
+    private let automation: @MainActor () async throws -> Int
     private let execute: @MainActor (String) throws -> Void
     private let stageManager: @MainActor (Bool) throws -> Void
     private let wait: @MainActor () async throws -> Void
 
     init(snapshot: @escaping @MainActor () async throws -> ManagedDisplaySpacesSnapshot = { try SpacesViewModel.shared.refreshSnapshot() },
          accessibility: @escaping @MainActor () -> Bool = { AXIsProcessTrusted() },
-         automation: @escaping @MainActor () -> Int = { PermissionHandler.automationStatus(prompt: false) },
+         automation: @escaping @MainActor () async throws -> Int = { try await PermissionHandler.automationStatus(prompt: false) },
          execute: @escaping @MainActor (String) throws -> Void = { try SpaceSwitcher.executeScript($0) },
          stageManager: @escaping @MainActor (Bool) throws -> Void = { try SpaceSwitcher.applyStageManager(enabled: $0) },
          wait: @escaping @MainActor () async throws -> Void = { try await Task.sleep(nanoseconds: 100_000_000) }) {
@@ -94,8 +94,11 @@ final class SpaceSwitcher {
         guard isCurrent(), !Task.isCancelled else { throw CancellationError() }
         if targets.contains(where: { initial.activeSpaceIDsByDisplay[$0.0.displayID] != $0.0.spaceID }) {
             guard accessibility() else { throw SpaceSwitchError.accessibilityNotGranted }
-            let status = automation()
-            guard status == 0 else { throw SpaceSwitchError.automationNotGranted(status) }
+            let status = try await automation()
+            guard isCurrent(), !Task.isCancelled else { throw CancellationError() }
+            guard status == 0 else {
+                throw SpaceSwitchError.scriptError(code: status, message: String(localized: "Automation preflight failed."))
+            }
         }
         for (target, _) in targets {
             // Re-resolve after each transition; a display or Space can disappear during an await.
