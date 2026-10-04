@@ -108,10 +108,11 @@ struct AppMenuBar: View {
                 emptyStateView
             } else {
                 spacesGrid
+                    .frame(minHeight: 160)
             }
         }
         .frame(width: 400)
-        .frame(maxHeight: 500)
+        .frame(maxHeight: 700)
     }
         
     private var headerBar: some View {
